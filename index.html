@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<!-- saved from url=(0054)file:///D:/Usuarios/clucero/Downloads/index%20(9).html -->
-<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<html lang="es">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EPEC SAU — Matriz de Competencias COD</title>
-<link rel="preconnect" href="https://fonts.googleapis.com/">
-<link href="./index_files/css2" rel="stylesheet">
-<link rel="stylesheet" href="./index_files/tabler-icons.min.css">
-<script src="./index_files/chart.umd.min.js.descargar"></script>
-<script src="./index_files/jspdf.umd.min.js.descargar"></script>
-<script src="./index_files/html2canvas.min.js.descargar"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <!-- Firebase -->
-<script src="./index_files/firebase-app-compat.js.descargar"></script>
-<script src="./index_files/firebase-database-compat.js.descargar"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
 :root{
   --g:#218570;--gd:#155748;--gm:#2BA888;--gl:#e1f5ee;--g2:#d0ece6;
@@ -182,6 +182,19 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
 @keyframes spin{to{transform:rotate(360deg);}}
 
 /* NOTIF */
+.plan-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.plan-tab{padding:7px 16px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--bd);background:var(--wh);color:var(--tm);transition:.2s;}
+.plan-tab.on{background:var(--gd);border-color:var(--gd);color:#fff;}
+.plan-panel{display:none;}.plan-panel.on{display:block;}
+.plan-header{background:var(--gd);color:#fff;padding:12px 16px;border-radius:8px;margin-bottom:14px;}
+.plan-title{font-size:14px;font-weight:600;}.plan-sub{font-size:10px;opacity:.8;margin-top:2px;}
+.plan-tbl{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:14px;}
+.plan-tbl th{background:var(--gd);color:#fff;padding:8px 10px;text-align:left;font-weight:500;font-size:10px;}
+.plan-tbl td{padding:8px 10px;border-bottom:1px solid var(--bd);vertical-align:top;line-height:1.5;}
+.plan-tbl tr:nth-child(even) td{background:var(--gl);}
+.plan-tbl .cod{font-weight:700;color:var(--gd);white-space:nowrap;font-size:10px;}
+.dup-badge{display:inline-block;background:var(--gm);color:#fff;font-size:8px;padding:1px 6px;border-radius:10px;font-weight:600;margin-left:4px;vertical-align:middle;}
+.mx-tbl td.pn.dup-row{background:#f0faf6;border-left:3px solid var(--gm);}
 .notif{position:fixed;bottom:24px;right:24px;background:var(--gd);color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,.2);display:none;max-width:320px;line-height:1.4;}
 </style>
 </head>
@@ -195,46 +208,43 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
     <p>EPEC S.A.U. · 6 Competencias Líder Operativo · Procesos Onboarding por Rol · Escala 1–4</p>
   </div>
   <div class="hdr-right">
-    <span class="usr-count" id="usrCount">3 usuarios conectados</span>
+    <span class="usr-count" id="usrCount"></span>
     <div class="live"><div class="dot"></div>Firebase en vivo</div>
   </div>
 </div>
 
 <!-- NAV -->
 <div class="nav">
-  <button class="nt on" onclick="go(&#39;dash&#39;)"><i class="ti ti-dashboard"></i>Dashboard</button>
-  <button class="nt" onclick="go(&#39;registro&#39;)"><i class="ti ti-user-plus"></i>Registrar evaluación</button>
-  <button class="nt" onclick="go(&#39;matriz&#39;)"><i class="ti ti-table"></i>Matriz cruzada</button>
-  <button class="nt" onclick="go(&#39;personas&#39;)"><i class="ti ti-users"></i>Personas</button>
-  <button class="nt" onclick="go(&#39;radar&#39;)"><i class="ti ti-chart-radar"></i>Radar</button>
-  <button class="nt" onclick="go(&#39;ninebox&#39;)"><i class="ti ti-layout-grid"></i>Nine Box</button>
-  <button class="nt" onclick="go(&#39;tendencia&#39;)"><i class="ti ti-trending-up"></i>Tendencia</button>
-  <button class="nt" onclick="go(&#39;reportes&#39;)"><i class="ti ti-file-type-pdf"></i>Reportes PDF</button>
+  <button class="nt on" onclick="go('dash')"><i class="ti ti-dashboard"></i>Dashboard</button>
+  <button class="nt" onclick="go('registro')"><i class="ti ti-user-plus"></i>Registrar evaluación</button>
+  <button class="nt" onclick="go('planillas')"><i class="ti ti-clipboard-list"></i>Planillas</button>
+  <button class="nt" onclick="go('matriz')"><i class="ti ti-table"></i>Matriz cruzada</button>
+  <button class="nt" onclick="go('personas')"><i class="ti ti-users"></i>Personas</button>
+  <button class="nt" onclick="go('radar')"><i class="ti ti-chart-radar"></i>Radar</button>
+  <button class="nt" onclick="go('ninebox')"><i class="ti ti-layout-grid"></i>Nine Box</button>
+  <button class="nt" onclick="go('tendencia')"><i class="ti ti-trending-up"></i>Tendencia</button>
+  <button class="nt" onclick="go('reportes')"><i class="ti ti-file-type-pdf"></i>Reportes PDF</button>
 </div>
 
 <div class="cnt">
 
 <!-- ═══════════════════════════════════ DASHBOARD ═══════ -->
 <div class="sec on" id="s-dash">
-  <div class="rcards" id="rolCards"><div class="rcard rc-j"><div style="font-size:9px;font-weight:600;color:var(--tm);margin-bottom:3px;">Jefe COD</div><div class="rcn">—</div><div class="rcl">0 evaluaciones · escala /4</div><div class="spk"></div></div><div class="rcard rc-s"><div style="font-size:9px;font-weight:600;color:var(--tm);margin-bottom:3px;">SubJefe COD</div><div class="rcn">—</div><div class="rcl">0 evaluaciones · escala /4</div><div class="spk"></div></div><div class="rcard rc-t"><div style="font-size:9px;font-weight:600;color:var(--tm);margin-bottom:3px;">Jefe Turno MT</div><div class="rcn">—</div><div class="rcl">0 evaluaciones · escala /4</div><div class="spk"></div></div></div>
-  <div class="g4" id="stats4" style="margin-bottom:14px;">
-    <div class="sc"><div class="sn">0</div><div class="sl">Evaluaciones totales</div></div>
-    <div class="sc"><div class="sn" style="color:#218570">0</div><div class="sl">Aptos (Dest./Adecuado)</div></div>
-    <div class="sc"><div class="sn" style="color:#f39c12">0</div><div class="sl">En desarrollo</div></div>
-    <div class="sc"><div class="sn" style="color:#c02133">0</div><div class="sl">Inicial / SHyMA</div></div></div>
+  <div class="rcards" id="rolCards"></div>
+  <div class="g4" id="stats4" style="margin-bottom:14px;"></div>
   <div class="g2">
     <div class="card">
       <div class="ct"><i class="ti ti-chart-bar"></i>Promedio por competencia Líder Operativo</div>
-      <div style="position:relative;height:210px;"><canvas id="cBarComp" role="img" aria-label="Promedio por competencia" width="543" height="210" style="display: block; box-sizing: border-box; height: 210px; width: 543px;"></canvas></div>
+      <div style="position:relative;height:210px;"><canvas id="cBarComp" role="img" aria-label="Promedio por competencia"></canvas></div>
     </div>
     <div class="card">
       <div class="ct"><i class="ti ti-chart-pie"></i>Estado de habilitación — equipo COD</div>
-      <div style="position:relative;height:210px;"><canvas id="cPie" role="img" aria-label="Estado habilitación" width="543" height="210" style="display: block; box-sizing: border-box; height: 210px; width: 543px;"></canvas></div>
+      <div style="position:relative;height:210px;"><canvas id="cPie" role="img" aria-label="Estado habilitación"></canvas></div>
     </div>
   </div>
   <div class="card">
     <div class="ct"><i class="ti ti-star"></i>Últimas evaluaciones — top desempeño</div>
-    <div id="topTbl"><table class="pt"><thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Fecha</th><th>Promedio</th><th>Estado</th></tr></thead><tbody><tr><td colspan="6" style="text-align:center;padding:20px;color:var(--tm)">Sin evaluaciones aún — comenzá registrando en la pestaña "Registrar evaluación"</td></tr></tbody></table></div>
+    <div id="topTbl"></div>
   </div>
 </div>
 
@@ -288,15 +298,91 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
   </div>
 </div>
 
+<!-- ═══════════════════════════════════ PLANILLAS ═══════ -->
+<div class="sec" id="s-planillas">
+  <div class="card">
+    <div class="ct"><i class="ti ti-clipboard-list"></i>Planillas de evaluación del proceso onboarding — COD EPEC S.A.U.</div>
+    <div class="sub">Estas planillas son el instrumento de referencia para el evaluador. Consultálas antes y durante la carga de cada evaluación en "Registrar".</div>
+    <div class="plan-tabs">
+      <button class="plan-tab on" onclick="showPlan('jcod',this)">Jefe COD</button>
+      <button class="plan-tab" onclick="showPlan('scod',this)">SubJefe COD</button>
+      <button class="plan-tab" onclick="showPlan('jtmt',this)">Jefe de Turno MT</button>
+      <button class="plan-tab" onclick="showPlan('dup',this)">Procesos P-DUP (1–15)</button>
+    </div>
+
+    <div class="plan-panel on" id="plan-jcod">
+      <div class="plan-header"><div><div class="plan-title">JEFE COD — Planilla de verificación de procesos exclusivos</div><div class="plan-sub">P-JCOD-01 al P-JCOD-05 · Rol Accountable (A) en P-DUP</div></div></div>
+      <table class="plan-tbl">
+        <thead><tr><th style="width:110px">Proceso</th><th>Actividad / Evidencia a verificar</th><th style="width:200px">Criterio de aceptación</th><th style="width:100px">Evaluación</th></tr></thead>
+        <tbody>
+          <tr><td class="cod">P-JCOD-01<br>Marco Legal</td><td>Conoce y aplica la normativa vigente (Ley 8.555, resoluciones ERSEP, estatuto EPEC). Fundamenta decisiones en base normativa cuando se lo consulta.</td><td>Responde correctamente al menos 3 de 4 consultas normativas tipo sin apoyo documental</td><td>☐ Cumple &nbsp; ☐ No cumple</td></tr>
+          <tr><td class="cod">P-JCOD-02<br>Config. MT/BT</td><td>Conoce parámetros de configuración de la red MT/BT del COD: tensiones nominales, límites de corriente, criterios de maniobra y configuración normal/emergencia.</td><td>Describe la configuración del sistema sin consultar planos en al menos el 80% de los casos evaluados</td><td>☐ Cumple &nbsp; ☐ No cumple</td></tr>
+          <tr><td class="cod">P-JCOD-03<br>Contratistas</td><td>Conoce el proceso completo de habilitación, seguimiento y cierre de contratistas. Verifica que el proceso sea aplicado correctamente por el SubJefe COD. No ejecuta tareas que corresponden al SubJefe.</td><td>Puede describir cada etapa del proceso. No ejecuta tareas del SubJefe COD</td><td>☐ Cumple &nbsp; ☐ No cumple</td></tr>
+          <tr><td class="cod">P-JCOD-04<br>Presupuesto</td><td>Gestiona el ciclo presupuestario completo: elabora, somete a Gerencia y controla ejecución mensual. Usa SAP/ERP. Aprueba solicitudes con criterio técnico-presupuestario explicitado.</td><td>Reporte de ejecución presupuestaria mensual con variaciones explicadas. SAP utilizado correctamente</td><td>☐ Cumple &nbsp; ☐ No cumple</td></tr>
+          <tr><td class="cod">P-JCOD-05<br>Reporte Jefatura</td><td>Elabora informes ejecutivos con indicadores SAIDI/SAIFI, novedades del período, desvíos y acciones correctivas. Presenta con claridad a la Gerencia.</td><td>Reporte entregado en plazo, indicadores calculados correctamente, narrativa de desvíos incluida</td><td>☐ Cumple &nbsp; ☐ No cumple</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="plan-panel" id="plan-scod">
+      <div class="plan-header"><div><div class="plan-title">SUBJEFE COD — Planilla de verificación de procesos exclusivos</div><div class="plan-sub">P-SCOD-01 al P-SCOD-03 · Rol Responsible (R) en P-DUP</div></div></div>
+      <table class="plan-tbl">
+        <thead><tr><th style="width:120px">Proceso</th><th>Actividad / Evidencia a verificar</th><th style="width:200px">Criterio de aceptación</th><th style="width:100px">Evaluación</th></tr></thead>
+        <tbody>
+          <tr><td class="cod">P-SCOD-01<br>Com. Operativas</td><td>Coordina operaciones diarias con CTZ Capital y Teleoperación Provincial. Registra todas las comunicaciones en bitácora. No delega la coordinación sin respaldo documentado.</td><td>Bitácora de coordinación completa sin lagunas. Comunicaciones registradas con hora, interlocutor y contenido</td><td>☐ Cumple &nbsp; ☐ No cumple</td></tr>
+          <tr><td class="cod">P-SCOD-02<br>Doc. Técnica</td><td>Gestiona, actualiza y controla la documentación técnica operativa del COD: procedimientos, planos, registros de turno, SITEC/GIS. Detecta documentación desactualizada y eleva al Jefe COD para aprobación.</td><td>Documentación vigente y accesible. Sin procedimientos desactualizados en uso. SITEC/GIS actualizado</td><td>☐ Cumple &nbsp; ☐ No cumple</td></tr>
+          <tr><td class="cod">P-SCOD-03<br>Supervisión Equipo</td><td>Supervisa el desempeño operativo del equipo en turno: verifica ejecución de tareas, detecta desvíos, otorga feedback al Jefe de Turno MT y reporta novedades al Jefe COD.</td><td>Reportes de supervisión en cada turno. Feedback documentado. Desvíos escalados en tiempo</td><td>☐ Cumple &nbsp; ☐ No cumple</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="plan-panel" id="plan-jtmt">
+      <div class="plan-header"><div><div class="plan-title">JEFE DE TURNO MT — Planilla de verificación de procesos exclusivos</div><div class="plan-sub">P-JTMT-01 al P-JTMT-03 · Ejecución operativa</div></div></div>
+      <table class="plan-tbl">
+        <thead><tr><th style="width:120px">Proceso</th><th>Actividad / Evidencia a verificar</th><th style="width:200px">Criterio de aceptación</th><th style="width:100px">Evaluación</th></tr></thead>
+        <tbody>
+          <tr><td class="cod">P-JTMT-01<br>Conducción Turno</td><td>Conduce el turno MT: dirige al equipo, gestiona la bitácora, registra novedades en tiempo real, coordina con el SubJefe COD y garantiza la continuidad operativa.</td><td>Bitácora de turno completa, sin campos faltantes. Novedades registradas en tiempo real</td><td>☐ Cumple &nbsp; ☐ No cumple</td></tr>
+          <tr><td class="cod">P-JTMT-02<br>Maniobras</td><td>Ejecuta maniobras de red MT siguiendo la secuencia programada aprobada por el Jefe COD. Registra cada maniobra. Reporta desvíos al SubJefe COD en menos de 5 minutos.</td><td>Maniobras conforme al plan aprobado. Registro completo. Desvíos reportados dentro de los 5 minutos</td><td>☐ Cumple &nbsp; ☐ No cumple</td></tr>
+          <tr><td class="cod">P-JTMT-03<br>Supervisión SHyMA</td><td>Controla EPP, enclavamientos y condiciones de seguridad antes de cada intervención. Reporta incidentes y condiciones inseguras al SubJefe COD. Preserva el lugar del incidente hasta intervención SHyMA.</td><td>Check de seguridad documentado antes de cada trabajo. Partes de incidente en plazo. Lugar preservado según protocolo</td><td>☐ Cumple &nbsp; ☐ No cumple</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="plan-panel" id="plan-dup">
+      <div class="plan-header"><div><div class="plan-title">PLANILLA P-DUP-01 al P-DUP-15 — Procesos compartidos rediseñados</div><div class="plan-sub">Fase 2 — Rediseño de Duplicaciones · JCOD=Accountable (A) · SCOD=Responsible (R) · JTMT=R/C/I</div></div></div>
+      <table class="plan-tbl">
+        <thead><tr><th style="width:100px">Código</th><th>Nombre del proceso</th><th style="width:130px">Rol JCOD</th><th style="width:130px">Rol SCOD</th><th style="width:130px">Rol JTMT</th><th style="width:80px">Eval.</th></tr></thead>
+        <tbody>
+          <tr><td class="cod">P-DUP-01</td><td>Planes de mantenimiento MT/CRD</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba plan y KPIs</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Elabora y ejecuta</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td>☐ C &nbsp; ☐ NC</td></tr>
+          <tr><td class="cod">P-DUP-02</td><td>Relevamiento de redes y aparamenta</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba informe</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Planifica y actualiza SITEC</td><td style="font-size:10px;color:#065f46">Consultado (C)</td><td>☐ C &nbsp; ☐ NC</td></tr>
+          <tr><td class="cod">P-DUP-03</td><td>Reclamos técnicos emergentes</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Decide casos críticos</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Evalúa y coordina</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Ejecuta atención</td><td>☐ C &nbsp; ☐ NC</td></tr>
+          <tr><td class="cod">P-DUP-04</td><td>Coordinación COD-CTZ-Teleoperación</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Establece protocolos</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Coordina turno a turno</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td>☐ C &nbsp; ☐ NC</td></tr>
+          <tr><td class="cod">P-DUP-05</td><td>Provisión de equipos, EPP y herramientas</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba adquisiciones</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Gestiona inventario</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td>☐ C &nbsp; ☐ NC</td></tr>
+          <tr><td class="cod">P-DUP-06</td><td>Provisión de insumos y materiales</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba solicitudes</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Gestiona stock</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td>☐ C &nbsp; ☐ NC</td></tr>
+          <tr><td class="cod">P-DUP-07</td><td>Maniobras programadas</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba plan</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Programa y monitorea</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Ejecuta maniobras</td><td>☐ C &nbsp; ☐ NC</td></tr>
+          <tr><td class="cod">P-DUP-08</td><td>Comités Técnicos y de Contingencias</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Voz institucional</td><td style="font-size:10px;color:#92400e">Consultado (C)<br>Soporte técnico</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td>☐ C &nbsp; ☐ NC</td></tr>
+          <tr><td class="cod">P-DUP-09</td><td>Capacitación del personal</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba plan</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Elabora y coordina</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Participa y aplica</td><td>☐ C &nbsp; ☐ NC</td></tr>
+          <tr><td class="cod">P-DUP-10</td><td>Cumplimiento SHyMA</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Define estándares</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Supervisa y audita</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Controla en turno</td><td>☐ C &nbsp; ☐ NC</td></tr>
+          <tr><td class="cod">P-DUP-11</td><td>Procedimientos operativos</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Revisa y aprueba</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Confecciona borradores</td><td style="font-size:10px;color:#065f46">Consultado (C)</td><td>☐ C &nbsp; ☐ NC</td></tr>
+          <tr><td class="cod">P-DUP-12</td><td>Presupuesto anual del COD</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Elabora y controla</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Aporta datos operativos</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td>☐ C &nbsp; ☐ NC</td></tr>
+          <tr><td class="cod">P-DUP-13</td><td>Indicadores de control y mejora</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Decide acciones de mejora</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Analiza KPIs</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td>☐ C &nbsp; ☐ NC</td></tr>
+          <tr><td class="cod">P-DUP-14</td><td>Reporte de Gestión O&amp;M</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba y firma</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Elabora reporte</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Provee registros de turno</td><td>☐ C &nbsp; ☐ NC</td></tr>
+          <tr><td class="cod">P-DUP-15</td><td>Gestión administrativa de RRHH</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba diagramas y licencias</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Gestiona administrativamente</td><td style="font-size:10px;color:#065f46">Informado (I)<br>Recibe diagrama aprobado</td><td>☐ C &nbsp; ☐ NC</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════ MATRIZ CRUZADA ═══════ -->
 <div class="sec" id="s-matriz">
   <div class="card">
     <div class="ct"><i class="ti ti-table"></i>Matriz consolidada — Procesos × Competencias (promedio del grupo)</div>
     <div class="sub">Promedio de todas las evaluaciones registradas. Colores: verde oscuro=4, verde=3, amarillo=2, rojo=1</div>
     <div class="rtabs" id="matzRolTabs">
-      <button class="rtab on" onclick="filMatriz(&#39;JCOD&#39;,this)">Jefe COD</button>
-      <button class="rtab" onclick="filMatriz(&#39;SCOD&#39;,this)">SubJefe COD</button>
-      <button class="rtab" onclick="filMatriz(&#39;JTMT&#39;,this)">Jefe de Turno MT</button>
+      <button class="rtab on" onclick="filMatriz('JCOD',this)">Jefe COD</button>
+      <button class="rtab" onclick="filMatriz('SCOD',this)">SubJefe COD</button>
+      <button class="rtab" onclick="filMatriz('JTMT',this)">Jefe de Turno MT</button>
     </div>
     <div class="mx-wrap" id="matrizResumen"><div class="loading"><div class="spinner"></div>Cargando...</div></div>
     <div class="pdf-legend" style="margin-top:12px;">
@@ -314,12 +400,12 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
   <div class="card">
     <div class="ct"><i class="ti ti-users"></i>Equipo COD — historial completo de evaluaciones</div>
     <div class="rtabs">
-      <button class="rtab on" onclick="filP(&#39;all&#39;,this)">Todos</button>
-      <button class="rtab" onclick="filP(&#39;JCOD&#39;,this)">Jefe COD</button>
-      <button class="rtab" onclick="filP(&#39;SCOD&#39;,this)">SubJefe COD</button>
-      <button class="rtab" onclick="filP(&#39;JTMT&#39;,this)">Jefe Turno MT</button>
+      <button class="rtab on" onclick="filP('all',this)">Todos</button>
+      <button class="rtab" onclick="filP('JCOD',this)">Jefe COD</button>
+      <button class="rtab" onclick="filP('SCOD',this)">SubJefe COD</button>
+      <button class="rtab" onclick="filP('JTMT',this)">Jefe Turno MT</button>
     </div>
-    <div style="overflow-x:auto;"><table class="pt" id="pTbl"><thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Evaluador</th><th>Fecha</th><th>Promedio</th><th>Estado</th><th></th></tr></thead><tbody><tr><td colspan="8" style="text-align:center;padding:20px;color:var(--tm)">Sin registros</td></tr></tbody></table></div>
+    <div style="overflow-x:auto;"><table class="pt" id="pTbl"></table></div>
   </div>
 </div>
 
@@ -523,24 +609,66 @@ const COMPS = [
 ];
 const PROCS = {
   JCOD:[
-    {id:'P-JCOD-01',n:'Gestión Marco Legal y Normativo'},
-    {id:'P-JCOD-02',n:'Configuración MT/BT'},
-    {id:'P-JCOD-03',n:'Gestión de Contratistas'},
-    {id:'P-JCOD-04',n:'Gestión Presupuestaria'},
-    {id:'P-JCOD-05',n:'Reporte de Gestión a Jefatura'},
-    {id:'P-DUP',    n:'Procesos compartidos (P-DUP-01 a 15)'},
+    {id:'P-JCOD-01',n:'Gestión Marco Legal y Normativo',dup:false},
+    {id:'P-JCOD-02',n:'Configuración MT/BT',dup:false},
+    {id:'P-JCOD-03',n:'Gestión de Contratistas',dup:false},
+    {id:'P-JCOD-04',n:'Gestión Presupuestaria',dup:false},
+    {id:'P-JCOD-05',n:'Reporte de Gestión a Jefatura',dup:false},
+    {id:'P-DUP-01',n:'Planes de mantenimiento MT/CRD',dup:true},
+    {id:'P-DUP-02',n:'Relevamiento de redes y aparamenta',dup:true},
+    {id:'P-DUP-03',n:'Reclamos técnicos emergentes',dup:true},
+    {id:'P-DUP-04',n:'Coordinación COD-CTZ-Teleoperación',dup:true},
+    {id:'P-DUP-05',n:'Provisión de equipos, EPP y herramientas',dup:true},
+    {id:'P-DUP-06',n:'Provisión de insumos y materiales',dup:true},
+    {id:'P-DUP-07',n:'Maniobras programadas',dup:true},
+    {id:'P-DUP-08',n:'Comités Técnicos y de Contingencias',dup:true},
+    {id:'P-DUP-09',n:'Capacitación del personal',dup:true},
+    {id:'P-DUP-10',n:'Cumplimiento SHyMA',dup:true},
+    {id:'P-DUP-11',n:'Procedimientos operativos',dup:true},
+    {id:'P-DUP-12',n:'Presupuesto anual del COD',dup:true},
+    {id:'P-DUP-13',n:'Indicadores de control y mejora',dup:true},
+    {id:'P-DUP-14',n:'Reporte de Gestión O&M',dup:true},
+    {id:'P-DUP-15',n:'Gestión administrativa de RRHH',dup:true},
   ],
   SCOD:[
-    {id:'P-SCOD-01',n:'Gestión de Comunicaciones Operativas'},
-    {id:'P-SCOD-02',n:'Gestión de Documentación Técnica'},
-    {id:'P-SCOD-03',n:'Supervisión del Equipo Operativo'},
-    {id:'P-DUP',    n:'Procesos compartidos (P-DUP-01 a 15)'},
+    {id:'P-SCOD-01',n:'Gestión de Comunicaciones Operativas',dup:false},
+    {id:'P-SCOD-02',n:'Gestión de Documentación Técnica',dup:false},
+    {id:'P-SCOD-03',n:'Supervisión del Equipo Operativo',dup:false},
+    {id:'P-DUP-01',n:'Planes de mantenimiento MT/CRD',dup:true},
+    {id:'P-DUP-02',n:'Relevamiento de redes y aparamenta',dup:true},
+    {id:'P-DUP-03',n:'Reclamos técnicos emergentes',dup:true},
+    {id:'P-DUP-04',n:'Coordinación COD-CTZ-Teleoperación',dup:true},
+    {id:'P-DUP-05',n:'Provisión de equipos, EPP y herramientas',dup:true},
+    {id:'P-DUP-06',n:'Provisión de insumos y materiales',dup:true},
+    {id:'P-DUP-07',n:'Maniobras programadas',dup:true},
+    {id:'P-DUP-08',n:'Comités Técnicos y de Contingencias',dup:true},
+    {id:'P-DUP-09',n:'Capacitación del personal',dup:true},
+    {id:'P-DUP-10',n:'Cumplimiento SHyMA',dup:true},
+    {id:'P-DUP-11',n:'Procedimientos operativos',dup:true},
+    {id:'P-DUP-12',n:'Presupuesto anual del COD',dup:true},
+    {id:'P-DUP-13',n:'Indicadores de control y mejora',dup:true},
+    {id:'P-DUP-14',n:'Reporte de Gestión O&M',dup:true},
+    {id:'P-DUP-15',n:'Gestión administrativa de RRHH',dup:true},
   ],
   JTMT:[
-    {id:'P-JTMT-01',n:'Conducción Operativa del Turno MT'},
-    {id:'P-JTMT-02',n:'Gestión de Maniobras y Restablecimiento'},
-    {id:'P-JTMT-03',n:'Supervisión SHyMA en Campo'},
-    {id:'P-DUP',    n:'Procesos compartidos (P-DUP-01 a 15)'},
+    {id:'P-JTMT-01',n:'Conducción Operativa del Turno MT',dup:false},
+    {id:'P-JTMT-02',n:'Gestión de Maniobras y Restablecimiento',dup:false},
+    {id:'P-JTMT-03',n:'Supervisión SHyMA',dup:false},
+    {id:'P-DUP-01',n:'Planes de mantenimiento MT/CRD',dup:true},
+    {id:'P-DUP-02',n:'Relevamiento de redes y aparamenta',dup:true},
+    {id:'P-DUP-03',n:'Reclamos técnicos emergentes',dup:true},
+    {id:'P-DUP-04',n:'Coordinación COD-CTZ-Teleoperación',dup:true},
+    {id:'P-DUP-05',n:'Provisión de equipos, EPP y herramientas',dup:true},
+    {id:'P-DUP-06',n:'Provisión de insumos y materiales',dup:true},
+    {id:'P-DUP-07',n:'Maniobras programadas',dup:true},
+    {id:'P-DUP-08',n:'Comités Técnicos y de Contingencias',dup:true},
+    {id:'P-DUP-09',n:'Capacitación del personal',dup:true},
+    {id:'P-DUP-10',n:'Cumplimiento SHyMA',dup:true},
+    {id:'P-DUP-11',n:'Procedimientos operativos',dup:true},
+    {id:'P-DUP-12',n:'Presupuesto anual del COD',dup:true},
+    {id:'P-DUP-13',n:'Indicadores de control y mejora',dup:true},
+    {id:'P-DUP-14',n:'Reporte de Gestión O&M',dup:true},
+    {id:'P-DUP-15',n:'Gestión administrativa de RRHH',dup:true},
   ],
 };
 const NB9_DEF = [
@@ -656,10 +784,11 @@ function buildMatriz(){
   COMPS.forEach(c=>{h+=`<th>${c.s}${c.shyma?'<br><small style="color:#fca5a5;">⚡SHyMA</small>':''}</th>`;});
   h+='<th>Prom.</th></tr></thead><tbody>';
   procs.forEach(p=>{
-    h+=`<tr><td class="pn"><span class="pc">${p.id}</span>${p.n}</td>`;
+    const isDup=p.dup;
+    h+=`<tr><td class="pn${isDup?' dup-row':''}"><span class="pc">${p.id}</span>${p.n}${isDup?'<span class="dup-badge">DUP</span>':''}</td>`;
     COMPS.forEach(c=>{
       const key=p.id+'_'+c.id;
-      h+=`<td><div class="score-sel">`;
+      h+=`<td${isDup?' style="background:#f0faf6"':''}><div class="score-sel">`;
       [4,3,2,1].forEach(v=>{ h+=`<button class="ss" id="ss-${key}-${v}" onclick="setS('${key}',${v},'${rol}')">${v}</button>`; });
       h+=`</div></td>`;
     });
@@ -726,7 +855,14 @@ function guardar(){
   const rol=document.getElementById('i-rol').value;
   const eval_=document.getElementById('i-eval').value.trim();
   const inst=document.getElementById('i-inst').value;
-  const fecha=document.getElementById('i-fecha').value||new Date().toISOString().split('T')[0];
+  const fecha=function showPlan(id,btn){
+  document.querySelectorAll('.plan-tab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.plan-panel').forEach(p=>p.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  const el=document.getElementById('plan-'+id);if(el)el.classList.add('on');
+}
+
+document.getElementById('i-fecha').value||new Date().toISOString().split('T')[0];
   if(!nom||!rol){alert('Completar nombre y rol');return;}
   const allV=Object.values(curScores).filter(v=>v);
   const avgTot=allV.length?+(allV.reduce((a,b)=>a+b,0)/allV.length).toFixed(2):0;
@@ -827,7 +963,8 @@ function renderMatrizRes(rol){
   COMPS.forEach(c=>{h+=`<th>${c.s}</th>`;});
   h+='<th>Prom.</th></tr></thead><tbody>';
   procs.forEach(p=>{
-    h+=`<tr><td class="pn"><span class="pc">${p.id}</span>${p.n}</td>`;
+    const isDup=p.dup;
+    h+=`<tr><td class="pn${isDup?' dup-row':''}"><span class="pc">${p.id}</span>${p.n}${isDup?'<span class="dup-badge">DUP</span>':''}</td>`;
     const rowVals=[];
     COMPS.forEach(c=>{
       const vals=evals.map(d=>d.scores?.[p.id+'_'+c.id]).filter(v=>v);
@@ -1094,8 +1231,14 @@ async function exportPDF(){
 // ════════════════════════════════════════════════════════════
 //  INIT
 // ════════════════════════════════════════════════════════════
+function showPlan(id,btn){
+  document.querySelectorAll('.plan-tab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.plan-panel').forEach(p=>p.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  const el=document.getElementById('plan-'+id);if(el)el.classList.add('on');
+}
+
 document.getElementById('i-fecha').value=new Date().toISOString().split('T')[0];
 </script>
-
-
-</body></html>
+</body>
+</html>
