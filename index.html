@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)file:///D:/Usuarios/clucero/Downloads/index%20(9).html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPEC SAU — Matriz de Competencias COD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./index_files/css2" rel="stylesheet">
+<link rel="stylesheet" href="./index_files/tabler-icons.min.css">
+<script src="./index_files/chart.umd.min.js.descargar"></script>
+<script src="./index_files/jspdf.umd.min.js.descargar"></script>
+<script src="./index_files/html2canvas.min.js.descargar"></script>
+<!-- Firebase -->
+<script src="./index_files/firebase-app-compat.js.descargar"></script>
+<script src="./index_files/firebase-database-compat.js.descargar"></script>
+<style>
+:root{
+  --g:#218570;--gd:#155748;--gm:#2BA888;--gl:#e1f5ee;--g2:#d0ece6;
+  --r:#c02133;--rl:#fde8eb;
+  --am:#f39c12;--aml:#fef3c7;
+  --bd:#d0e8e0;--bg:#f5f9f7;
+  --tx:#1a2e2a;--tm:#5a7a72;
+  --wh:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);background:var(--bg);min-height:100vh;}
+
+/* HEADER */
+.hdr{background:var(--gd);color:#fff;padding:12px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.hdr-logo{background:#fff;border-radius:8px;padding:5px 9px;font-size:10px;font-weight:700;color:var(--gd);line-height:1.2;text-align:center;}
+.hdr-info{flex:1;}
+.hdr-info h1{font-size:15px;font-weight:600;margin-bottom:1px;}
+.hdr-info p{font-size:10px;opacity:.75;}
+.hdr-right{display:flex;align-items:center;gap:10px;}
+.live{background:var(--gm);color:#fff;font-size:10px;padding:3px 10px;border-radius:20px;display:flex;align-items:center;gap:5px;}
+.dot{width:6px;height:6px;background:#7fffd4;border-radius:50%;animation:pu 1.5s infinite;}
+@keyframes pu{0%,100%{opacity:1;}50%{opacity:.3;}}
+.usr-count{font-size:10px;color:#fff;opacity:.8;}
+
+/* NAV */
+.nav{background:var(--wh);border-bottom:2px solid var(--bd);display:flex;overflow-x:auto;padding:0 16px;}
+.nt{padding:11px 18px;font-size:12px;font-weight:500;border:none;background:transparent;cursor:pointer;color:var(--tm);border-bottom:2.5px solid transparent;white-space:nowrap;transition:.2s;display:flex;align-items:center;gap:6px;}
+.nt.on{color:var(--g);border-bottom-color:var(--g);font-weight:600;}
+.nt:hover:not(.on){background:var(--gl);}
+.nt i{font-size:15px;}
+
+/* CONTENT */
+.cnt{max-width:1200px;margin:0 auto;padding:20px 16px;}
+.sec{display:none;}
+.sec.on{display:block;}
+
+/* CARDS */
+.card{background:var(--wh);border:.5px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.ct{font-size:11px;font-weight:600;color:var(--gd);margin-bottom:10px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.5px;}
+.sub{font-size:10px;color:var(--tm);margin-bottom:10px;margin-top:-6px;line-height:1.5;}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+@media(max-width:700px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+/* FORMS */
+.fg{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;}
+.fg label{font-size:10px;color:var(--tm);font-weight:600;text-transform:uppercase;letter-spacing:.3px;}
+.fg input,.fg select,.fg textarea{border:1.5px solid var(--bd);border-radius:8px;padding:8px 12px;font-size:13px;font-family:inherit;color:var(--tx);background:var(--wh);width:100%;transition:.2s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--g);box-shadow:0 0 0 3px rgba(33,133,112,.1);}
+
+/* STAT CARDS */
+.sc{background:var(--gl);border-radius:10px;padding:14px;text-align:center;border:1px solid var(--g2);}
+.sn{font-size:28px;font-weight:700;color:var(--gd);}
+.sl{font-size:10px;color:var(--tm);margin-top:3px;}
+.spk{display:flex;align-items:flex-end;gap:2px;height:24px;margin-top:6px;justify-content:center;}
+.spkb{width:8px;border-radius:2px 2px 0 0;min-height:3px;}
+
+/* ROLE CARDS */
+.rcards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px;}
+.rcard{border-radius:12px;padding:14px;text-align:center;border:1.5px solid;}
+.rc-j{background:#dbeafe;border-color:#93c5fd;}
+.rc-s{background:var(--aml);border-color:#fcd34d;}
+.rc-t{background:var(--gl);border-color:#6ee7b7;}
+.rcn{font-size:28px;font-weight:700;}
+.rc-j .rcn{color:#1e40af;} .rc-s .rcn{color:#92400e;} .rc-t .rcn{color:#065f46;}
+.rcl{font-size:9px;color:var(--tm);margin-top:2px;}
+
+/* BADGES */
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:600;}
+.bj{background:#dbeafe;color:#1e40af;} .bs{background:var(--aml);color:#92400e;} .bt{background:var(--gl);color:#065f46;}
+.b4{background:#218570;color:#fff;} .b3{background:#2BA888;color:#fff;} .b2{background:#f39c12;color:#fff;} .b1{background:#c02133;color:#fff;}
+
+/* MATRIZ */
+.mx-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--bd);}
+.mx-tbl{border-collapse:collapse;width:100%;font-size:11px;}
+.mx-tbl th{background:var(--gd);color:#fff;padding:9px 10px;text-align:center;font-weight:500;white-space:nowrap;font-size:10px;}
+.mx-tbl th.proc-h{text-align:left;min-width:180px;}
+.mx-tbl td{padding:6px 8px;border:1px solid var(--bd);text-align:center;vertical-align:middle;}
+.mx-tbl td.pn{text-align:left;background:var(--bg);font-weight:500;white-space:nowrap;}
+.mx-tbl td.pn .pc{font-size:9px;color:var(--tm);display:block;}
+.mx-tbl tr:hover td{background:#f0faf6;}
+.score-sel{display:flex;gap:3px;justify-content:center;}
+.ss{width:26px;height:26px;border-radius:6px;border:1.5px solid #ddd;background:var(--wh);cursor:pointer;font-size:11px;font-weight:700;transition:.15s;font-family:inherit;}
+.ss:hover{transform:scale(1.15);border-color:var(--g);}
+.ss.s4{background:#218570;border-color:#218570;color:#fff;}
+.ss.s3{background:#2BA888;border-color:#2BA888;color:#fff;}
+.ss.s2{background:#f39c12;border-color:#f39c12;color:#fff;}
+.ss.s1{background:#c02133;border-color:#c02133;color:#fff;}
+.avg-cell{font-weight:700;font-size:12px;}
+
+/* BTNS */
+.bp{background:var(--g);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:6px;font-family:inherit;}
+.bp:hover{background:var(--gd);}
+.bsec{background:var(--wh);color:var(--g);border:1.5px solid var(--g);padding:9px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;}
+.bsec:hover{background:var(--gl);}
+.bdel{background:var(--r);color:#fff;border:none;padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit;}
+.bpdf{background:var(--r);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:inherit;}
+.bpdf:hover{background:#9b1c2e;}
+.acts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+
+/* TABS */
+.rtabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+.rtab{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:1.5px solid var(--bd);background:var(--wh);color:var(--tm);transition:.2s;}
+.rtab.on{background:var(--g);border-color:var(--g);color:#fff;}
+
+/* PEOPLE TABLE */
+.pt{width:100%;border-collapse:collapse;font-size:12px;}
+.pt th{background:var(--gd);color:#fff;padding:9px 12px;text-align:left;font-weight:500;font-size:11px;}
+.pt td{padding:8px 12px;border-bottom:1px solid var(--bd);}
+.pt tr:hover td{background:var(--gl);}
+.sbar{height:6px;border-radius:3px;background:#e2e8f0;overflow:hidden;margin-top:3px;}
+.sfill{height:100%;border-radius:3px;}
+
+/* ALERTS */
+.al{padding:10px 14px;border-radius:8px;font-size:11px;margin-bottom:8px;line-height:1.5;}
+.al-g{background:var(--gl);color:#065f46;border:1px solid #6ee7b7;}
+.al-a{background:var(--aml);color:#92400e;border:1px solid #fcd34d;}
+.al-r{background:var(--rl);color:#9b1c2e;border:1px solid #fca5a5;}
+
+/* NINE BOX */
+.nb9{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;}
+.nbc{border-radius:8px;padding:10px 8px;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;font-weight:600;text-align:center;cursor:default;border:1px solid rgba(0,0,0,.08);}
+.nbl{font-size:9px;opacity:.85;margin-bottom:5px;font-weight:500;}
+.nbdots{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;margin-top:4px;}
+.nbdot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;background:#fff;border:2px solid rgba(0,0,0,.15);}
+
+/* SHYMA */
+.shyma-alert{background:var(--rl);border:2px solid var(--r);border-radius:10px;padding:12px 16px;font-size:12px;color:var(--r);margin-top:10px;display:none;font-weight:500;}
+
+/* RES BOX */
+.res-box{background:var(--gl);border-radius:10px;padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;border:1px solid var(--g2);}
+.res-item{text-align:center;}
+.res-num{font-size:26px;font-weight:700;color:var(--gd);}
+.res-lbl{font-size:9px;color:var(--tm);margin-top:2px;}
+
+/* PDF REPORTE */
+.pdf-preview{background:var(--wh);border:1px solid var(--bd);border-radius:12px;padding:20px;margin-top:14px;}
+.pdf-header{background:var(--gd);color:#fff;padding:16px 20px;border-radius:8px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+.pdf-logo{background:#fff;border-radius:6px;padding:5px 9px;font-size:11px;font-weight:700;color:var(--gd);line-height:1.2;text-align:center;}
+.pdf-title{font-size:16px;font-weight:600;}
+.pdf-sub{font-size:10px;opacity:.8;margin-top:2px;}
+.pdf-charts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.pdf-chart-box{background:var(--bg);border-radius:8px;padding:14px;border:1px solid var(--bd);}
+.pdf-chart-title{font-size:11px;font-weight:600;color:var(--gd);margin-bottom:10px;text-transform:uppercase;letter-spacing:.4px;}
+.pdf-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:10px;}
+.pdf-table th{background:var(--gd);color:#fff;padding:8px 10px;text-align:left;font-weight:500;font-size:10px;}
+.pdf-table td{padding:7px 10px;border-bottom:1px solid var(--bd);}
+.pdf-table tr:nth-child(even) td{background:var(--gl);}
+.pdf-footer{text-align:center;font-size:9px;color:var(--tm);margin-top:14px;padding-top:10px;border-top:1px solid var(--bd);}
+.pdf-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:10px;margin-top:8px;}
+.pdf-legend span{display:flex;align-items:center;gap:5px;}
+.pdf-legend .sq{width:12px;height:12px;border-radius:3px;display:inline-block;}
+
+/* MATRIZ RESUMEN COLORES */
+.cell-4{background:#218570;color:#fff;font-weight:700;}
+.cell-3{background:#2BA888;color:#fff;font-weight:700;}
+.cell-2{background:#f39c12;color:#fff;font-weight:700;}
+.cell-1{background:#c02133;color:#fff;font-weight:700;}
+.cell-0{background:#f1f5f9;color:#94a3b8;}
+
+/* LOADING */
+.loading{display:flex;align-items:center;justify-content:center;padding:40px;flex-direction:column;gap:10px;color:var(--tm);}
+.spinner{width:32px;height:32px;border:3px solid var(--bd);border-top-color:var(--g);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* NOTIF */
+.notif{position:fixed;bottom:24px;right:24px;background:var(--gd);color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,.2);display:none;max-width:320px;line-height:1.4;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-logo">EPEC<br>COD</div>
+  <div class="hdr-info">
+    <h1>Matriz de Competencias — Centro Operativo de Distribución</h1>
+    <p>EPEC S.A.U. · 6 Competencias Líder Operativo · Procesos Onboarding por Rol · Escala 1–4</p>
+  </div>
+  <div class="hdr-right">
+    <span class="usr-count" id="usrCount">3 usuarios conectados</span>
+    <div class="live"><div class="dot"></div>Firebase en vivo</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nt on" onclick="go(&#39;dash&#39;)"><i class="ti ti-dashboard"></i>Dashboard</button>
+  <button class="nt" onclick="go(&#39;registro&#39;)"><i class="ti ti-user-plus"></i>Registrar evaluación</button>
+  <button class="nt" onclick="go(&#39;matriz&#39;)"><i class="ti ti-table"></i>Matriz cruzada</button>
+  <button class="nt" onclick="go(&#39;personas&#39;)"><i class="ti ti-users"></i>Personas</button>
+  <button class="nt" onclick="go(&#39;radar&#39;)"><i class="ti ti-chart-radar"></i>Radar</button>
+  <button class="nt" onclick="go(&#39;ninebox&#39;)"><i class="ti ti-layout-grid"></i>Nine Box</button>
+  <button class="nt" onclick="go(&#39;tendencia&#39;)"><i class="ti ti-trending-up"></i>Tendencia</button>
+  <button class="nt" onclick="go(&#39;reportes&#39;)"><i class="ti ti-file-type-pdf"></i>Reportes PDF</button>
+</div>
+
+<div class="cnt">
+
+<!-- ═══════════════════════════════════ DASHBOARD ═══════ -->
+<div class="sec on" id="s-dash">
+  <div class="rcards" id="rolCards"><div class="rcard rc-j"><div style="font-size:9px;font-weight:600;color:var(--tm);margin-bottom:3px;">Jefe COD</div><div class="rcn">—</div><div class="rcl">0 evaluaciones · escala /4</div><div class="spk"></div></div><div class="rcard rc-s"><div style="font-size:9px;font-weight:600;color:var(--tm);margin-bottom:3px;">SubJefe COD</div><div class="rcn">—</div><div class="rcl">0 evaluaciones · escala /4</div><div class="spk"></div></div><div class="rcard rc-t"><div style="font-size:9px;font-weight:600;color:var(--tm);margin-bottom:3px;">Jefe Turno MT</div><div class="rcn">—</div><div class="rcl">0 evaluaciones · escala /4</div><div class="spk"></div></div></div>
+  <div class="g4" id="stats4" style="margin-bottom:14px;">
+    <div class="sc"><div class="sn">0</div><div class="sl">Evaluaciones totales</div></div>
+    <div class="sc"><div class="sn" style="color:#218570">0</div><div class="sl">Aptos (Dest./Adecuado)</div></div>
+    <div class="sc"><div class="sn" style="color:#f39c12">0</div><div class="sl">En desarrollo</div></div>
+    <div class="sc"><div class="sn" style="color:#c02133">0</div><div class="sl">Inicial / SHyMA</div></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct"><i class="ti ti-chart-bar"></i>Promedio por competencia Líder Operativo</div>
+      <div style="position:relative;height:210px;"><canvas id="cBarComp" role="img" aria-label="Promedio por competencia" width="543" height="210" style="display: block; box-sizing: border-box; height: 210px; width: 543px;"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-chart-pie"></i>Estado de habilitación — equipo COD</div>
+      <div style="position:relative;height:210px;"><canvas id="cPie" role="img" aria-label="Estado habilitación" width="543" height="210" style="display: block; box-sizing: border-box; height: 210px; width: 543px;"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct"><i class="ti ti-star"></i>Últimas evaluaciones — top desempeño</div>
+    <div id="topTbl"><table class="pt"><thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Fecha</th><th>Promedio</th><th>Estado</th></tr></thead><tbody><tr><td colspan="6" style="text-align:center;padding:20px;color:var(--tm)">Sin evaluaciones aún — comenzá registrando en la pestaña "Registrar evaluación"</td></tr></tbody></table></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ REGISTRO ═══════ -->
+<div class="sec" id="s-registro">
+  <div class="card">
+    <div class="ct"><i class="ti ti-user-plus"></i>Nueva evaluación de onboarding</div>
+    <div class="g2">
+      <div class="fg"><label>Nombre completo</label><input type="text" id="i-nom" placeholder="Apellido, Nombre"></div>
+      <div class="fg"><label>Rol</label>
+        <select id="i-rol" onchange="buildMatriz()">
+          <option value="">Seleccionar rol...</option>
+          <option value="JCOD">Jefe COD</option>
+          <option value="SCOD">SubJefe COD</option>
+          <option value="JTMT">Jefe de Turno MT</option>
+        </select>
+      </div>
+    </div>
+    <div class="g3">
+      <div class="fg"><label>Evaluador / Tutor</label><input type="text" id="i-eval" placeholder="Nombre del tutor"></div>
+      <div class="fg"><label>Instancia</label>
+        <select id="i-inst">
+          <option value="diagnostico">Diagnóstico — Semana 1</option>
+          <option value="seguimiento">Seguimiento — Sem. 2–3</option>
+          <option value="certificacion">Certificación — Semana 4</option>
+        </select>
+      </div>
+      <div class="fg"><label>Fecha</label><input type="date" id="i-fecha"></div>
+    </div>
+  </div>
+
+  <div class="card" id="matrizCard" style="display:none;">
+    <div class="ct"><i class="ti ti-clipboard-check"></i>Matriz cruzada: Procesos × 6 Competencias Líder Operativo EPEC</div>
+    <div class="sub">Escala: <strong>4 = Destacado</strong> · <strong>3 = Adecuado</strong> · <strong>2 = En desarrollo</strong> · <strong>1 = Inicial</strong> · seleccioná un valor por cada celda</div>
+    <div class="mx-wrap">
+      <table class="mx-tbl" id="matrizTbl"></table>
+    </div>
+    <div class="shyma-alert" id="shyAlerta">
+      ⛔ ALERTA SHyMA — "Gestión de la seguridad operacional" calificada como 1 (Inicial).<br>
+      Criterio de override: la persona NO puede ser habilitada independientemente del puntaje total.
+    </div>
+    <div class="res-box" id="resBox">
+      <div class="res-item"><div class="res-num" id="rNum">—</div><div class="res-lbl">Promedio general / 4</div></div>
+      <div class="res-item"><div class="res-num" id="rPct">—</div><div class="res-lbl">% sobre nivel requerido</div></div>
+      <div class="res-item"><div class="res-num" id="rEst" style="font-size:13px;margin-top:6px;">—</div><div class="res-lbl">Estado de habilitación</div></div>
+    </div>
+    <div class="acts">
+      <button class="bp" onclick="guardar()"><i class="ti ti-device-floppy"></i>Guardar en Firebase</button>
+      <button class="bsec" onclick="limpiar()"><i class="ti ti-refresh"></i>Limpiar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ MATRIZ CRUZADA ═══════ -->
+<div class="sec" id="s-matriz">
+  <div class="card">
+    <div class="ct"><i class="ti ti-table"></i>Matriz consolidada — Procesos × Competencias (promedio del grupo)</div>
+    <div class="sub">Promedio de todas las evaluaciones registradas. Colores: verde oscuro=4, verde=3, amarillo=2, rojo=1</div>
+    <div class="rtabs" id="matzRolTabs">
+      <button class="rtab on" onclick="filMatriz(&#39;JCOD&#39;,this)">Jefe COD</button>
+      <button class="rtab" onclick="filMatriz(&#39;SCOD&#39;,this)">SubJefe COD</button>
+      <button class="rtab" onclick="filMatriz(&#39;JTMT&#39;,this)">Jefe de Turno MT</button>
+    </div>
+    <div class="mx-wrap" id="matrizResumen"><div class="loading"><div class="spinner"></div>Cargando...</div></div>
+    <div class="pdf-legend" style="margin-top:12px;">
+      <span><span class="sq" style="background:#218570;"></span>4 Destacado</span>
+      <span><span class="sq" style="background:#2BA888;"></span>3 Adecuado</span>
+      <span><span class="sq" style="background:#f39c12;"></span>2 En desarrollo</span>
+      <span><span class="sq" style="background:#c02133;"></span>1 Inicial</span>
+      <span><span class="sq" style="background:#f1f5f9;"></span>Sin datos</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ PERSONAS ═══════ -->
+<div class="sec" id="s-personas">
+  <div class="card">
+    <div class="ct"><i class="ti ti-users"></i>Equipo COD — historial completo de evaluaciones</div>
+    <div class="rtabs">
+      <button class="rtab on" onclick="filP(&#39;all&#39;,this)">Todos</button>
+      <button class="rtab" onclick="filP(&#39;JCOD&#39;,this)">Jefe COD</button>
+      <button class="rtab" onclick="filP(&#39;SCOD&#39;,this)">SubJefe COD</button>
+      <button class="rtab" onclick="filP(&#39;JTMT&#39;,this)">Jefe Turno MT</button>
+    </div>
+    <div style="overflow-x:auto;"><table class="pt" id="pTbl"><thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Evaluador</th><th>Fecha</th><th>Promedio</th><th>Estado</th><th></th></tr></thead><tbody><tr><td colspan="8" style="text-align:center;padding:20px;color:var(--tm)">Sin registros</td></tr></tbody></table></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ RADAR ═══════ -->
+<div class="sec" id="s-radar">
+  <div class="card">
+    <div class="ct"><i class="ti ti-chart-radar"></i>Radar — 6 Competencias Líder Operativo EPEC</div>
+    <div class="sub">Perfil real del grupo vs. nivel requerido (4 = Destacado). El área roja indica la brecha a cerrar.</div>
+    <div class="g2" style="margin-bottom:14px;">
+      <div class="fg"><label>Rol</label>
+        <select id="rRol" onchange="updPers();renderRadar();">
+          <option value="JCOD">Jefe COD</option>
+          <option value="SCOD">SubJefe COD</option>
+          <option value="JTMT">Jefe de Turno MT</option>
+        </select>
+      </div>
+      <div class="fg"><label>Persona (individual vs. grupo)</label>
+        <select id="rPers" onchange="renderRadar()"><option value="">— Promedio del grupo —</option></select>
+      </div>
+    </div>
+    <div style="position:relative;height:320px;max-width:520px;margin:0 auto;"><canvas id="cRadar" role="img" aria-label="Radar competencias Líder Operativo"></canvas></div>
+    <div class="pdf-legend" style="margin-top:10px;justify-content:center;">
+      <span><span style="width:16px;height:3px;background:#218570;display:inline-block;border-radius:2px;"></span>Nivel requerido (4)</span>
+      <span><span style="width:16px;height:3px;background:#c02133;display:inline-block;border-radius:2px;border-style:dashed;"></span>Perfil real</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ NINE BOX ═══════ -->
+<div class="sec" id="s-ninebox">
+  <div class="card">
+    <div class="ct"><i class="ti ti-layout-grid"></i>Nine Box — Potencial × Desempeño · Equipo COD</div>
+    <div class="sub">Eje Y = potencial estimado por tendencia de mejora · Eje X = desempeño competencial actual (promedio /4)</div>
+    <div style="display:flex;gap:6px;align-items:stretch;">
+      <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;font-weight:600;color:var(--gd);text-align:center;padding:4px;min-width:18px;letter-spacing:1px;">POTENCIAL ↑</div>
+      <div style="flex:1;">
+        <div class="nb9" id="nb9g"></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:4px;">
+          <div style="text-align:center;font-size:9px;color:var(--tm);">Bajo desempeño (&lt;2)</div>
+          <div style="text-align:center;font-size:9px;color:var(--tm);">Desempeño medio (2–3)</div>
+          <div style="text-align:center;font-size:9px;color:var(--tm);">Alto desempeño (&gt;3)</div>
+        </div>
+        <div style="text-align:center;font-size:10px;font-weight:600;color:var(--gd);margin-top:4px;letter-spacing:1px;">DESEMPEÑO →</div>
+      </div>
+    </div>
+    <div id="nb9leg" style="margin-top:12px;"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ TENDENCIA ═══════ -->
+<div class="sec" id="s-tendencia">
+  <div class="g2">
+    <div class="card">
+      <div class="ct"><i class="ti ti-trending-up"></i>Tendencia por instancia de evaluación</div>
+      <div class="fg" style="margin-bottom:12px;max-width:240px;">
+        <label>Filtrar rol</label>
+        <select id="tRol" onchange="renderTend()">
+          <option value="all">Todos los roles</option>
+          <option value="JCOD">Jefe COD</option>
+          <option value="SCOD">SubJefe COD</option>
+          <option value="JTMT">Jefe de Turno MT</option>
+        </select>
+      </div>
+      <div style="position:relative;height:230px;"><canvas id="cTend" role="img" aria-label="Tendencia evaluaciones"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-chart-bar-off"></i>Brechas por competencia</div>
+      <div style="position:relative;height:260px;"><canvas id="cBrecha" role="img" aria-label="Brechas por competencia"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct"><i class="ti ti-bell-ringing"></i>Alertas automáticas del sistema</div>
+    <div id="alertas"><div style="color:var(--tm);text-align:center;padding:20px;font-size:12px;">Cargando datos...</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ REPORTES PDF ═══════ -->
+<div class="sec" id="s-reportes">
+  <div class="card">
+    <div class="ct"><i class="ti ti-file-type-pdf"></i>Generador de Reportes PDF — COD EPEC S.A.U.</div>
+    <div class="sub">Seleccioná el tipo de reporte y generá un PDF institucional listo para compartir o archivar.</div>
+    <div class="g3" style="margin-bottom:16px;">
+      <div class="fg">
+        <label>Tipo de reporte</label>
+        <select id="pdfTipo">
+          <option value="general">Reporte general del equipo COD</option>
+          <option value="rol">Reporte por rol</option>
+          <option value="persona">Reporte individual por persona</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Filtro de rol</label>
+        <select id="pdfRol">
+          <option value="all">Todos los roles</option>
+          <option value="JCOD">Jefe COD</option>
+          <option value="SCOD">SubJefe COD</option>
+          <option value="JTMT">Jefe de Turno MT</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Filtro de instancia</label>
+        <select id="pdfInst">
+          <option value="all">Todas las instancias</option>
+          <option value="diagnostico">Diagnóstico</option>
+          <option value="seguimiento">Seguimiento</option>
+          <option value="certificacion">Certificación</option>
+        </select>
+      </div>
+    </div>
+    <div class="acts">
+      <button class="bp" onclick="buildPdfPreview()"><i class="ti ti-eye"></i>Vista previa</button>
+      <button class="bpdf" onclick="exportPDF()"><i class="ti ti-download"></i>Exportar PDF</button>
+    </div>
+  </div>
+
+  <!-- PREVIEW DEL PDF -->
+  <div id="pdfPreviewWrap" style="display:none;">
+    <div class="pdf-preview" id="pdfContent">
+      <!-- Header institucional -->
+      <div class="pdf-header">
+        <div class="pdf-logo">EPEC<br>COD</div>
+        <div>
+          <div class="pdf-title" id="pdfMainTitle">Reporte de Competencias — Centro Operativo de Distribución</div>
+          <div class="pdf-sub" id="pdfSubTitle">EPEC S.A.U. · Córdoba</div>
+        </div>
+      </div>
+      <!-- KPIs -->
+      <div class="g4" id="pdfKpis" style="margin-bottom:16px;"></div>
+      <!-- Gráficos -->
+      <div class="pdf-charts">
+        <div class="pdf-chart-box">
+          <div class="pdf-chart-title">Competencias Líder Operativo — promedio del grupo</div>
+          <div style="position:relative;height:200px;"><canvas id="pdfRadar" role="img" aria-label="Radar PDF"></canvas></div>
+        </div>
+        <div class="pdf-chart-box">
+          <div class="pdf-chart-title">Estado de habilitación operativa</div>
+          <div style="position:relative;height:200px;"><canvas id="pdfPie" role="img" aria-label="Pie PDF"></canvas></div>
+        </div>
+      </div>
+      <!-- Brechas -->
+      <div class="pdf-chart-box" style="margin-bottom:16px;">
+        <div class="pdf-chart-title">Análisis de brechas — nivel alcanzado vs. nivel requerido (4)</div>
+        <div style="position:relative;height:160px;"><canvas id="pdfBar" role="img" aria-label="Barras PDF"></canvas></div>
+      </div>
+      <!-- Tabla detalle -->
+      <div class="pdf-chart-title" style="margin-bottom:8px;">Detalle de evaluaciones</div>
+      <div style="overflow-x:auto;" id="pdfTableWrap"></div>
+      <!-- Legenda Nine Box -->
+      <div class="pdf-chart-box" style="margin-top:16px;">
+        <div class="pdf-chart-title">Distribución Nine Box — Potencial × Desempeño</div>
+        <div style="display:flex;gap:4px;margin-top:6px;">
+          <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:9px;font-weight:600;color:var(--gd);text-align:center;padding:2px;min-width:14px;">POTENCIAL ↑</div>
+          <div style="flex:1;">
+            <div class="nb9" id="pdfNb9" style="gap:2px;"></div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2px;">
+              <div style="text-align:center;font-size:8px;color:var(--tm);">Bajo</div>
+              <div style="text-align:center;font-size:8px;color:var(--tm);">Medio</div>
+              <div style="text-align:center;font-size:8px;color:var(--tm);">Alto</div>
+            </div>
+            <div style="text-align:center;font-size:9px;font-weight:600;color:var(--gd);margin-top:2px;">DESEMPEÑO →</div>
+          </div>
+        </div>
+      </div>
+      <div class="pdf-footer" id="pdfFooter"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /cnt -->
+
+<div class="notif" id="notif"></div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  FIREBASE CONFIG
+// ════════════════════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey:            "AIzaSyBvE7RSYKS4gmwcq48FttdR55fIjcj9dbU",
+  authDomain:        "epec---capacitaciones.firebaseapp.com",
+  databaseURL:       "https://epec---capacitaciones-default-rtdb.firebaseio.com",
+  projectId:         "epec---capacitaciones",
+  storageBucket:     "epec---capacitaciones.firebasestorage.app",
+  messagingSenderId: "990909328558",
+  appId:             "1:990909328558:web:ead9e4118a814e0d20513f"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const ref = db.ref('cod_competencias');
+const usrRef = db.ref('.info/connected');
+
+// ════════════════════════════════════════════════════════════
+//  DATOS ESTRUCTURALES
+// ════════════════════════════════════════════════════════════
+const COMPS = [
+  {id:'C1',s:'Habilidad / Resultados',   full:'Habilidad y agilidad para alcanzar resultados'},
+  {id:'C2',s:'Gestión del cambio',        full:'Gestión del cambio e incertidumbre operativa'},
+  {id:'C3',s:'Comunicación',             full:'Comunicación y coordinación operativa'},
+  {id:'C4',s:'Conducción equipos',       full:'Desarrollo de personas y conducción de equipos'},
+  {id:'C5',s:'Seguridad operacional',    full:'Gestión de la seguridad operacional', shyma:true},
+  {id:'C6',s:'Expertiz técnica',         full:'Expertiz técnica'},
+];
+const PROCS = {
+  JCOD:[
+    {id:'P-JCOD-01',n:'Gestión Marco Legal y Normativo'},
+    {id:'P-JCOD-02',n:'Configuración MT/BT'},
+    {id:'P-JCOD-03',n:'Gestión de Contratistas'},
+    {id:'P-JCOD-04',n:'Gestión Presupuestaria'},
+    {id:'P-JCOD-05',n:'Reporte de Gestión a Jefatura'},
+    {id:'P-DUP',    n:'Procesos compartidos (P-DUP-01 a 15)'},
+  ],
+  SCOD:[
+    {id:'P-SCOD-01',n:'Gestión de Comunicaciones Operativas'},
+    {id:'P-SCOD-02',n:'Gestión de Documentación Técnica'},
+    {id:'P-SCOD-03',n:'Supervisión del Equipo Operativo'},
+    {id:'P-DUP',    n:'Procesos compartidos (P-DUP-01 a 15)'},
+  ],
+  JTMT:[
+    {id:'P-JTMT-01',n:'Conducción Operativa del Turno MT'},
+    {id:'P-JTMT-02',n:'Gestión de Maniobras y Restablecimiento'},
+    {id:'P-JTMT-03',n:'Supervisión SHyMA en Campo'},
+    {id:'P-DUP',    n:'Procesos compartidos (P-DUP-01 a 15)'},
+  ],
+};
+const NB9_DEF = [
+  {r:2,c:0,l:'Dilema',             bg:'#fde8eb',tx:'#9b1c2e'},
+  {r:2,c:1,l:'Pot. inconsistente', bg:'#fef3c7',tx:'#92400e'},
+  {r:2,c:2,l:'Estrella en formación',bg:'#d1fae5',tx:'#065f46'},
+  {r:1,c:0,l:'Bajo rendimiento',   bg:'#fde8eb',tx:'#9b1c2e'},
+  {r:1,c:1,l:'Núcleo operativo',   bg:'#fff7ed',tx:'#7c2d12'},
+  {r:1,c:2,l:'Alto potencial',     bg:'#dbeafe',tx:'#1e3a8a'},
+  {r:0,c:0,l:'Marginal',           bg:'#fee2e2',tx:'#991b1b'},
+  {r:0,c:1,l:'Sólido',             bg:'#e0f2fe',tx:'#0c4a6e'},
+  {r:0,c:2,l:'Referente COD',      bg:'#218570',tx:'#ffffff'},
+];
+const ROLE_C = {JCOD:'#1e40af',SCOD:'#92400e',JTMT:'#065f46'};
+const ROLE_N = {JCOD:'Jefe COD',SCOD:'SubJefe COD',JTMT:'Jefe Turno MT'};
+const INST_N  = {diagnostico:'Diagnóstico',seguimiento:'Seguimiento',certificacion:'Certificación'};
+
+// ════════════════════════════════════════════════════════════
+//  ESTADO
+// ════════════════════════════════════════════════════════════
+let DATA = [];
+let curScores = {};
+let pfiltro = 'all';
+let mfiltro = 'JCOD';
+let cBarComp,cPie,cRadar,cTend,cBrecha,cPdfRadar,cPdfPie,cPdfBar;
+
+// ════════════════════════════════════════════════════════════
+//  FIREBASE LISTENER — tiempo real
+// ════════════════════════════════════════════════════════════
+ref.on('value', snap => {
+  DATA = [];
+  if(snap.exists()){
+    snap.forEach(child => {
+      DATA.push({...child.val(), fbKey: child.key});
+    });
+  }
+  refresh();
+});
+
+// Contador de usuarios conectados
+let connectedUsers = 0;
+const myConn = db.ref('cod_connected/' + Date.now());
+myConn.set(true);
+myConn.onDisconnect().remove();
+db.ref('cod_connected').on('value', snap => {
+  connectedUsers = snap.numChildren();
+  const el = document.getElementById('usrCount');
+  if(el) el.textContent = connectedUsers + ' usuario' + (connectedUsers!==1?'s':'')+' conectado'+(connectedUsers!==1?'s':'');
+});
+
+// ════════════════════════════════════════════════════════════
+//  NAV
+// ════════════════════════════════════════════════════════════
+function go(id){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.nt').forEach(b=>b.classList.remove('on'));
+  document.getElementById('s-'+id).classList.add('on');
+  document.querySelectorAll('.nt').forEach(b=>{
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'")) b.classList.add('on');
+  });
+  if(id==='dash') renderDash();
+  if(id==='radar'){updPers();renderRadar();}
+  if(id==='ninebox') renderNB();
+  if(id==='tendencia') renderTend();
+  if(id==='personas') renderPersonas(pfiltro);
+  if(id==='matriz') renderMatrizRes(mfiltro);
+}
+
+// ════════════════════════════════════════════════════════════
+//  HELPERS
+// ════════════════════════════════════════════════════════════
+function scColor(v){
+  if(!v||isNaN(v)) return 'var(--tm)';
+  if(v>=3.5) return '#218570';
+  if(v>=3)   return '#2BA888';
+  if(v>=2)   return '#f39c12';
+  return '#c02133';
+}
+function scClass(v){
+  if(!v||isNaN(v)) return 'cell-0';
+  if(v>=3.5) return 'cell-4';
+  if(v>=3)   return 'cell-3';
+  if(v>=2)   return 'cell-2';
+  return 'cell-1';
+}
+function avg(arr){ const f=arr.filter(v=>v&&!isNaN(v)); return f.length?+(f.reduce((a,b)=>a+b,0)/f.length).toFixed(1):null; }
+function notif(msg){
+  const n=document.getElementById('notif');
+  n.textContent=msg; n.style.display='block';
+  setTimeout(()=>{n.style.display='none';},3200);
+}
+function refresh(){
+  renderDash();
+  renderPersonas(pfiltro);
+  updPers();
+  if(document.getElementById('s-radar').classList.contains('on')) renderRadar();
+  if(document.getElementById('s-ninebox').classList.contains('on')) renderNB();
+  if(document.getElementById('s-tendencia').classList.contains('on')) renderTend();
+  if(document.getElementById('s-matriz').classList.contains('on')) renderMatrizRes(mfiltro);
+}
+
+// ════════════════════════════════════════════════════════════
+//  BUILD MATRIZ (REGISTRO)
+// ════════════════════════════════════════════════════════════
+function buildMatriz(){
+  const rol=document.getElementById('i-rol').value;
+  const mc=document.getElementById('matrizCard');
+  if(!rol){mc.style.display='none';return;}
+  mc.style.display='block';
+  curScores={};
+  const procs=PROCS[rol];
+  let h='<thead><tr><th class="proc-h">Proceso onboarding</th>';
+  COMPS.forEach(c=>{h+=`<th>${c.s}${c.shyma?'<br><small style="color:#fca5a5;">⚡SHyMA</small>':''}</th>`;});
+  h+='<th>Prom.</th></tr></thead><tbody>';
+  procs.forEach(p=>{
+    h+=`<tr><td class="pn"><span class="pc">${p.id}</span>${p.n}</td>`;
+    COMPS.forEach(c=>{
+      const key=p.id+'_'+c.id;
+      h+=`<td><div class="score-sel">`;
+      [4,3,2,1].forEach(v=>{ h+=`<button class="ss" id="ss-${key}-${v}" onclick="setS('${key}',${v},'${rol}')">${v}</button>`; });
+      h+=`</div></td>`;
+    });
+    h+=`<td class="avg-cell" id="ra-${p.id}">—</td></tr>`;
+  });
+  h+='<tr style="background:var(--bg)"><td class="pn" style="font-weight:700;color:var(--gd)">Promedio competencia</td>';
+  COMPS.forEach(c=>{ h+=`<td class="avg-cell" id="ca-${c.id}">—</td>`; });
+  h+='<td class="avg-cell" id="ca-total">—</td></tr></tbody>';
+  document.getElementById('matrizTbl').innerHTML=h;
+  calcRes(rol);
+}
+
+function setS(key,val,rol){
+  curScores[key]=val;
+  const [pid,cid]=key.split('_');
+  [4,3,2,1].forEach(v=>{ const b=document.getElementById(`ss-${key}-${v}`); if(b) b.className='ss'+(v===val?' s'+v:''); });
+  calcRes(rol);
+  checkShyma(rol);
+}
+
+function checkShyma(rol){
+  const procs=PROCS[rol];
+  const shy=COMPS.find(c=>c.shyma);
+  if(!shy) return;
+  const bad=procs.some(p=>curScores[p.id+'_'+shy.id]===1);
+  document.getElementById('shyAlerta').style.display=bad?'block':'none';
+}
+
+function calcRes(rol){
+  const procs=PROCS[rol];
+  procs.forEach(p=>{
+    const v=avg(COMPS.map(c=>curScores[p.id+'_'+c.id]));
+    const el=document.getElementById('ra-'+p.id);
+    if(el){el.textContent=v||'—';el.style.color=scColor(v);}
+  });
+  COMPS.forEach(c=>{
+    const v=avg(procs.map(p=>curScores[p.id+'_'+c.id]));
+    const el=document.getElementById('ca-'+c.id);
+    if(el){el.textContent=v||'—';el.style.color=scColor(v);}
+  });
+  const allV=Object.values(curScores).filter(v=>v);
+  const tot=allV.length?+(allV.reduce((a,b)=>a+b,0)/allV.length).toFixed(1):null;
+  const pct=tot?Math.round((tot/4)*100)+'%':'—';
+  const te=document.getElementById('ca-total');
+  if(te){te.textContent=tot||'—';te.style.color=scColor(tot);}
+  document.getElementById('rNum').textContent=tot||'—';
+  document.getElementById('rPct').textContent=pct;
+  const shy=COMPS.filter(c=>c.shyma).some(c=>procs.some(p=>curScores[p.id+'_'+c.id]===1));
+  let est,col;
+  if(shy){est='⛔ No habilitado (SHyMA)';col='#c02133';}
+  else if(tot>=3.5){est='✅ Destacado — Apto';col='#218570';}
+  else if(tot>=3){est='✅ Adecuado — Apto';col='#218570';}
+  else if(tot>=2){est='🔄 En desarrollo';col='#f39c12';}
+  else{est='⚠ Inicial — Requiere plan';col='#c02133';}
+  const re=document.getElementById('rEst');
+  re.textContent=est;re.style.color=col;
+}
+
+// ════════════════════════════════════════════════════════════
+//  GUARDAR EN FIREBASE
+// ════════════════════════════════════════════════════════════
+function guardar(){
+  const nom=document.getElementById('i-nom').value.trim();
+  const rol=document.getElementById('i-rol').value;
+  const eval_=document.getElementById('i-eval').value.trim();
+  const inst=document.getElementById('i-inst').value;
+  const fecha=document.getElementById('i-fecha').value||new Date().toISOString().split('T')[0];
+  if(!nom||!rol){alert('Completar nombre y rol');return;}
+  const allV=Object.values(curScores).filter(v=>v);
+  const avgTot=allV.length?+(allV.reduce((a,b)=>a+b,0)/allV.length).toFixed(2):0;
+  const shyBad=COMPS.filter(c=>c.shyma).some(c=>PROCS[rol].some(p=>curScores[p.id+'_'+c.id]===1));
+  let estado;
+  if(shyBad) estado='shyma';
+  else if(avgTot>=3.5) estado='destacado';
+  else if(avgTot>=3)   estado='adecuado';
+  else if(avgTot>=2)   estado='en_desarrollo';
+  else estado='inicial';
+  const rec={nom,rol,eval:eval_,inst,fecha,scores:{...curScores},avg:avgTot,estado,shyBad,ts:Date.now()};
+  ref.push(rec)
+    .then(()=>{notif('✅ Evaluación de '+nom+' guardada en Firebase');limpiar();})
+    .catch(e=>{alert('Error al guardar: '+e.message);});
+}
+
+function limpiar(){
+  document.getElementById('i-nom').value='';
+  document.getElementById('i-rol').value='';
+  document.getElementById('i-eval').value='';
+  document.getElementById('matrizCard').style.display='none';
+  curScores={};
+}
+
+// ════════════════════════════════════════════════════════════
+//  ELIMINAR
+// ════════════════════════════════════════════════════════════
+function del(fbKey){
+  if(!confirm('¿Eliminar esta evaluación?')) return;
+  ref.child(fbKey).remove().then(()=>notif('Evaluación eliminada'));
+}
+
+// ════════════════════════════════════════════════════════════
+//  DASHBOARD
+// ════════════════════════════════════════════════════════════
+function renderDash(){
+  let rh='';
+  ['JCOD','SCOD','JTMT'].forEach(r=>{
+    const d=DATA.filter(x=>x.rol===r);
+    const av=d.length?+(d.reduce((a,b)=>a+b.avg,0)/d.length).toFixed(1):0;
+    const spk=d.slice(-4).map(x=>`<div class="spkb" style="height:${Math.max(4,Math.round(x.avg/4*22))}px;background:${scColor(x.avg)};"></div>`).join('');
+    const rc=r==='JCOD'?'rc-j':r==='SCOD'?'rc-s':'rc-t';
+    rh+=`<div class="rcard ${rc}"><div style="font-size:9px;font-weight:600;color:var(--tm);margin-bottom:3px;">${ROLE_N[r]}</div><div class="rcn">${av||'—'}</div><div class="rcl">${d.length} evaluaciones · escala /4</div><div class="spk">${spk}</div></div>`;
+  });
+  document.getElementById('rolCards').innerHTML=rh;
+  const tot=DATA.length;
+  const apt=DATA.filter(d=>d.estado==='destacado'||d.estado==='adecuado').length;
+  const dev=DATA.filter(d=>d.estado==='en_desarrollo').length;
+  const mal=DATA.filter(d=>d.estado==='inicial'||d.estado==='shyma').length;
+  document.getElementById('stats4').innerHTML=`
+    <div class="sc"><div class="sn">${tot}</div><div class="sl">Evaluaciones totales</div></div>
+    <div class="sc"><div class="sn" style="color:#218570">${apt}</div><div class="sl">Aptos (Dest./Adecuado)</div></div>
+    <div class="sc"><div class="sn" style="color:#f39c12">${dev}</div><div class="sl">En desarrollo</div></div>
+    <div class="sc"><div class="sn" style="color:#c02133">${mal}</div><div class="sl">Inicial / SHyMA</div></div>`;
+
+  const compAvgs=COMPS.map(c=>{
+    const vals=DATA.flatMap(d=>(PROCS[d.rol]||[]).map(p=>d.scores?.[p.id+'_'+c.id]).filter(v=>v));
+    return vals.length?+(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):0;
+  });
+  if(cBarComp)cBarComp.destroy();
+  cBarComp=new Chart(document.getElementById('cBarComp').getContext('2d'),{type:'bar',data:{
+    labels:COMPS.map(c=>c.s),
+    datasets:[{data:compAvgs,backgroundColor:compAvgs.map(v=>v>=3.5?'#218570':v>=3?'#2BA888':v>=2?'#f39c12':'#c02133'),borderRadius:5}]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:4,ticks:{stepSize:1}},x:{ticks:{font:{size:9},maxRotation:30}}}}});
+
+  if(cPie)cPie.destroy();
+  cPie=new Chart(document.getElementById('cPie').getContext('2d'),{type:'doughnut',data:{
+    labels:['Destacado','Adecuado','En desarrollo','Inicial','SHyMA override'],
+    datasets:[{data:[DATA.filter(d=>d.estado==='destacado').length,DATA.filter(d=>d.estado==='adecuado').length,dev,DATA.filter(d=>d.estado==='inicial').length,DATA.filter(d=>d.estado==='shyma').length],backgroundColor:['#155748','#218570','#f39c12','#c02133','#7f1d1d'],borderWidth:2,borderColor:'#fff'}]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:9},boxWidth:9,padding:6}}}}});
+
+  const sorted=[...DATA].sort((a,b)=>b.avg-a.avg).slice(0,6);
+  const rc2={JCOD:'bj',SCOD:'bs',JTMT:'bt'};
+  let th='<table class="pt"><thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Fecha</th><th>Promedio</th><th>Estado</th></tr></thead><tbody>';
+  if(!sorted.length) th+='<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--tm)">Sin evaluaciones aún — comenzá registrando en la pestaña "Registrar evaluación"</td></tr>';
+  sorted.forEach(d=>{
+    const col=scColor(d.avg);
+    th+=`<tr><td><strong>${d.nom}</strong></td><td><span class="badge ${rc2[d.rol]}">${d.rol}</span></td><td>${INST_N[d.inst]||d.inst}</td><td>${d.fecha}</td>
+    <td><div>${d.avg.toFixed(1)}/4</div><div class="sbar" style="width:80px"><div class="sfill" style="width:${Math.round(d.avg/4*100)}%;background:${col}"></div></div></td>
+    <td style="font-size:10px;color:${col}">${d.estado.replace('_',' ')}</td></tr>`;
+  });
+  document.getElementById('topTbl').innerHTML=th+'</tbody></table>';
+}
+
+// ════════════════════════════════════════════════════════════
+//  MATRIZ RESUMEN
+// ════════════════════════════════════════════════════════════
+function filMatriz(rol,btn){
+  document.querySelectorAll('#matzRolTabs .rtab').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  mfiltro=rol;
+  renderMatrizRes(rol);
+}
+function renderMatrizRes(rol){
+  const procs=PROCS[rol];
+  const evals=DATA.filter(d=>d.rol===rol);
+  let h='<table class="mx-tbl"><thead><tr><th class="proc-h">Proceso</th>';
+  COMPS.forEach(c=>{h+=`<th>${c.s}</th>`;});
+  h+='<th>Prom.</th></tr></thead><tbody>';
+  procs.forEach(p=>{
+    h+=`<tr><td class="pn"><span class="pc">${p.id}</span>${p.n}</td>`;
+    const rowVals=[];
+    COMPS.forEach(c=>{
+      const vals=evals.map(d=>d.scores?.[p.id+'_'+c.id]).filter(v=>v);
+      const a=vals.length?+(vals.reduce((x,y)=>x+y,0)/vals.length).toFixed(1):null;
+      rowVals.push(a);
+      h+=`<td class="${scClass(a)}">${a||'—'}</td>`;
+    });
+    const ra=avg(rowVals);
+    h+=`<td class="${scClass(ra)}">${ra||'—'}</td></tr>`;
+  });
+  h+='<tr style="background:var(--bg)"><td class="pn" style="font-weight:700;color:var(--gd)">Promedio</td>';
+  COMPS.forEach(c=>{
+    const vals=evals.flatMap(d=>(PROCS[d.rol]||[]).map(p=>d.scores?.[p.id+'_'+c.id]).filter(v=>v));
+    const a=vals.length?+(vals.reduce((x,y)=>x+y,0)/vals.length).toFixed(1):null;
+    h+=`<td class="${scClass(a)}">${a||'—'}</td>`;
+  });
+  const allV=evals.flatMap(d=>Object.values(d.scores||{}).filter(v=>v));
+  const tot=allV.length?+(allV.reduce((a,b)=>a+b,0)/allV.length).toFixed(1):null;
+  h+=`<td class="${scClass(tot)}">${tot||'—'}</td></tr></tbody></table>`;
+  document.getElementById('matrizResumen').innerHTML=h;
+}
+
+// ════════════════════════════════════════════════════════════
+//  PERSONAS
+// ════════════════════════════════════════════════════════════
+function filP(rol,btn){
+  document.querySelectorAll('#s-personas .rtab').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  pfiltro=rol;renderPersonas(rol);
+}
+function renderPersonas(fil){
+  const list=fil==='all'?DATA:DATA.filter(d=>d.rol===fil);
+  const rc={JCOD:'bj',SCOD:'bs',JTMT:'bt'};
+  let h='<thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Evaluador</th><th>Fecha</th><th>Promedio</th><th>Estado</th><th></th></tr></thead><tbody>';
+  if(!list.length) h+='<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--tm)">Sin registros</td></tr>';
+  [...list].sort((a,b)=>new Date(b.fecha)-new Date(a.fecha)).forEach(d=>{
+    const col=scColor(d.avg);
+    const est=d.shyBad?'⛔ SHyMA':d.estado==='destacado'?'✅ Destacado':d.estado==='adecuado'?'✅ Adecuado':d.estado==='en_desarrollo'?'🔄 En desarrollo':'⚠ Inicial';
+    h+=`<tr><td><strong>${d.nom}</strong></td><td><span class="badge ${rc[d.rol]}">${d.rol}</span></td><td>${INST_N[d.inst]||d.inst}</td><td>${d.eval||'—'}</td><td>${d.fecha}</td>
+    <td><div>${d.avg.toFixed(1)}/4</div><div class="sbar" style="width:80px"><div class="sfill" style="width:${Math.round(d.avg/4*100)}%;background:${col}"></div></div></td>
+    <td style="font-size:10px;color:${col}">${est}</td>
+    <td><button class="bdel" onclick="del('${d.fbKey}')"><i class="ti ti-trash"></i></button></td></tr>`;
+  });
+  document.getElementById('pTbl').innerHTML=h+'</tbody>';
+}
+
+// ════════════════════════════════════════════════════════════
+//  RADAR
+// ════════════════════════════════════════════════════════════
+function updPers(){
+  const rol=document.getElementById('rRol').value;
+  const sel=document.getElementById('rPers');
+  const ppl=[...new Map(DATA.filter(d=>d.rol===rol).map(d=>[d.nom,d])).values()];
+  sel.innerHTML='<option value="">— Promedio del grupo —</option>';
+  ppl.forEach(p=>{const o=document.createElement('option');o.value=p.nom;o.textContent=p.nom;sel.appendChild(o);});
+}
+function renderRadar(){
+  const rol=document.getElementById('rRol').value;
+  const pers=document.getElementById('rPers').value;
+  const evals=DATA.filter(d=>d.rol===rol);
+  const procs=PROCS[rol]||[];
+  let actual;
+  if(pers){
+    const last=evals.filter(d=>d.nom===pers).sort((a,b)=>new Date(b.fecha)-new Date(a.fecha))[0];
+    actual=COMPS.map(c=>{ const v=procs.map(p=>last?.scores?.[p.id+'_'+c.id]).filter(v=>v); return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0; });
+  } else {
+    actual=COMPS.map(c=>{ const v=evals.flatMap(d=>procs.map(p=>d.scores?.[p.id+'_'+c.id]).filter(v=>v)); return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0; });
+  }
+  if(cRadar)cRadar.destroy();
+  cRadar=new Chart(document.getElementById('cRadar').getContext('2d'),{type:'radar',data:{
+    labels:COMPS.map(c=>c.s),
+    datasets:[
+      {label:'Nivel requerido',data:[4,4,4,4,4,4],borderColor:'#218570',backgroundColor:'rgba(33,133,112,.1)',borderWidth:2.5,pointRadius:4,pointBackgroundColor:'#218570'},
+      {label:'Perfil real',data:actual,borderColor:'#c02133',backgroundColor:'rgba(192,33,51,.12)',borderWidth:2,borderDash:[5,3],pointRadius:4,pointBackgroundColor:'#c02133'}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:9},callback:v=>['','1','2','3','4'][v]||v},pointLabels:{font:{size:10}}}},plugins:{legend:{display:false}}}});
+}
+
+// ════════════════════════════════════════════════════════════
+//  NINE BOX
+// ════════════════════════════════════════════════════════════
+function renderNB(){
+  const cells=NB9_DEF.map(c=>({...c,ppl:[]}));
+  const people=[...new Map(DATA.map(d=>[d.nom+'_'+d.rol,d])).values()];
+  people.forEach(p=>{
+    const ev=DATA.filter(d=>d.nom===p.nom&&d.rol===p.rol).sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
+    const cur=ev[0]?.avg||0;
+    const trend=ev.length>=2?(ev[0].avg-ev[ev.length-1].avg):0;
+    const pot=Math.min(4,Math.max(0,cur+trend*0.4));
+    const col=cur<2?0:cur<3?1:2;
+    const row=pot<2?0:pot<3?1:2;
+    const cell=cells.find(c=>c.r===row&&c.c===col);
+    if(cell)cell.ppl.push({...p,cur,pot});
+  });
+  renderNBGrid('nb9g',cells);
+  document.getElementById('nb9leg').innerHTML='<div style="display:flex;gap:12px;flex-wrap:wrap;">'+Object.entries(ROLE_C).map(([r,c])=>`<span style="display:flex;align-items:center;gap:5px;font-size:10px;"><span style="width:10px;height:10px;border-radius:50%;background:${c};display:inline-block;"></span>${ROLE_N[r]}</span>`).join('')+'</div>';
+}
+function renderNBGrid(containerId,cells){
+  let h='';
+  [2,1,0].forEach(row=>{
+    [0,1,2].forEach(col=>{
+      const cell=cells.find(c=>c.r===row&&c.c===col);
+      const dots=cell.ppl.map(p=>`<div class="nbdot" style="color:${ROLE_C[p.rol]};border-color:${ROLE_C[p.rol]};" title="${p.nom} (${p.rol}) — ${p.cur.toFixed(1)}/4">${p.nom.split(',')[0].slice(0,3)}</div>`).join('');
+      h+=`<div class="nbc" style="background:${cell.bg};color:${cell.tx};"><div class="nbl">${cell.l}</div><div class="nbdots">${dots||'<span style="opacity:.3;font-size:8px;">vacío</span>'}</div></div>`;
+    });
+  });
+  document.getElementById(containerId).innerHTML=h;
+}
+
+// ════════════════════════════════════════════════════════════
+//  TENDENCIA
+// ════════════════════════════════════════════════════════════
+function renderTend(){
+  const rFil=document.getElementById('tRol').value;
+  const roles=rFil==='all'?['JCOD','SCOD','JTMT']:[rFil];
+  const insts=['diagnostico','seguimiento','certificacion'];
+  const ds=roles.map(r=>({
+    label:ROLE_N[r],
+    data:insts.map(i=>{const ev=DATA.filter(d=>d.rol===r&&d.inst===i);return ev.length?+(ev.reduce((a,b)=>a+b.avg,0)/ev.length).toFixed(1):null;}),
+    borderColor:ROLE_C[r],backgroundColor:ROLE_C[r]+'22',borderWidth:2.5,pointRadius:5,pointBackgroundColor:ROLE_C[r],fill:true,tension:.35,spanGaps:true
+  }));
+  if(cTend)cTend.destroy();
+  cTend=new Chart(document.getElementById('cTend').getContext('2d'),{type:'line',data:{labels:['Diagnóstico','Seguimiento','Certificación'],datasets:ds},options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:1,max:4,ticks:{callback:v=>['','Inicial','En des.','Adecuado','Destacado'][v]||v,font:{size:9}}}},plugins:{legend:{display:true,position:'bottom',labels:{font:{size:9},boxWidth:9}}}}});
+
+  const fil=rFil==='all'?DATA:DATA.filter(d=>d.rol===rFil);
+  const compAvgs=COMPS.map(c=>{ const v=fil.flatMap(d=>(PROCS[d.rol]||[]).map(p=>d.scores?.[p.id+'_'+c.id]).filter(v=>v)); return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0; });
+  const brechas=compAvgs.map(v=>+(4-v).toFixed(1));
+  if(cBrecha)cBrecha.destroy();
+  cBrecha=new Chart(document.getElementById('cBrecha').getContext('2d'),{type:'bar',data:{
+    labels:COMPS.map(c=>c.s),
+    datasets:[
+      {label:'Nivel alcanzado',data:compAvgs,backgroundColor:'#218570',borderRadius:4},
+      {label:'Brecha hacia requerido',data:brechas,backgroundColor:'rgba(192,33,51,.3)',borderRadius:4}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:9},boxWidth:9}}},scales:{x:{stacked:true,ticks:{font:{size:9},maxRotation:30}},y:{stacked:true,min:0,max:4}}}});
+
+  let alerts='';
+  DATA.forEach(d=>{
+    const prev=DATA.filter(x=>x.nom===d.nom&&x.rol===d.rol&&new Date(x.fecha)<new Date(d.fecha)).sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
+    if(prev.length){ const delta=d.avg-prev[0].avg;
+      if(delta>=0.5) alerts+=`<div class="al al-g">📈 <strong>${d.nom}</strong> (${d.rol}) mejoró <strong>+${delta.toFixed(1)} puntos</strong> entre evaluaciones.</div>`;
+      if(delta<=-0.5) alerts+=`<div class="al al-a">📉 <strong>${d.nom}</strong> (${d.rol}) bajó ${Math.abs(delta).toFixed(1)} puntos. Requiere atención del tutor.</div>`;
+    }
+    if(d.shyBad) alerts+=`<div class="al al-r">⛔ <strong>${d.nom}</strong> activó override SHyMA en evaluación del ${d.fecha}. No habilitado.</div>`;
+  });
+  document.getElementById('alertas').innerHTML=alerts||'<div style="color:var(--tm);text-align:center;padding:20px;font-size:12px;">Registrá múltiples evaluaciones para ver análisis de tendencias y alertas automáticas.</div>';
+}
+
+// ════════════════════════════════════════════════════════════
+//  REPORTES PDF
+// ════════════════════════════════════════════════════════════
+function buildPdfPreview(){
+  const rolFil=document.getElementById('pdfRol').value;
+  const instFil=document.getElementById('pdfInst').value;
+  const tipo=document.getElementById('pdfTipo').value;
+  let fil=DATA;
+  if(rolFil!=='all') fil=fil.filter(d=>d.rol===rolFil);
+  if(instFil!=='all') fil=fil.filter(d=>d.inst===instFil);
+
+  document.getElementById('pdfPreviewWrap').style.display='block';
+
+  // Título
+  const rolLbl=rolFil==='all'?'Todos los roles':ROLE_N[rolFil];
+  const instLbl=instFil==='all'?'Todas las instancias':INST_N[instFil];
+  document.getElementById('pdfMainTitle').textContent='Reporte de Competencias — '+rolLbl;
+  document.getElementById('pdfSubTitle').textContent='EPEC S.A.U. · COD · '+instLbl+' · Emitido: '+new Date().toLocaleDateString('es-AR');
+
+  // KPIs
+  const apt=fil.filter(d=>d.estado==='destacado'||d.estado==='adecuado').length;
+  const dev=fil.filter(d=>d.estado==='en_desarrollo').length;
+  const ini=fil.filter(d=>d.estado==='inicial'||d.estado==='shyma').length;
+  const pavg=fil.length?+(fil.reduce((a,b)=>a+b.avg,0)/fil.length).toFixed(1):0;
+  document.getElementById('pdfKpis').innerHTML=`
+    <div class="sc"><div class="sn">${fil.length}</div><div class="sl">Evaluaciones</div></div>
+    <div class="sc"><div class="sn">${pavg}</div><div class="sl">Promedio /4</div></div>
+    <div class="sc"><div class="sn" style="color:#218570">${apt}</div><div class="sl">Aptos</div></div>
+    <div class="sc"><div class="sn" style="color:#c02133">${ini}</div><div class="sl">Inicial/SHyMA</div></div>`;
+
+  // Radar PDF
+  const compAvgs=COMPS.map(c=>{ const v=fil.flatMap(d=>(PROCS[d.rol]||[]).map(p=>d.scores?.[p.id+'_'+c.id]).filter(v=>v)); return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0; });
+  if(cPdfRadar)cPdfRadar.destroy();
+  cPdfRadar=new Chart(document.getElementById('pdfRadar').getContext('2d'),{type:'radar',data:{
+    labels:COMPS.map(c=>c.s),
+    datasets:[
+      {label:'Requerido',data:[4,4,4,4,4,4],borderColor:'#218570',backgroundColor:'rgba(33,133,112,.1)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#218570'},
+      {label:'Real',data:compAvgs,borderColor:'#c02133',backgroundColor:'rgba(192,33,51,.12)',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#c02133'}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:8}},pointLabels:{font:{size:9}}}},plugins:{legend:{display:false}}}});
+
+  // Pie PDF
+  if(cPdfPie)cPdfPie.destroy();
+  cPdfPie=new Chart(document.getElementById('pdfPie').getContext('2d'),{type:'doughnut',data:{
+    labels:['Destacado','Adecuado','En desarrollo','Inicial','SHyMA'],
+    datasets:[{data:[fil.filter(d=>d.estado==='destacado').length,fil.filter(d=>d.estado==='adecuado').length,dev,fil.filter(d=>d.estado==='inicial').length,fil.filter(d=>d.estado==='shyma').length],backgroundColor:['#155748','#218570','#f39c12','#c02133','#7f1d1d'],borderWidth:2,borderColor:'#fff'}]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:9},boxWidth:8,padding:5}}}}});
+
+  // Bar brechas PDF
+  const brechas=compAvgs.map(v=>+(4-v).toFixed(1));
+  if(cPdfBar)cPdfBar.destroy();
+  cPdfBar=new Chart(document.getElementById('pdfBar').getContext('2d'),{type:'bar',data:{
+    labels:COMPS.map(c=>c.s),
+    datasets:[
+      {label:'Nivel alcanzado',data:compAvgs,backgroundColor:'#218570',borderRadius:4},
+      {label:'Brecha',data:brechas,backgroundColor:'rgba(192,33,51,.3)',borderRadius:4}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:9},boxWidth:8}}},scales:{x:{stacked:true,ticks:{font:{size:9},maxRotation:30}},y:{stacked:true,min:0,max:4}}}});
+
+  // Nine Box PDF
+  const cells=NB9_DEF.map(c=>({...c,ppl:[]}));
+  const people=[...new Map(fil.map(d=>[d.nom+'_'+d.rol,d])).values()];
+  people.forEach(p=>{
+    const ev=fil.filter(d=>d.nom===p.nom&&d.rol===p.rol).sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
+    const cur=ev[0]?.avg||0;
+    const trend=ev.length>=2?(ev[0].avg-ev[ev.length-1].avg):0;
+    const pot=Math.min(4,Math.max(0,cur+trend*0.4));
+    const col=cur<2?0:cur<3?1:2;
+    const row=pot<2?0:pot<3?1:2;
+    const cell=cells.find(c=>c.r===row&&c.c===col);
+    if(cell)cell.ppl.push({...p,cur,pot});
+  });
+  renderNBGrid('pdfNb9',cells);
+
+  // Tabla
+  const rc2={JCOD:'bj',SCOD:'bs',JTMT:'bt'};
+  let th='<table class="pdf-table"><thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Fecha</th><th>Promedio</th><th>Estado</th></tr></thead><tbody>';
+  if(!fil.length) th+='<tr><td colspan="6" style="text-align:center;padding:12px;color:var(--tm)">Sin datos para el filtro seleccionado</td></tr>';
+  [...fil].sort((a,b)=>b.avg-a.avg).forEach(d=>{
+    const col=scColor(d.avg);
+    th+=`<tr><td><strong>${d.nom}</strong></td><td><span class="badge ${rc2[d.rol]}">${d.rol}</span></td><td>${INST_N[d.inst]||d.inst}</td><td>${d.fecha}</td><td style="color:${col};font-weight:600;">${d.avg.toFixed(1)}/4</td><td style="color:${col};font-size:10px;">${d.estado.replace('_',' ')}</td></tr>`;
+  });
+  document.getElementById('pdfTableWrap').innerHTML=th+'</tbody></table>';
+
+  // Footer
+  document.getElementById('pdfFooter').textContent='EPEC S.A.U. · Centro Operativo de Distribución · Reporte generado el '+new Date().toLocaleString('es-AR')+' · Sistema de Seguimiento Onboarding COD';
+
+  document.getElementById('pdfPreviewWrap').scrollIntoView({behavior:'smooth'});
+  notif('✅ Vista previa generada — hacé clic en "Exportar PDF" para descargar');
+}
+
+async function exportPDF(){
+  const el=document.getElementById('pdfContent');
+  if(!el||document.getElementById('pdfPreviewWrap').style.display==='none'){alert('Primero generá la vista previa');return;}
+  notif('⏳ Generando PDF... aguardá unos segundos');
+  try{
+    await new Promise(r=>setTimeout(r,600));
+    const canvas=await html2canvas(el,{scale:1.8,useCORS:true,backgroundColor:'#ffffff',logging:false});
+    const {jsPDF}=window.jspdf;
+    const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    const imgData=canvas.toDataURL('image/jpeg',0.92);
+    const pdfW=pdf.internal.pageSize.getWidth();
+    const pdfH=(canvas.height*pdfW)/canvas.width;
+    let y=0,pageH=pdf.internal.pageSize.getHeight();
+    while(y<pdfH){
+      if(y>0) pdf.addPage();
+      pdf.addImage(imgData,'JPEG',0,-y,pdfW,pdfH,undefined,'FAST');
+      y+=pageH;
+    }
+    const fecha=new Date().toISOString().split('T')[0];
+    pdf.save('EPEC_COD_Competencias_'+fecha+'.pdf');
+    notif('✅ PDF descargado correctamente');
+  }catch(e){alert('Error al generar PDF: '+e.message);}
+}
+
+// ════════════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════════════
+document.getElementById('i-fecha').value=new Date().toISOString().split('T')[0];
+</script>
+
+
+</body></html>
