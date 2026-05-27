@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -850,19 +851,19 @@ function calcRes(rol){
 // ════════════════════════════════════════════════════════════
 //  GUARDAR EN FIREBASE
 // ════════════════════════════════════════════════════════════
-function guardar(){
-  const nom=document.getElementById('i-nom').value.trim();
-  const rol=document.getElementById('i-rol').value;
-  const eval_=document.getElementById('i-eval').value.trim();
-  const inst=document.getElementById('i-inst').value;
-  const fecha=function showPlan(id,btn){
+function showPlan(id,btn){
   document.querySelectorAll('.plan-tab').forEach(b=>b.classList.remove('on'));
   document.querySelectorAll('.plan-panel').forEach(p=>p.classList.remove('on'));
   if(btn)btn.classList.add('on');
   const el=document.getElementById('plan-'+id);if(el)el.classList.add('on');
 }
 
-document.getElementById('i-fecha').value||new Date().toISOString().split('T')[0];
+function guardar(){
+  const nom=document.getElementById('i-nom').value.trim();
+  const rol=document.getElementById('i-rol').value;
+  const eval_=document.getElementById('i-eval').value.trim();
+  const inst=document.getElementById('i-inst').value;
+  const fecha=document.getElementById('i-fecha').value||new Date().toISOString().split('T')[0];
   if(!nom||!rol){alert('Completar nombre y rol');return;}
   const allV=Object.values(curScores).filter(v=>v);
   const avgTot=allV.length?+(allV.reduce((a,b)=>a+b,0)/allV.length).toFixed(2):0;
@@ -1231,13 +1232,6 @@ async function exportPDF(){
 // ════════════════════════════════════════════════════════════
 //  INIT
 // ════════════════════════════════════════════════════════════
-function showPlan(id,btn){
-  document.querySelectorAll('.plan-tab').forEach(b=>b.classList.remove('on'));
-  document.querySelectorAll('.plan-panel').forEach(p=>p.classList.remove('on'));
-  if(btn)btn.classList.add('on');
-  const el=document.getElementById('plan-'+id);if(el)el.classList.add('on');
-}
-
 document.getElementById('i-fecha').value=new Date().toISOString().split('T')[0];
 </script>
 </body>
