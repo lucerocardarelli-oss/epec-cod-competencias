@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -1026,13 +1027,56 @@ let cBarTec, cRadarDash, cRadarTec, cRadarLider, cBrecha, cTendTec, cTendLider;
 // ════════════════════════════════════════════════════════════
 refInd.on('value', snap => {
   DATA_IND = [];
-  if(snap.exists()) snap.forEach(c => DATA_IND.push({...c.val(), fbKey:c.key, tipo:'individual'}));
-  refresh();
+  snap.forEach(child => {
+    const val = child.val();
+    if(val && val.nom) {
+      DATA_IND.push({
+        fbKey:      child.key,
+        nom:        val.nom        || '',
+        rol:        val.rol        || '',
+        eval:       val.eval       || '',
+        inst:       val.inst       || '',
+        fecha:      val.fecha      || '',
+        avgTec:     val.avgTec     || 0,
+        avgLid:     val.avgLid     || 0,
+        estadoTec:  val.estadoTec  || '',
+        estadoLid:  val.estadoLid  || '',
+        shyBad:     val.shyBad     || false,
+        scoreTec:   val.scoreTec   || {},
+        scoreLider: val.scoreLider || {},
+        ts:         val.ts         || 0,
+        tipo:       'individual'
+      });
+    }
+  });
+  console.log('DATA_IND cargado:', DATA_IND.length, 'registros');
+  renderDash();
+  if(document.getElementById('s-personas').classList.contains('on')) renderPersonas(pfiltro);
+  if(document.getElementById('s-radar').classList.contains('on')){renderRadarTec();renderRadarLider();renderBrecha();}
+  if(document.getElementById('s-ninebox').classList.contains('on')) renderNineBox();
+  if(document.getElementById('s-tendencia').classList.contains('on')){renderTendTec();renderTendLider();renderAlertas();}
 });
+
 refEq.on('value', snap => {
   DATA_EQ = [];
-  if(snap.exists()) snap.forEach(c => DATA_EQ.push({...c.val(), fbKey:c.key, tipo:'equipo'}));
-  refresh();
+  snap.forEach(child => {
+    const val = child.val();
+    if(val) {
+      DATA_EQ.push({
+        fbKey:    child.key,
+        eval:     val.eval    || '',
+        inst:     val.inst    || '',
+        fecha:    val.fecha   || '',
+        obs:      val.obs     || '',
+        avgEq:    val.avgEq   || 0,
+        estadoEq: val.estadoEq|| '',
+        scoreEq:  val.scoreEq || {},
+        ts:       val.ts      || 0,
+        tipo:     'equipo'
+      });
+    }
+  });
+  console.log('DATA_EQ cargado:', DATA_EQ.length, 'registros');
 });
 
 // ════════════════════════════════════════════════════════════
@@ -1413,7 +1457,7 @@ function renderPersonas(tipo){
   if(tipo==='individual'){
     h='<thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Evaluador</th><th>Fecha</th><th>Técnico</th><th>Liderazgo</th><th>Estado Tec.</th><th></th></tr></thead><tbody>';
     if(!DATA_IND.length) h+='<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--tm)">Sin registros</td></tr>';
-    [...DATA_IND].sort((a,b)=>new Date(b.fecha)-new Date(a.fecha)).forEach(d=>{
+    [...DATA_IND].sort((a,b)=>(b.ts||0)-(a.ts||0)).forEach(d=>{
       const cT=scColor(d.avgTec); const cL=scColor(d.avgLid);
       const est=d.shyBad?'⛔ SHyMA':d.estadoTec==='avanzado'?'✅ Avanzado':d.estadoTec==='competente'?'✅ Competente':d.estadoTec==='basico'?'🔄 Básico':'⚠ Inicial';
       h+=`<tr><td><strong>${d.nom}</strong></td><td><span class="badge ${rc[d.rol]}">${d.rol}</span></td><td>${INST_N[d.inst]||d.inst}</td><td>${d.eval||'—'}</td><td>${d.fecha}</td>
