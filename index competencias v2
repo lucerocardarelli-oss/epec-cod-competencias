@@ -1,0 +1,1824 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EPEC SAU — Matriz de Competencias COD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<style>
+:root{
+  --g:#218570;--gd:#155748;--gm:#2BA888;--gl:#e1f5ee;--g2:#d0ece6;
+  --r:#c02133;--rl:#fde8eb;--am:#f39c12;--aml:#fef3c7;
+  --bd:#d0e8e0;--bg:#f5f9f7;--tx:#1a2e2a;--tm:#5a7a72;--wh:#ffffff;
+  --azul:#1a5276;--azul-lt:#d6e4f0;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);background:var(--bg);min-height:100vh;}
+
+.hdr{background:var(--gd);color:#fff;padding:12px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.hdr-logo{background:#fff;border-radius:8px;padding:5px 9px;font-size:10px;font-weight:700;color:var(--gd);line-height:1.2;text-align:center;}
+.hdr-info{flex:1;}
+.hdr-info h1{font-size:15px;font-weight:600;margin-bottom:1px;}
+.hdr-info p{font-size:10px;opacity:.75;}
+.hdr-right{display:flex;align-items:center;gap:10px;}
+.live{background:var(--gm);color:#fff;font-size:10px;padding:3px 10px;border-radius:20px;display:flex;align-items:center;gap:5px;}
+.dot{width:6px;height:6px;background:#7fffd4;border-radius:50%;animation:pu 1.5s infinite;}
+@keyframes pu{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+.nav{background:var(--wh);border-bottom:2px solid var(--bd);display:flex;overflow-x:auto;padding:0 16px;}
+.nt{padding:11px 16px;font-size:12px;font-weight:500;border:none;background:transparent;cursor:pointer;color:var(--tm);border-bottom:2.5px solid transparent;white-space:nowrap;transition:.2s;display:flex;align-items:center;gap:6px;}
+.nt.on{color:var(--g);border-bottom-color:var(--g);font-weight:600;}
+.nt:hover:not(.on){background:var(--gl);}
+.nt i{font-size:15px;}
+
+.cnt{max-width:1200px;margin:0 auto;padding:20px 16px;}
+.sec{display:none;}.sec.on{display:block;}
+
+.card{background:var(--wh);border:.5px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.ct{font-size:11px;font-weight:600;color:var(--gd);margin-bottom:10px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.5px;}
+.sub{font-size:10px;color:var(--tm);margin-bottom:10px;margin-top:-6px;line-height:1.5;}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+@media(max-width:700px){.g2,.g3,.g4{grid-template-columns:1fr;}}
+
+.fg{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;}
+.fg label{font-size:10px;color:var(--tm);font-weight:600;text-transform:uppercase;letter-spacing:.3px;}
+.fg input,.fg select,.fg textarea{border:1.5px solid var(--bd);border-radius:8px;padding:8px 12px;font-size:13px;font-family:inherit;color:var(--tx);background:var(--wh);width:100%;transition:.2s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--g);box-shadow:0 0 0 3px rgba(33,133,112,.1);}
+
+/* STAT */
+.sc{background:var(--gl);border-radius:10px;padding:14px;text-align:center;border:1px solid var(--g2);}
+.sn{font-size:28px;font-weight:700;color:var(--gd);}
+.sl{font-size:10px;color:var(--tm);margin-top:3px;}
+
+/* ROLE CARDS */
+.rcards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px;}
+.rcard{border-radius:12px;padding:14px;text-align:center;border:1.5px solid;}
+.rc-j{background:#dbeafe;border-color:#93c5fd;} .rc-s{background:var(--aml);border-color:#fcd34d;} .rc-t{background:var(--gl);border-color:#6ee7b7;}
+.rcn{font-size:28px;font-weight:700;}
+.rc-j .rcn{color:#1e40af;} .rc-s .rcn{color:#92400e;} .rc-t .rcn{color:#065f46;}
+.rcl{font-size:9px;color:var(--tm);margin-top:2px;}
+
+/* BADGE */
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:600;}
+.bj{background:#dbeafe;color:#1e40af;} .bs{background:var(--aml);color:#92400e;} .bt{background:var(--gl);color:#065f46;}
+
+/* TABLA PERSONAS */
+.pt{width:100%;border-collapse:collapse;font-size:12px;}
+.pt th{background:var(--gd);color:#fff;padding:9px 12px;text-align:left;font-weight:500;font-size:11px;}
+.pt td{padding:8px 12px;border-bottom:1px solid var(--bd);}
+.pt tr:hover td{background:var(--gl);}
+.sbar{height:6px;border-radius:3px;background:#e2e8f0;overflow:hidden;margin-top:3px;}
+.sfill{height:100%;border-radius:3px;}
+
+/* BOTONES 1-2-3-4 */
+.score-sel{display:flex;gap:3px;justify-content:center;}
+.ss{width:28px;height:28px;border-radius:6px;border:1.5px solid #ddd;background:var(--wh);cursor:pointer;font-size:11px;font-weight:700;transition:.15s;font-family:inherit;color:var(--tm);}
+.ss:hover{transform:scale(1.15);border-color:var(--g);}
+.ss.s4{background:#218570;border-color:#218570;color:#fff;}
+.ss.s3{background:#2BA888;border-color:#2BA888;color:#fff;}
+.ss.s2{background:#f39c12;border-color:#f39c12;color:#fff;}
+.ss.s1{background:#c02133;border-color:#c02133;color:#fff;}
+
+/* TABLA MATRIZ */
+.mx-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--bd);}
+.mx-tbl{border-collapse:collapse;width:100%;font-size:11px;}
+.mx-tbl th{background:var(--gd);color:#fff;padding:9px 10px;text-align:center;font-weight:500;white-space:nowrap;font-size:10px;}
+.mx-tbl th.proc-h{text-align:left;min-width:200px;}
+.mx-tbl td{padding:7px 8px;border:1px solid var(--bd);text-align:center;vertical-align:middle;}
+.mx-tbl td.pn{text-align:left;background:var(--bg);font-weight:500;}
+.mx-tbl td.pn .pc{font-size:9px;color:var(--tm);display:block;}
+.mx-tbl tr:hover td{background:#f0faf6;}
+.avg-cell{font-weight:700;font-size:12px;}
+.cell-4{background:#218570;color:#fff;font-weight:700;}
+.cell-3{background:#2BA888;color:#fff;font-weight:700;}
+.cell-2{background:#f39c12;color:#fff;font-weight:700;}
+.cell-1{background:#c02133;color:#fff;font-weight:700;}
+.cell-0{background:#f1f5f9;color:#94a3b8;}
+
+/* LIDERAZGO CARD */
+.lider-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+@media(max-width:700px){.lider-grid{grid-template-columns:1fr;}}
+.lider-comp{background:var(--bg);border:1.5px solid var(--bd);border-radius:10px;padding:14px;}
+.lider-comp.shyma-comp{border-color:#fca5a5;background:#fff8f8;}
+.lc-name{font-size:13px;font-weight:700;color:var(--gd);margin-bottom:3px;}
+.lc-desc{font-size:10px;color:var(--tm);margin-bottom:10px;line-height:1.4;}
+.lc-btns{display:flex;gap:6px;}
+.lb{flex:1;padding:10px 4px;border-radius:8px;border:2px solid #ddd;background:var(--wh);cursor:pointer;font-size:12px;font-weight:700;transition:all .15s;font-family:inherit;color:var(--tm);text-align:center;line-height:1.3;}
+.lb:hover{transform:scale(1.05);border-color:var(--g);}
+.lb .ln{font-size:18px;font-weight:800;display:block;}
+.lb .ll{font-size:8px;display:block;margin-top:2px;}
+.lb.sel-4{background:#218570;border-color:#155748;color:#fff;}
+.lb.sel-3{background:#2BA888;border-color:#218570;color:#fff;}
+.lb.sel-2{background:#f39c12;border-color:#d68910;color:#fff;}
+.lb.sel-1{background:#c02133;border-color:#9b1c2e;color:#fff;}
+
+/* RESULTADO BOX */
+.res-box{background:var(--gl);border-radius:10px;padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;border:1px solid var(--g2);}
+.res-item{text-align:center;}
+.res-num{font-size:26px;font-weight:700;color:var(--gd);}
+.res-lbl{font-size:9px;color:var(--tm);margin-top:2px;}
+
+/* TABS */
+.rtabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+.rtab{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;border:1.5px solid var(--bd);background:var(--wh);color:var(--tm);transition:.2s;}
+.rtab.on{background:var(--g);border-color:var(--g);color:#fff;}
+
+/* SECCION HEADER */
+.sec-header{background:linear-gradient(135deg,var(--gd),var(--g));color:#fff;border-radius:10px;padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.sec-header i{font-size:22px;opacity:.85;}
+.sec-header h2{font-size:15px;font-weight:700;margin-bottom:2px;}
+.sec-header p{font-size:10px;opacity:.8;}
+
+/* ESCALA INFO */
+.escala-box{background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:10px 14px;margin-bottom:14px;}
+.escala-box .et{font-size:10px;font-weight:700;color:var(--gd);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.escala-items{display:flex;gap:8px;flex-wrap:wrap;}
+.ei{display:flex;align-items:center;gap:6px;font-size:11px;}
+.ei-dot{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:#fff;flex-shrink:0;}
+
+/* ALERTS */
+.al{padding:10px 14px;border-radius:8px;font-size:11px;margin-bottom:8px;line-height:1.5;}
+.al-g{background:var(--gl);color:#065f46;border:1px solid #6ee7b7;}
+.al-a{background:var(--aml);color:#92400e;border:1px solid #fcd34d;}
+.al-r{background:var(--rl);color:#9b1c2e;border:1px solid #fca5a5;}
+
+.shyma-alert{background:var(--rl);border:2px solid var(--r);border-radius:10px;padding:12px 16px;font-size:12px;color:var(--r);margin-top:10px;display:none;font-weight:500;}
+
+/* EQUIPO */
+.equipo-comp{background:var(--bg);border:1.5px solid var(--bd);border-radius:10px;padding:16px;margin-bottom:12px;}
+.eq-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.eq-name{font-size:14px;font-weight:700;color:var(--gd);}
+.eq-desc{font-size:10px;color:var(--tm);margin-bottom:10px;line-height:1.4;}
+.eq-btns{display:flex;gap:8px;}
+.eqb{flex:1;padding:12px 6px;border-radius:8px;border:2px solid #ddd;background:var(--wh);cursor:pointer;font-size:13px;font-weight:700;transition:all .15s;font-family:inherit;color:var(--tm);text-align:center;line-height:1.3;}
+.eqb:hover{transform:scale(1.04);border-color:var(--g);}
+.eqb .en{font-size:22px;font-weight:800;display:block;}
+.eqb .el{font-size:9px;display:block;margin-top:3px;}
+.eqb.sel-4{background:#218570;border-color:#155748;color:#fff;}
+.eqb.sel-3{background:#2BA888;border-color:#218570;color:#fff;}
+.eqb.sel-2{background:#f39c12;border-color:#d68910;color:#fff;}
+.eqb.sel-1{background:#c02133;border-color:#9b1c2e;color:#fff;}
+
+/* BTNS */
+.bp{background:var(--g);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:6px;font-family:inherit;}
+.bp:hover{background:var(--gd);}
+.bsec{background:var(--wh);color:var(--g);border:1.5px solid var(--g);padding:9px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;}
+.bsec:hover{background:var(--gl);}
+.bdel{background:var(--r);color:#fff;border:none;padding:5px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit;}
+.acts{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+
+/* LOADING */
+.loading{display:flex;align-items:center;justify-content:center;padding:40px;flex-direction:column;gap:10px;color:var(--tm);}
+.spinner{width:32px;height:32px;border:3px solid var(--bd);border-top-color:var(--g);border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* NOTIF */
+.notif{position:fixed;bottom:24px;right:24px;background:var(--gd);color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;z-index:999;box-shadow:0 4px 16px rgba(0,0,0,.2);display:none;max-width:320px;line-height:1.4;}
+
+/* PLANILLAS TÉCNICAS */
+.plan-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.plan-tab{padding:7px 16px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--bd);background:var(--wh);color:var(--tm);transition:.2s;}
+.plan-tab.on{background:var(--gd);border-color:var(--gd);color:#fff;}
+.plan-panel{display:none;}.plan-panel.on{display:block;}
+.plan-header{background:var(--gd);color:#fff;padding:12px 16px;border-radius:8px;margin-bottom:14px;}
+.plan-title{font-size:14px;font-weight:600;}.plan-sub{font-size:10px;opacity:.8;margin-top:2px;}
+.plan-tbl{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:14px;}
+.plan-tbl th{background:var(--gd);color:#fff;padding:8px 10px;text-align:left;font-weight:500;font-size:10px;}
+.plan-tbl td{padding:10px 10px;border-bottom:1px solid var(--bd);vertical-align:middle;line-height:1.5;}
+.plan-tbl tr:nth-child(even) td{background:var(--gl);}
+.plan-tbl .cod{font-weight:700;color:var(--gd);white-space:nowrap;font-size:10px;width:110px;}
+.plan-tbl .crit{font-size:10px;color:var(--tm);width:200px;}
+.plan-score{display:flex;gap:5px;justify-content:center;width:130px;}
+.ps{width:28px;height:28px;border-radius:7px;border:2px solid #ddd;background:var(--wh);cursor:pointer;font-size:12px;font-weight:700;transition:all .15s;font-family:inherit;color:var(--tm);display:flex;align-items:center;justify-content:center;}
+.ps:hover{transform:scale(1.18);border-color:var(--g);}
+.ps.sel-4{background:#218570;border-color:#155748;color:#fff;transform:scale(1.1);}
+.ps.sel-3{background:#2BA888;border-color:#218570;color:#fff;transform:scale(1.1);}
+.ps.sel-2{background:#f39c12;border-color:#d68910;color:#fff;transform:scale(1.1);}
+.ps.sel-1{background:#c02133;border-color:#9b1c2e;color:#fff;transform:scale(1.1);}
+.plan-total{background:var(--gl);border:1px solid var(--g2);border-radius:8px;padding:12px 16px;display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-top:4px;}
+.pt-item{text-align:center;}
+.pt-num{font-size:22px;font-weight:700;color:var(--gd);}
+.pt-lbl{font-size:9px;color:var(--tm);margin-top:1px;}
+.shyma-tag{background:var(--rl);color:var(--r);font-size:9px;padding:1px 6px;border-radius:10px;font-weight:700;margin-left:4px;vertical-align:middle;}
+
+.nb9{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;}
+.nbc{border-radius:8px;padding:10px 8px;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;font-weight:600;text-align:center;border:1px solid rgba(0,0,0,.08);}
+.nbl{font-size:9px;opacity:.85;margin-bottom:6px;font-weight:500;}
+.nbdots{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;margin-top:4px;}
+.nbdot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;background:#fff;border:2px solid rgba(0,0,0,.15);cursor:default;}
+
+/* PDF PREVIEW */
+.pdf-preview{background:var(--wh);border:1px solid var(--bd);border-radius:12px;padding:20px;margin-top:14px;}
+.pdf-header{background:var(--gd);color:#fff;padding:16px 20px;border-radius:8px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+.pdf-logo{background:#fff;border-radius:6px;padding:5px 9px;font-size:11px;font-weight:700;color:var(--gd);line-height:1.2;text-align:center;}
+.pdf-title{font-size:16px;font-weight:600;}
+.pdf-sub{font-size:10px;opacity:.8;margin-top:2px;}
+.pdf-section{font-size:11px;font-weight:700;color:var(--gd);text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--g2);}
+.pdf-charts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.pdf-chart-box{background:var(--bg);border-radius:8px;padding:14px;border:1px solid var(--bd);}
+.pdf-chart-title{font-size:11px;font-weight:600;color:var(--gd);margin-bottom:10px;}
+.pdf-table{width:100%;border-collapse:collapse;font-size:11px;}
+.pdf-table th{background:var(--gd);color:#fff;padding:8px 10px;text-align:left;font-weight:500;font-size:10px;}
+.pdf-table td{padding:7px 10px;border-bottom:1px solid var(--bd);}
+.pdf-table tr:nth-child(even) td{background:var(--gl);}
+.pdf-footer{text-align:center;font-size:9px;color:var(--tm);margin-top:14px;padding-top:10px;border-top:1px solid var(--bd);}
+.bpdf{background:var(--r);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:inherit;}
+.bpdf:hover{background:#9b1c2e;}
+
+
+/* SEPARADOR DE SECCIONES */
+.sec-divider{display:flex;align-items:center;gap:10px;margin:18px 0 14px;}
+.sec-divider span{font-size:11px;font-weight:700;color:var(--gd);text-transform:uppercase;letter-spacing:.8px;white-space:nowrap;}
+.sec-divider::before,.sec-divider::after{content:'';flex:1;height:1px;background:var(--bd);}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-logo">EPEC<br>COD</div>
+  <div class="hdr-info">
+    <h1>Matriz de Competencias — Centro Operativo de Distribución</h1>
+    <p>EPEC S.A.U. · Evaluación Individual y de Equipo · Técnica + Liderazgo Operativo</p>
+  </div>
+  <div class="hdr-right">
+    <span style="font-size:10px;color:#fff;opacity:.8;" id="usrCount"></span>
+    <div class="live"><div class="dot"></div>Firebase en vivo</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nt on" onclick="go('dash')"><i class="ti ti-dashboard"></i>Dashboard</button>
+  <button class="nt" onclick="go('individual')"><i class="ti ti-user-check"></i>Evaluación Individual</button>
+  <button class="nt" onclick="go('planillas')"><i class="ti ti-clipboard-list"></i>Planillas Técnicas</button>
+  <button class="nt" onclick="go('equipo')"><i class="ti ti-users"></i>Evaluación de Equipo</button>
+  <button class="nt" onclick="go('personas')"><i class="ti ti-address-book"></i>Historial</button>
+  <button class="nt" onclick="go('radar')"><i class="ti ti-chart-radar"></i>Radar</button>
+  <button class="nt" onclick="go('tendencia')"><i class="ti ti-trending-up"></i>Tendencia</button>
+  <button class="nt" onclick="go('ninebox')"><i class="ti ti-layout-grid"></i>Nine Box</button>
+  <button class="nt" onclick="go('reportes')"><i class="ti ti-file-type-pdf"></i>Reportes PDF</button>
+</div>
+
+<div class="cnt">
+
+<!-- ═══════════════════════════════════════════
+     DASHBOARD
+═══════════════════════════════════════════ -->
+<div class="sec on" id="s-dash">
+  <div class="rcards" id="rolCards"></div>
+  <div class="g4" id="stats4" style="margin-bottom:14px;"></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct"><i class="ti ti-chart-bar"></i>Promedio Técnico por proceso — equipo COD</div>
+      <div style="position:relative;height:220px;"><canvas id="cBarTec"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-chart-radar"></i>Perfil de Liderazgo — equipo COD</div>
+      <div style="position:relative;height:220px;"><canvas id="cRadarDash"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct"><i class="ti ti-star"></i>Últimas evaluaciones individuales</div>
+    <div id="topTbl"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PLANILLAS TÉCNICAS POR ROL
+═══════════════════════════════════════════ -->
+<div class="sec" id="s-planillas">
+
+  <div class="sec-header">
+    <i class="ti ti-clipboard-list"></i>
+    <div>
+      <h2>Planillas de Evaluación Técnica por Rol</h2>
+      <p>Instrumento de referencia para el evaluador · Puntuar cada proceso del 1 al 4</p>
+    </div>
+  </div>
+
+  <div class="escala-box">
+    <div class="et">Escala de dominio técnico</div>
+    <div class="escala-items">
+      <div class="ei"><div class="ei-dot" style="background:#c02133;">1</div><span><strong>Inicial</strong> — requiere guía directa y supervisión permanente</span></div>
+      <div class="ei"><div class="ei-dot" style="background:#f39c12;">2</div><span><strong>Básico Supervisado</strong> — conoce la tarea pero requiere validación frecuente</span></div>
+      <div class="ei"><div class="ei-dot" style="background:#2BA888;">3</div><span><strong>Competente Autónomo</strong> — ejecuta correctamente de forma independiente</span></div>
+      <div class="ei"><div class="ei-dot" style="background:#218570;">4</div><span><strong>Avanzado Referente</strong> — domina, resuelve casos complejos y puede enseñar</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="plan-tabs">
+      <button class="plan-tab on" onclick="showPlan('jcod',this)"><i class="ti ti-user"></i> Jefe COD</button>
+      <button class="plan-tab" onclick="showPlan('scod',this)"><i class="ti ti-user"></i> SubJefe COD</button>
+      <button class="plan-tab" onclick="showPlan('jtmt',this)"><i class="ti ti-user"></i> Jefe Turno MT</button>
+      <button class="plan-tab" onclick="showPlan('dup',this)"><i class="ti ti-users"></i> Procesos Compartidos (P-DUP)</button>
+      <button class="plan-tab" onclick="showPlan('tec',this)"><i class="ti ti-tool"></i> Expertiz + SHyMA</button>
+    </div>
+
+    <!-- JEFE COD -->
+    <div class="plan-panel on" id="plan-jcod">
+      <div class="plan-header">
+        <div class="plan-title">JEFE COD — Procesos exclusivos del rol</div>
+        <div class="plan-sub">P-JCOD-01 al P-JCOD-05 · Rol Accountable (A) en procesos compartidos</div>
+      </div>
+      <table class="plan-tbl">
+        <thead><tr><th style="width:120px">Proceso</th><th>Actividad / Evidencia a verificar</th><th style="width:210px">Criterio de aceptación</th><th style="width:140px;text-align:center">Puntuación</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="cod">P-JCOD-01<br>Marco Legal</td>
+            <td>Conoce y aplica la normativa vigente (Ley 8.555, resoluciones ERSEP, estatuto EPEC). Fundamenta decisiones en base normativa cuando se lo consulta.</td>
+            <td class="crit">Responde correctamente al menos 3 de 4 consultas normativas tipo sin apoyo documental</td>
+            <td><div class="plan-score" id="ps-jcod-01"></div></td>
+          </tr>
+          <tr>
+            <td class="cod">P-JCOD-02<br>Config. MT/BT</td>
+            <td>Conoce parámetros de configuración de la red MT/BT del COD: tensiones nominales, límites de corriente, criterios de maniobra y configuración normal/emergencia.</td>
+            <td class="crit">Describe la configuración del sistema sin consultar planos en al menos el 80% de los casos</td>
+            <td><div class="plan-score" id="ps-jcod-02"></div></td>
+          </tr>
+          <tr>
+            <td class="cod">P-JCOD-03<br>Contratistas</td>
+            <td>Conoce el proceso completo de habilitación, seguimiento y cierre de contratistas. Verifica que el proceso sea aplicado correctamente por el SubJefe COD.</td>
+            <td class="crit">Puede describir cada etapa del proceso. No ejecuta tareas del SubJefe COD</td>
+            <td><div class="plan-score" id="ps-jcod-03"></div></td>
+          </tr>
+          <tr>
+            <td class="cod">P-JCOD-04<br>Presupuesto</td>
+            <td>Gestiona el ciclo presupuestario completo: elabora, somete a Gerencia y controla ejecución mensual. Usa SAP/ERP. Aprueba solicitudes con criterio técnico-presupuestario.</td>
+            <td class="crit">Reporte de ejecución mensual con variaciones explicadas. SAP utilizado correctamente</td>
+            <td><div class="plan-score" id="ps-jcod-04"></div></td>
+          </tr>
+          <tr>
+            <td class="cod">P-JCOD-05<br>Reporte Jefatura</td>
+            <td>Elabora informes ejecutivos con indicadores SAIDI/SAIFI, novedades del período, desvíos y acciones correctivas. Presenta con claridad a la Gerencia.</td>
+            <td class="crit">Reporte entregado en plazo, indicadores calculados correctamente, narrativa de desvíos incluida</td>
+            <td><div class="plan-score" id="ps-jcod-05"></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="plan-total" id="total-jcod">
+        <div class="pt-item"><div class="pt-num" id="pn-jcod">—</div><div class="pt-lbl">Promedio rol</div></div>
+        <div class="pt-item"><div class="pt-num" id="pp-jcod">—</div><div class="pt-lbl">% requerido</div></div>
+        <div class="pt-item"><div class="pt-num" id="pe-jcod" style="font-size:13px;margin-top:4px;">—</div><div class="pt-lbl">Estado</div></div>
+      </div>
+    </div>
+
+    <!-- SUBJEFE COD -->
+    <div class="plan-panel" id="plan-scod">
+      <div class="plan-header">
+        <div class="plan-title">SUBJEFE COD — Procesos exclusivos del rol</div>
+        <div class="plan-sub">P-SCOD-01 al P-SCOD-03 · Rol Responsible (R) en procesos compartidos</div>
+      </div>
+      <table class="plan-tbl">
+        <thead><tr><th style="width:120px">Proceso</th><th>Actividad / Evidencia a verificar</th><th style="width:210px">Criterio de aceptación</th><th style="width:140px;text-align:center">Puntuación</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="cod">P-SCOD-01<br>Com. Operativas</td>
+            <td>Coordina operaciones diarias con CTZ Capital y Teleoperación Provincial. Registra todas las comunicaciones en bitácora. No delega la coordinación sin respaldo documentado.</td>
+            <td class="crit">Bitácora de coordinación completa sin lagunas. Comunicaciones registradas con hora, interlocutor y contenido</td>
+            <td><div class="plan-score" id="ps-scod-01"></div></td>
+          </tr>
+          <tr>
+            <td class="cod">P-SCOD-02<br>Doc. Técnica</td>
+            <td>Gestiona, actualiza y controla la documentación técnica operativa del COD: procedimientos, planos, registros de turno, SITEC/GIS. Detecta documentación desactualizada y la eleva al Jefe COD.</td>
+            <td class="crit">Documentación vigente y accesible. Sin procedimientos desactualizados en uso. SITEC/GIS actualizado</td>
+            <td><div class="plan-score" id="ps-scod-02"></div></td>
+          </tr>
+          <tr>
+            <td class="cod">P-SCOD-03<br>Supervisión Equipo</td>
+            <td>Supervisa el desempeño operativo del equipo en turno: verifica ejecución de tareas, detecta desvíos, otorga feedback al Jefe de Turno MT y reporta novedades al Jefe COD.</td>
+            <td class="crit">Reportes de supervisión en cada turno. Feedback documentado. Desvíos escalados en tiempo</td>
+            <td><div class="plan-score" id="ps-scod-03"></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="plan-total">
+        <div class="pt-item"><div class="pt-num" id="pn-scod">—</div><div class="pt-lbl">Promedio rol</div></div>
+        <div class="pt-item"><div class="pt-num" id="pp-scod">—</div><div class="pt-lbl">% requerido</div></div>
+        <div class="pt-item"><div class="pt-num" id="pe-scod" style="font-size:13px;margin-top:4px;">—</div><div class="pt-lbl">Estado</div></div>
+      </div>
+    </div>
+
+    <!-- JEFE DE TURNO MT -->
+    <div class="plan-panel" id="plan-jtmt">
+      <div class="plan-header">
+        <div class="plan-title">JEFE DE TURNO MT — Procesos exclusivos del rol</div>
+        <div class="plan-sub">P-JTMT-01 al P-JTMT-03 · Ejecución operativa directa</div>
+      </div>
+      <table class="plan-tbl">
+        <thead><tr><th style="width:120px">Proceso</th><th>Actividad / Evidencia a verificar</th><th style="width:210px">Criterio de aceptación</th><th style="width:140px;text-align:center">Puntuación</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="cod">P-JTMT-01<br>Conducción Turno</td>
+            <td>Conduce el turno MT: dirige al equipo, gestiona la bitácora, registra novedades en tiempo real, coordina con el SubJefe COD y garantiza la continuidad operativa.</td>
+            <td class="crit">Bitácora de turno completa, sin campos faltantes. Novedades registradas en tiempo real</td>
+            <td><div class="plan-score" id="ps-jtmt-01"></div></td>
+          </tr>
+          <tr>
+            <td class="cod">P-JTMT-02<br>Maniobras</td>
+            <td>Ejecuta maniobras de red MT siguiendo la secuencia programada aprobada por el Jefe COD. Registra cada maniobra. Reporta desvíos al SubJefe COD en menos de 5 minutos.</td>
+            <td class="crit">Maniobras conforme al plan aprobado. Registro completo. Desvíos reportados dentro de los 5 minutos</td>
+            <td><div class="plan-score" id="ps-jtmt-02"></div></td>
+          </tr>
+          <tr>
+            <td class="cod">P-JTMT-03<br>Supervisión SHyMA <span class="shyma-tag">⚡SHyMA</span></td>
+            <td>Controla EPP, enclavamientos y condiciones de seguridad antes de cada intervención. Reporta incidentes y condiciones inseguras al SubJefe COD. Preserva el lugar del incidente.</td>
+            <td class="crit">Check de seguridad documentado antes de cada trabajo. Partes de incidente en plazo. Lugar preservado según protocolo</td>
+            <td><div class="plan-score" id="ps-jtmt-03"></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="plan-total">
+        <div class="pt-item"><div class="pt-num" id="pn-jtmt">—</div><div class="pt-lbl">Promedio rol</div></div>
+        <div class="pt-item"><div class="pt-num" id="pp-jtmt">—</div><div class="pt-lbl">% requerido</div></div>
+        <div class="pt-item"><div class="pt-num" id="pe-jtmt" style="font-size:13px;margin-top:4px;">—</div><div class="pt-lbl">Estado</div></div>
+      </div>
+    </div>
+
+    <!-- P-DUP COMPARTIDOS -->
+    <div class="plan-panel" id="plan-dup">
+      <div class="plan-header">
+        <div class="plan-title">PROCESOS COMPARTIDOS — P-DUP-01 al P-DUP-15</div>
+        <div class="plan-sub">Rediseño de duplicaciones · JCOD=Accountable (A) · SCOD=Responsible (R) · JTMT=R/C/I</div>
+      </div>
+      <table class="plan-tbl">
+        <thead><tr><th style="width:90px">Código</th><th>Nombre del proceso</th><th style="width:120px">Rol JCOD</th><th style="width:120px">Rol SCOD</th><th style="width:120px">Rol JTMT</th><th style="width:140px;text-align:center">Puntuación</th></tr></thead>
+        <tbody>
+          <tr><td class="cod">P-DUP-01</td><td>Planes de mantenimiento MT/CRD</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba plan y KPIs</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Elabora y ejecuta</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td><div class="plan-score" id="ps-dup-01"></div></td></tr>
+          <tr><td class="cod">P-DUP-02</td><td>Relevamiento de redes y aparamenta</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba informe</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Planifica y actualiza SITEC</td><td style="font-size:10px;color:#065f46">Consultado (C)</td><td><div class="plan-score" id="ps-dup-02"></div></td></tr>
+          <tr><td class="cod">P-DUP-03</td><td>Reclamos técnicos emergentes</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Decide casos críticos</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Evalúa y coordina</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Ejecuta atención</td><td><div class="plan-score" id="ps-dup-03"></div></td></tr>
+          <tr><td class="cod">P-DUP-04</td><td>Coordinación COD-CTZ-Teleoperación</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Establece protocolos</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Coordina turno a turno</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td><div class="plan-score" id="ps-dup-04"></div></td></tr>
+          <tr><td class="cod">P-DUP-05</td><td>Provisión de equipos, EPP y herramientas</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba adquisiciones</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Gestiona inventario</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td><div class="plan-score" id="ps-dup-05"></div></td></tr>
+          <tr><td class="cod">P-DUP-06</td><td>Provisión de insumos y materiales</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba solicitudes</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Gestiona stock</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td><div class="plan-score" id="ps-dup-06"></div></td></tr>
+          <tr><td class="cod">P-DUP-07</td><td>Maniobras programadas</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba plan</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Programa y monitorea</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Ejecuta maniobras</td><td><div class="plan-score" id="ps-dup-07"></div></td></tr>
+          <tr><td class="cod">P-DUP-08</td><td>Comités Técnicos y de Contingencias</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Voz institucional</td><td style="font-size:10px;color:#92400e">Consultado (C)<br>Soporte técnico</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td><div class="plan-score" id="ps-dup-08"></div></td></tr>
+          <tr><td class="cod">P-DUP-09</td><td>Capacitación del personal</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba plan</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Elabora y coordina</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Participa y aplica</td><td><div class="plan-score" id="ps-dup-09"></div></td></tr>
+          <tr><td class="cod">P-DUP-10</td><td>Cumplimiento SHyMA <span class="shyma-tag">⚡</span></td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Define estándares</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Supervisa y audita</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Controla en turno</td><td><div class="plan-score" id="ps-dup-10"></div></td></tr>
+          <tr><td class="cod">P-DUP-11</td><td>Procedimientos operativos</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Revisa y aprueba</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Confecciona borradores</td><td style="font-size:10px;color:#065f46">Consultado (C)</td><td><div class="plan-score" id="ps-dup-11"></div></td></tr>
+          <tr><td class="cod">P-DUP-12</td><td>Presupuesto anual del COD</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Elabora y controla</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Aporta datos operativos</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td><div class="plan-score" id="ps-dup-12"></div></td></tr>
+          <tr><td class="cod">P-DUP-13</td><td>Indicadores de control y mejora</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Decide acciones de mejora</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Analiza KPIs</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td><div class="plan-score" id="ps-dup-13"></div></td></tr>
+          <tr><td class="cod">P-DUP-14</td><td>Reporte de Gestión O&amp;M</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba y firma</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Elabora reporte</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Provee registros de turno</td><td><div class="plan-score" id="ps-dup-14"></div></td></tr>
+          <tr><td class="cod">P-DUP-15</td><td>Gestión administrativa de RRHH</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba diagramas y licencias</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Gestiona administrativamente</td><td style="font-size:10px;color:#065f46">Informado (I)<br>Recibe diagrama aprobado</td><td><div class="plan-score" id="ps-dup-15"></div></td></tr>
+        </tbody>
+      </table>
+      <div class="plan-total">
+        <div class="pt-item"><div class="pt-num" id="pn-dup">—</div><div class="pt-lbl">Promedio P-DUP</div></div>
+        <div class="pt-item"><div class="pt-num" id="pp-dup">—</div><div class="pt-lbl">% requerido</div></div>
+        <div class="pt-item"><div class="pt-num" id="pe-dup" style="font-size:13px;margin-top:4px;">—</div><div class="pt-lbl">Estado</div></div>
+      </div>
+    </div>
+
+    <!-- EXPERTIZ + SHYMA -->
+    <div class="plan-panel" id="plan-tec">
+      <div class="plan-header">
+        <div class="plan-title">EXPERTIZ TÉCNICA + SEGURIDAD OPERACIONAL</div>
+        <div class="plan-sub">Evaluación transversal aplicable a todos los roles del COD</div>
+      </div>
+      <table class="plan-tbl">
+        <thead><tr><th style="width:120px">Proceso</th><th>Actividad / Evidencia a verificar</th><th style="width:210px">Criterio de aceptación</th><th style="width:140px;text-align:center">Puntuación</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="cod">P-TEC-01<br>Expertiz Técnica MT/BT</td>
+            <td>Demuestra conocimiento técnico sólido sobre sistemas eléctricos MT/BT: operación, fallas, restablecimiento, normativa técnica aplicable y criterios de decisión operativa.</td>
+            <td class="crit">Resuelve correctamente al menos 3 de 4 casos técnicos prácticos sin apoyo externo</td>
+            <td><div class="plan-score" id="ps-tec-01"></div></td>
+          </tr>
+          <tr style="border-left:3px solid #c02133;">
+            <td class="cod">P-TEC-02<br>Seguridad Operacional <span class="shyma-tag">⚡SHyMA</span></td>
+            <td>Aplica correctamente los procedimientos de seguridad: uso de EPP, bloqueos y enclavamientos, análisis de riesgo previo, manejo de incidentes y preservación de evidencia.</td>
+            <td class="crit">100% de cumplimiento en check de seguridad. Cero incidentes por omisión de protocolo. <strong>Calificación 1 implica No habilitación automática.</strong></td>
+            <td><div class="plan-score" id="ps-tec-02"></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="plan-total">
+        <div class="pt-item"><div class="pt-num" id="pn-tec">—</div><div class="pt-lbl">Promedio técnico</div></div>
+        <div class="pt-item"><div class="pt-num" id="pp-tec">—</div><div class="pt-lbl">% requerido</div></div>
+        <div class="pt-item"><div class="pt-num" id="pe-tec" style="font-size:13px;margin-top:4px;">—</div><div class="pt-lbl">Estado SHyMA</div></div>
+      </div>
+    </div>
+
+  </div><!-- /card -->
+</div>
+
+<!-- ═══════════════════════════════════════════
+     EVALUACIÓN INDIVIDUAL
+═══════════════════════════════════════════ -->
+<div class="sec" id="s-individual">
+
+  <!-- Datos del evaluado -->
+  <div class="card">
+    <div class="ct"><i class="ti ti-user-plus"></i>Datos del evaluado</div>
+    <div class="g2">
+      <div class="fg"><label>Nombre completo *</label><input type="text" id="i-nom" placeholder="Apellido, Nombre"></div>
+      <div class="fg"><label>Rol *</label>
+        <select id="i-rol" onchange="onRolChange()">
+          <option value="">Seleccionar rol...</option>
+          <option value="JCOD">Jefe COD</option>
+          <option value="SCOD">SubJefe COD</option>
+          <option value="JTMT">Jefe de Turno MT</option>
+        </select>
+      </div>
+    </div>
+    <div class="g3">
+      <div class="fg"><label>Evaluador / Tutor</label><input type="text" id="i-eval" placeholder="Nombre del tutor"></div>
+      <div class="fg"><label>Instancia</label>
+        <select id="i-inst">
+          <option value="diagnostico">Diagnóstico — Semana 1</option>
+          <option value="seguimiento">Seguimiento — Sem. 2–3</option>
+          <option value="certificacion">Certificación — Semana 4</option>
+        </select>
+      </div>
+      <div class="fg"><label>Fecha</label><input type="date" id="i-fecha"></div>
+    </div>
+  </div>
+
+  <!-- Contenedor de las dos matrices -->
+  <div id="matricesWrap" style="display:none;">
+
+    <!-- ── MATRIZ TÉCNICA ── -->
+    <div class="sec-header">
+      <i class="ti ti-tool"></i>
+      <div>
+        <h2>Matriz de Expertiz Técnica</h2>
+        <p>Evaluación por proceso · Escala 1–4 de dominio técnico</p>
+      </div>
+    </div>
+
+    <div class="escala-box">
+      <div class="et">Escala de dominio técnico</div>
+      <div class="escala-items">
+        <div class="ei"><div class="ei-dot" style="background:#c02133;">1</div><span><strong>Inicial</strong> — requiere guía directa y supervisión permanente</span></div>
+        <div class="ei"><div class="ei-dot" style="background:#f39c12;">2</div><span><strong>Básico Supervisado</strong> — conoce la tarea pero requiere validación frecuente</span></div>
+        <div class="ei"><div class="ei-dot" style="background:#2BA888;">3</div><span><strong>Competente Autónomo</strong> — ejecuta correctamente de forma independiente</span></div>
+        <div class="ei"><div class="ei-dot" style="background:#218570;">4</div><span><strong>Avanzado Referente</strong> — domina, resuelve casos complejos y puede enseñar</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ct"><i class="ti ti-clipboard-check"></i>Procesos del rol + Procesos compartidos (P-DUP)</div>
+      <div class="mx-wrap">
+        <table class="mx-tbl" id="matrizTecTbl"></table>
+      </div>
+      <div class="shyma-alert" id="shyAlerta">
+        ⛔ ALERTA SHyMA — "Gestión de la seguridad operacional" calificada como 1 (Inicial).<br>
+        Criterio de override: la persona NO puede ser habilitada independientemente del puntaje total.
+      </div>
+      <div class="res-box" id="resTec">
+        <div class="res-item"><div class="res-num" id="tNum">—</div><div class="res-lbl">Promedio técnico / 4</div></div>
+        <div class="res-item"><div class="res-num" id="tPct">—</div><div class="res-lbl">% sobre nivel requerido</div></div>
+        <div class="res-item"><div class="res-num" id="tEst" style="font-size:13px;margin-top:6px;">—</div><div class="res-lbl">Estado técnico</div></div>
+      </div>
+    </div>
+
+    <!-- ── MATRIZ DE LIDERAZGO ── -->
+    <div class="sec-header" style="background:linear-gradient(135deg,#1a5276,#2471a3);margin-top:8px;">
+      <i class="ti ti-award"></i>
+      <div>
+        <h2>Matriz de Habilidades de Liderazgo Operativo</h2>
+        <p>Evaluación por competencia · Escala 1–4 de comportamiento observable</p>
+      </div>
+    </div>
+
+    <div class="escala-box">
+      <div class="et">Escala de liderazgo operativo</div>
+      <div class="escala-items">
+        <div class="ei"><div class="ei-dot" style="background:#c02133;">1</div><span><strong>No observable</strong> — el comportamiento no se evidencia en el desempeño diario</span></div>
+        <div class="ei"><div class="ei-dot" style="background:#f39c12;">2</div><span><strong>En desarrollo</strong> — aparece de forma inconsistente, requiere orientación</span></div>
+        <div class="ei"><div class="ei-dot" style="background:#2BA888;">3</div><span><strong>Consolidado</strong> — comportamiento consistente y autónomo</span></div>
+        <div class="ei"><div class="ei-dot" style="background:#218570;">4</div><span><strong>Referente</strong> — lo modela, lo transmite y eleva al equipo</span></div>
+      </div>
+    </div>
+
+    <div class="lider-grid" id="liderGrid"></div>
+
+    <div class="res-box" id="resLider" style="margin-bottom:14px;">
+      <div class="res-item"><div class="res-num" id="lNum">—</div><div class="res-lbl">Promedio liderazgo / 4</div></div>
+      <div class="res-item"><div class="res-num" id="lPct">—</div><div class="res-lbl">% sobre nivel requerido</div></div>
+      <div class="res-item"><div class="res-num" id="lEst" style="font-size:13px;margin-top:6px;">—</div><div class="res-lbl">Nivel de liderazgo</div></div>
+    </div>
+
+    <div class="acts">
+      <button class="bp" onclick="guardarIndividual()"><i class="ti ti-device-floppy"></i>Guardar evaluación individual</button>
+      <button class="bsec" onclick="limpiarIndividual()"><i class="ti ti-refresh"></i>Limpiar</button>
+    </div>
+    <div id="form-msg" style="margin-top:10px;font-size:13px;font-weight:500;min-height:18px;"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     EVALUACIÓN DE EQUIPO
+═══════════════════════════════════════════ -->
+<div class="sec" id="s-equipo">
+
+  <div class="sec-header" style="background:linear-gradient(135deg,#155748,#1a7a5e);">
+    <i class="ti ti-users"></i>
+    <div>
+      <h2>Evaluación de Equipo COD</h2>
+      <p>Diagnóstico grupal de Habilidades de Liderazgo Operativo · Sin nombre individual</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct"><i class="ti ti-info-circle"></i>Datos de la evaluación grupal</div>
+    <div class="g3">
+      <div class="fg"><label>Evaluador / Facilitador</label><input type="text" id="eq-eval" placeholder="Nombre del evaluador"></div>
+      <div class="fg"><label>Instancia</label>
+        <select id="eq-inst">
+          <option value="diagnostico">Diagnóstico inicial</option>
+          <option value="seguimiento">Seguimiento intermedio</option>
+          <option value="cierre">Cierre / Certificación</option>
+        </select>
+      </div>
+      <div class="fg"><label>Fecha</label><input type="date" id="eq-fecha"></div>
+    </div>
+    <div class="fg"><label>Observaciones generales del equipo</label>
+      <textarea id="eq-obs" rows="2" placeholder="Contexto de la evaluación, situaciones observadas, acuerdos del grupo..."></textarea>
+    </div>
+  </div>
+
+  <div class="escala-box">
+    <div class="et">Escala de liderazgo operativo — evaluación grupal</div>
+    <div class="escala-items">
+      <div class="ei"><div class="ei-dot" style="background:#c02133;">1</div><span><strong>No observable</strong> — el comportamiento no se evidencia como equipo</span></div>
+      <div class="ei"><div class="ei-dot" style="background:#f39c12;">2</div><span><strong>En desarrollo</strong> — presente de forma inconsistente en el equipo</span></div>
+      <div class="ei"><div class="ei-dot" style="background:#2BA888;">3</div><span><strong>Consolidado</strong> — el equipo lo practica de forma consistente</span></div>
+      <div class="ei"><div class="ei-dot" style="background:#218570;">4</div><span><strong>Referente colectivo</strong> — el equipo lo modela y lo transmite a otros</span></div>
+    </div>
+  </div>
+
+  <div id="equipoGrid"></div>
+
+  <div class="res-box" id="resEquipo" style="margin-bottom:14px;">
+    <div class="res-item"><div class="res-num" id="eqNum">—</div><div class="res-lbl">Promedio equipo / 4</div></div>
+    <div class="res-item"><div class="res-num" id="eqPct">—</div><div class="res-lbl">% sobre nivel requerido</div></div>
+    <div class="res-item"><div class="res-num" id="eqEst" style="font-size:13px;margin-top:6px;">—</div><div class="res-lbl">Estado del equipo</div></div>
+  </div>
+
+  <div class="acts">
+    <button class="bp" onclick="guardarEquipo()"><i class="ti ti-device-floppy"></i>Guardar evaluación de equipo</button>
+    <button class="bsec" onclick="limpiarEquipo()"><i class="ti ti-refresh"></i>Limpiar</button>
+  </div>
+  <div id="eq-msg" style="margin-top:10px;font-size:13px;font-weight:500;min-height:18px;"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     HISTORIAL
+═══════════════════════════════════════════ -->
+<div class="sec" id="s-personas">
+  <div class="card">
+    <div class="ct"><i class="ti ti-address-book"></i>Historial de evaluaciones</div>
+    <div class="rtabs">
+      <button class="rtab on" onclick="filP('individual',this)">Individuales</button>
+      <button class="rtab" onclick="filP('equipo',this)">Equipo</button>
+    </div>
+    <div style="overflow-x:auto;"><table class="pt" id="pTbl"></table></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     RADAR
+═══════════════════════════════════════════ -->
+<div class="sec" id="s-radar">
+  <div class="g2">
+    <div class="card">
+      <div class="ct"><i class="ti ti-chart-radar"></i>Radar — Expertiz Técnica</div>
+      <div class="fg" style="max-width:200px;">
+        <label>Rol</label>
+        <select id="rRolTec" onchange="renderRadarTec()">
+          <option value="JCOD">Jefe COD</option>
+          <option value="SCOD">SubJefe COD</option>
+          <option value="JTMT">Jefe de Turno MT</option>
+        </select>
+      </div>
+      <div style="position:relative;height:300px;"><canvas id="cRadarTec"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-chart-radar"></i>Radar — Liderazgo Operativo</div>
+      <div class="fg" style="max-width:200px;">
+        <label>Ver</label>
+        <select id="rModLider" onchange="renderRadarLider()">
+          <option value="grupo">Promedio del grupo</option>
+          <option value="equipo">Evaluaciones de equipo</option>
+        </select>
+      </div>
+      <div style="position:relative;height:300px;"><canvas id="cRadarLider"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct"><i class="ti ti-chart-bar-off"></i>Brechas — Liderazgo individual vs. nivel requerido</div>
+    <div style="position:relative;height:240px;"><canvas id="cBrecha"></canvas></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     TENDENCIA
+═══════════════════════════════════════════ -->
+<div class="sec" id="s-tendencia">
+  <div class="g2">
+    <div class="card">
+      <div class="ct"><i class="ti ti-trending-up"></i>Tendencia Técnica por instancia</div>
+      <div class="fg" style="max-width:200px;">
+        <label>Rol</label>
+        <select id="tRolTec" onchange="renderTendTec()">
+          <option value="all">Todos los roles</option>
+          <option value="JCOD">Jefe COD</option>
+          <option value="SCOD">SubJefe COD</option>
+          <option value="JTMT">Jefe de Turno MT</option>
+        </select>
+      </div>
+      <div style="position:relative;height:220px;"><canvas id="cTendTec"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct"><i class="ti ti-trending-up"></i>Tendencia Liderazgo por instancia</div>
+      <div style="position:relative;height:260px;"><canvas id="cTendLider"></canvas></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ct"><i class="ti ti-bell-ringing"></i>Alertas automáticas</div>
+    <div id="alertas"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NINE BOX
+═══════════════════════════════════════════ -->
+<div class="sec" id="s-ninebox">
+  <div class="card">
+    <div class="ct"><i class="ti ti-layout-grid"></i>Nine Box — Potencial × Desempeño Técnico · Equipo COD</div>
+    <div class="sub">Eje Y = potencial (tendencia de mejora técnica) · Eje X = desempeño técnico actual (promedio /4)</div>
+    <div class="fg" style="max-width:200px;margin-bottom:14px;">
+      <label>Filtrar rol</label>
+      <select id="nbRol" onchange="renderNineBox()">
+        <option value="all">Todos los roles</option>
+        <option value="JCOD">Jefe COD</option>
+        <option value="SCOD">SubJefe COD</option>
+        <option value="JTMT">Jefe de Turno MT</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:8px;align-items:stretch;">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;padding:8px 0;min-width:22px;">
+        <div style="font-size:9px;font-weight:700;color:var(--gd);text-align:center;">Alto</div>
+        <div style="font-size:9px;font-weight:700;color:var(--gd);text-align:center;">Medio</div>
+        <div style="font-size:9px;font-weight:700;color:var(--gd);text-align:center;">Bajo</div>
+      </div>
+      <div style="flex:1;">
+        <div class="nb9" id="nb9g"></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:6px;">
+          <div style="text-align:center;font-size:9px;color:var(--tm);">Inicial (&lt;2)</div>
+          <div style="text-align:center;font-size:9px;color:var(--tm);">Básico (2–3)</div>
+          <div style="text-align:center;font-size:9px;color:var(--tm);">Competente (&gt;3)</div>
+        </div>
+        <div style="text-align:center;font-size:10px;font-weight:700;color:var(--gd);margin-top:6px;letter-spacing:1px;">DESEMPEÑO TÉCNICO →</div>
+      </div>
+    </div>
+    <div id="nb9leyenda" style="margin-top:14px;display:flex;gap:14px;flex-wrap:wrap;"></div>
+  </div>
+
+  <div class="card">
+    <div class="ct"><i class="ti ti-award"></i>Nine Box — Liderazgo Operativo</div>
+    <div class="sub">Eje Y = potencial (tendencia de mejora en liderazgo) · Eje X = nivel de liderazgo actual (promedio /4)</div>
+    <div style="display:flex;gap:8px;align-items:stretch;">
+      <div style="display:flex;flex-direction:column;justify-content:space-between;padding:8px 0;min-width:22px;">
+        <div style="font-size:9px;font-weight:700;color:#1a5276;text-align:center;">Alto</div>
+        <div style="font-size:9px;font-weight:700;color:#1a5276;text-align:center;">Medio</div>
+        <div style="font-size:9px;font-weight:700;color:#1a5276;text-align:center;">Bajo</div>
+      </div>
+      <div style="flex:1;">
+        <div class="nb9" id="nb9lider"></div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:6px;">
+          <div style="text-align:center;font-size:9px;color:var(--tm);">No obs. (&lt;2)</div>
+          <div style="text-align:center;font-size:9px;color:var(--tm);">En des. (2–3)</div>
+          <div style="text-align:center;font-size:9px;color:var(--tm);">Consolidado (&gt;3)</div>
+        </div>
+        <div style="text-align:center;font-size:10px;font-weight:700;color:#1a5276;margin-top:6px;letter-spacing:1px;">LIDERAZGO →</div>
+      </div>
+    </div>
+    <div id="nb9liderLey" style="margin-top:14px;display:flex;gap:14px;flex-wrap:wrap;"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     REPORTES PDF
+═══════════════════════════════════════════ -->
+<div class="sec" id="s-reportes">
+  <div class="card">
+    <div class="ct"><i class="ti ti-file-type-pdf"></i>Generador de Reportes PDF — COD EPEC S.A.U.</div>
+    <div class="sub">Seleccioná el tipo de reporte y generá un PDF institucional listo para compartir o archivar.</div>
+    <div class="g3" style="margin-bottom:14px;">
+      <div class="fg">
+        <label>Tipo de reporte</label>
+        <select id="pdfTipo">
+          <option value="general">Reporte general del equipo</option>
+          <option value="rol">Reporte por rol</option>
+          <option value="inst">Reporte por instancia</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Filtro de rol</label>
+        <select id="pdfRol">
+          <option value="all">Todos los roles</option>
+          <option value="JCOD">Jefe COD</option>
+          <option value="SCOD">SubJefe COD</option>
+          <option value="JTMT">Jefe de Turno MT</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Filtro de instancia</label>
+        <select id="pdfInst">
+          <option value="all">Todas las instancias</option>
+          <option value="diagnostico">Diagnóstico</option>
+          <option value="seguimiento">Seguimiento</option>
+          <option value="certificacion">Certificación</option>
+        </select>
+      </div>
+    </div>
+    <div class="acts">
+      <button class="bp" onclick="buildPdfPreview()"><i class="ti ti-eye"></i>Vista previa</button>
+      <button class="bpdf" onclick="exportPDF()"><i class="ti ti-download"></i>Exportar PDF</button>
+    </div>
+  </div>
+
+  <div id="pdfPreviewWrap" style="display:none;">
+    <div class="pdf-preview" id="pdfContent">
+
+      <!-- Encabezado -->
+      <div class="pdf-header">
+        <div class="pdf-logo">EPEC<br>COD</div>
+        <div>
+          <div class="pdf-title" id="pdfMainTitle">Reporte de Competencias — COD</div>
+          <div class="pdf-sub" id="pdfSubTitle">EPEC S.A.U. · Córdoba</div>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="g4" id="pdfKpis" style="margin-bottom:16px;"></div>
+
+      <!-- Gráficos -->
+      <div class="pdf-section">Análisis gráfico</div>
+      <div class="pdf-charts">
+        <div class="pdf-chart-box">
+          <div class="pdf-chart-title">Radar — Expertiz Técnica</div>
+          <div style="position:relative;height:200px;"><canvas id="pdfRadarTec"></canvas></div>
+        </div>
+        <div class="pdf-chart-box">
+          <div class="pdf-chart-title">Radar — Liderazgo Operativo</div>
+          <div style="position:relative;height:200px;"><canvas id="pdfRadarLider"></canvas></div>
+        </div>
+      </div>
+      <div class="pdf-chart-box" style="margin-bottom:16px;">
+        <div class="pdf-chart-title">Brechas de Liderazgo — nivel alcanzado vs. requerido (4)</div>
+        <div style="position:relative;height:160px;"><canvas id="pdfBarBrecha"></canvas></div>
+      </div>
+
+      <!-- Nine Box técnico -->
+      <div class="pdf-section">Nine Box — Potencial × Desempeño Técnico</div>
+      <div style="display:flex;gap:6px;margin-bottom:16px;">
+        <div style="display:flex;flex-direction:column;justify-content:space-between;padding:4px 0;min-width:16px;">
+          <div style="font-size:8px;font-weight:700;color:var(--gd);text-align:center;">Alto</div>
+          <div style="font-size:8px;font-weight:700;color:var(--gd);text-align:center;">Med.</div>
+          <div style="font-size:8px;font-weight:700;color:var(--gd);text-align:center;">Bajo</div>
+        </div>
+        <div style="flex:1;">
+          <div class="nb9" id="pdfNb9Tec" style="gap:3px;"></div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:4px;">
+            <div style="text-align:center;font-size:8px;color:var(--tm);">Inicial</div>
+            <div style="text-align:center;font-size:8px;color:var(--tm);">Básico</div>
+            <div style="text-align:center;font-size:8px;color:var(--tm);">Competente</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabla detalle -->
+      <div class="pdf-section">Detalle de evaluaciones individuales</div>
+      <div style="overflow-x:auto;" id="pdfTableWrap"></div>
+
+      <!-- Evaluaciones de equipo -->
+      <div class="pdf-section" style="margin-top:16px;">Evaluaciones de equipo</div>
+      <div id="pdfEqWrap"></div>
+
+      <div class="pdf-footer" id="pdfFooter"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /cnt -->
+<div class="notif" id="notif"></div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  FIREBASE
+// ════════════════════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey:            "AIzaSyBvE7RSYKS4gmwcq48FttdR55fIjcj9dbU",
+  authDomain:        "epec---capacitaciones.firebaseapp.com",
+  databaseURL:       "https://epec---capacitaciones-default-rtdb.firebaseio.com",
+  projectId:         "epec---capacitaciones",
+  storageBucket:     "epec---capacitaciones.firebasestorage.app",
+  messagingSenderId: "990909328558",
+  appId:             "1:990909328558:web:ead9e4118a814e0d20513f"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const refInd = db.ref('cod_individual');
+const refEq  = db.ref('cod_equipo');
+
+// Contador de usuarios
+const myConn = db.ref('cod_connected/'+Date.now());
+myConn.set(true); myConn.onDisconnect().remove();
+db.ref('cod_connected').on('value', snap => {
+  const n = snap.numChildren();
+  const el = document.getElementById('usrCount');
+  if(el) el.textContent = n+' usuario'+(n!==1?'s':'')+' conectado'+(n!==1?'s':'');
+});
+
+// ════════════════════════════════════════════════════════════
+//  DATOS ESTRUCTURALES
+// ════════════════════════════════════════════════════════════
+
+// Procesos técnicos por rol
+const PROCS_TEC = {
+  JCOD:[
+    {id:'P-JCOD-01', n:'Gestión Marco Legal y Normativo', shyma:false},
+    {id:'P-JCOD-02', n:'Configuración MT/BT', shyma:false},
+    {id:'P-JCOD-03', n:'Gestión de Contratistas', shyma:false},
+    {id:'P-JCOD-04', n:'Gestión Presupuestaria', shyma:false},
+    {id:'P-JCOD-05', n:'Reporte de Gestión a Jefatura', shyma:false},
+  ],
+  SCOD:[
+    {id:'P-SCOD-01', n:'Gestión de Comunicaciones Operativas', shyma:false},
+    {id:'P-SCOD-02', n:'Gestión de Documentación Técnica', shyma:false},
+    {id:'P-SCOD-03', n:'Supervisión del Equipo Operativo', shyma:false},
+  ],
+  JTMT:[
+    {id:'P-JTMT-01', n:'Conducción Operativa del Turno MT', shyma:false},
+    {id:'P-JTMT-02', n:'Gestión de Maniobras y Restablecimiento', shyma:false},
+    {id:'P-JTMT-03', n:'Supervisión SHyMA en turno', shyma:true},
+  ],
+};
+// Procesos compartidos DUP (incluyendo SHyMA y expertiz)
+const PROCS_DUP = [
+  {id:'P-DUP-01', n:'Planes de mantenimiento MT/CRD', shyma:false},
+  {id:'P-DUP-02', n:'Relevamiento de redes y aparamenta', shyma:false},
+  {id:'P-DUP-03', n:'Reclamos técnicos emergentes', shyma:false},
+  {id:'P-DUP-04', n:'Coordinación COD-CTZ-Teleoperación', shyma:false},
+  {id:'P-DUP-05', n:'Provisión de equipos, EPP y herramientas', shyma:false},
+  {id:'P-DUP-06', n:'Provisión de insumos y materiales', shyma:false},
+  {id:'P-DUP-07', n:'Maniobras programadas', shyma:false},
+  {id:'P-DUP-08', n:'Comités Técnicos y de Contingencias', shyma:false},
+  {id:'P-DUP-09', n:'Capacitación del personal', shyma:false},
+  {id:'P-DUP-10', n:'Cumplimiento SHyMA', shyma:true},
+  {id:'P-DUP-11', n:'Procedimientos operativos', shyma:false},
+  {id:'P-DUP-12', n:'Presupuesto anual del COD', shyma:false},
+  {id:'P-DUP-13', n:'Indicadores de control y mejora', shyma:false},
+  {id:'P-DUP-14', n:'Reporte de Gestión O&M', shyma:false},
+  {id:'P-DUP-15', n:'Gestión administrativa de RRHH', shyma:false},
+  {id:'P-TEC-01', n:'Expertiz técnica en red MT/BT', shyma:false},
+  {id:'P-TEC-02', n:'Gestión de la seguridad operacional (SHyMA)', shyma:true},
+];
+
+// Competencias de liderazgo
+const COMPS_LIDER = [
+  {id:'L1', nombre:'Habilidad y agilidad para alcanzar resultados',
+   desc:'Capacidad para orientar las acciones al logro de objetivos operativos, priorizando tareas y manteniendo el foco bajo presión.'},
+  {id:'L2', nombre:'Gestión del cambio e incertidumbre operativa',
+   desc:'Capacidad para adaptarse a situaciones nuevas, gestionar contingencias y mantener la calma del equipo ante escenarios inciertos.'},
+  {id:'L3', nombre:'Comunicación y coordinación operativa',
+   desc:'Transmite información con claridad, escucha activamente y coordina acciones entre áreas con efectividad.'},
+  {id:'L4', nombre:'Comunicación asertiva',
+   desc:'Expresa ideas, límites y necesidades de forma directa, respetuosa y constructiva en situaciones de tensión o conflicto operativo.'},
+  {id:'L5', nombre:'Desarrollo de personas y conducción de equipos',
+   desc:'Lidera, motiva y desarrolla al equipo operativo. Delega adecuadamente y genera un clima de trabajo colaborativo y de alto rendimiento.'},
+  {id:'L6', nombre:'Feedback',
+   desc:'Brinda retroalimentación oportuna, específica y orientada al desarrollo. Reconoce logros y aborda desvíos con enfoque constructivo.'},
+  {id:'L7', nombre:'Escucha activa',
+   desc:'Presta atención genuina a lo que dice el equipo, valida las ideas recibidas y genera espacios de diálogo antes de decidir.'},
+];
+
+const ROLE_N = {JCOD:'Jefe COD', SCOD:'SubJefe COD', JTMT:'Jefe Turno MT'};
+const ROLE_C = {JCOD:'#1e40af', SCOD:'#92400e', JTMT:'#065f46'};
+const INST_N  = {diagnostico:'Diagnóstico', seguimiento:'Seguimiento', certificacion:'Certificación', cierre:'Cierre'};
+
+// ════════════════════════════════════════════════════════════
+//  ESTADO
+// ════════════════════════════════════════════════════════════
+let DATA_IND = [];
+let DATA_EQ  = [];
+let scoreTec = {};    // {procId: valor}
+let scoreLider = {};  // {compId: valor}
+let scoreEq = {};     // {compId: valor}
+let pfiltro = 'individual';
+let cBarTec, cRadarDash, cRadarTec, cRadarLider, cBrecha, cTendTec, cTendLider;
+
+// ════════════════════════════════════════════════════════════
+//  FIREBASE LISTENERS
+// ════════════════════════════════════════════════════════════
+refInd.on('value', snap => {
+  DATA_IND = [];
+  if(snap.exists()) snap.forEach(c => DATA_IND.push({...c.val(), fbKey:c.key, tipo:'individual'}));
+  refresh();
+});
+refEq.on('value', snap => {
+  DATA_EQ = [];
+  if(snap.exists()) snap.forEach(c => DATA_EQ.push({...c.val(), fbKey:c.key, tipo:'equipo'}));
+  refresh();
+});
+
+// ════════════════════════════════════════════════════════════
+//  NAVEGACIÓN
+// ════════════════════════════════════════════════════════════
+function go(id){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.nt').forEach(b=>b.classList.remove('on'));
+  document.getElementById('s-'+id).classList.add('on');
+  document.querySelectorAll('.nt').forEach(b=>{
+    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'")) b.classList.add('on');
+  });
+  if(id==='dash') renderDash();
+  if(id==='radar'){renderRadarTec();renderRadarLider();renderBrecha();}
+  if(id==='ninebox'){renderNineBox();}
+  if(id==='planillas'){initPlanillas();}
+  if(id==='tendencia'){renderTendTec();renderTendLider();renderAlertas();}
+  if(id==='personas') renderPersonas(pfiltro);
+}
+
+// ════════════════════════════════════════════════════════════
+//  HELPERS
+// ════════════════════════════════════════════════════════════
+function scColor(v){if(!v||isNaN(v))return'var(--tm)';if(v>=3.5)return'#218570';if(v>=3)return'#2BA888';if(v>=2)return'#f39c12';return'#c02133';}
+function scClass(v){if(!v||isNaN(v))return'cell-0';if(v>=3.5)return'cell-4';if(v>=3)return'cell-3';if(v>=2)return'cell-2';return'cell-1';}
+function avg(arr){const f=arr.filter(v=>v&&!isNaN(v));return f.length?+(f.reduce((a,b)=>a+b,0)/f.length).toFixed(1):null;}
+function notif(msg){const n=document.getElementById('notif');n.textContent=msg;n.style.display='block';setTimeout(()=>n.style.display='none',3200);}
+function estTec(v,shy){if(shy)return{t:'⛔ No habilitado (SHyMA)',c:'#c02133'};if(!v)return{t:'—',c:'var(--tm)'};if(v>=3.5)return{t:'✅ Destacado — Apto',c:'#218570'};if(v>=3)return{t:'✅ Competente — Apto',c:'#218570'};if(v>=2)return{t:'🔄 Básico Supervisado',c:'#f39c12'};return{t:'⚠ Inicial — Requiere plan',c:'#c02133'};}
+function estLider(v){if(!v)return{t:'—',c:'var(--tm)'};if(v>=3.5)return{t:'✅ Referente',c:'#218570'};if(v>=3)return{t:'✅ Consolidado',c:'#218570'};if(v>=2)return{t:'🔄 En desarrollo',c:'#f39c12'};return{t:'⚠ No observable',c:'#c02133'};}
+function refresh(){
+  renderDash();
+  if(document.getElementById('s-personas').classList.contains('on')) renderPersonas(pfiltro);
+  if(document.getElementById('s-radar').classList.contains('on')){renderRadarTec();renderRadarLider();renderBrecha();}
+  if(document.getElementById('s-tendencia').classList.contains('on')){renderTendTec();renderTendLider();renderAlertas();}
+}
+
+// ════════════════════════════════════════════════════════════
+//  BUILD MATRICES INDIVIDUALES
+// ════════════════════════════════════════════════════════════
+function onRolChange(){
+  const rol = document.getElementById('i-rol').value;
+  if(!rol){ document.getElementById('matricesWrap').style.display='none'; return; }
+  document.getElementById('matricesWrap').style.display='block';
+  scoreTec={}; scoreLider={};
+  buildMatrizTec(rol);
+  buildMatrizLider();
+}
+
+function buildMatrizTec(rol){
+  const propsRol = PROCS_TEC[rol] || [];
+  const todos = [...propsRol, ...PROCS_DUP];
+  let h = '<thead><tr><th class="proc-h">Proceso</th><th style="width:140px;text-align:center">Nivel de dominio</th><th style="width:70px">Prom.</th></tr></thead><tbody>';
+  // Procesos del rol
+  if(propsRol.length){
+    h += `<tr><td colspan="3" style="background:#f0faf6;font-size:10px;font-weight:700;color:var(--gd);padding:8px 10px;text-transform:uppercase;letter-spacing:.5px;">Procesos exclusivos del rol — ${ROLE_N[rol]}</td></tr>`;
+    propsRol.forEach(p=>{
+      h += fila(p, false);
+    });
+  }
+  // Procesos compartidos
+  h += `<tr><td colspan="3" style="background:#f0faf6;font-size:10px;font-weight:700;color:#1a5276;padding:8px 10px;text-transform:uppercase;letter-spacing:.5px;">Procesos compartidos (P-DUP) + Expertiz Técnica y Seguridad</td></tr>`;
+  PROCS_DUP.forEach(p=>{
+    h += fila(p, true);
+  });
+  // Fila de promedio total
+  h += `<tr style="background:var(--bg)"><td class="pn" style="font-weight:700;color:var(--gd)">PROMEDIO TÉCNICO TOTAL</td><td></td><td class="avg-cell" id="tec-avg-total">—</td></tr>`;
+  h += '</tbody>';
+  document.getElementById('matrizTecTbl').innerHTML = h;
+  calcTec();
+}
+
+function fila(p, isDup){
+  const shymaStyle = p.shyma ? 'border-left:3px solid #c02133;' : (isDup?'border-left:3px solid #2BA888;':'');
+  return `<tr>
+    <td class="pn" style="${shymaStyle}">
+      <span class="pc">${p.id}${p.shyma?' ⚡':''}</span>${p.n}
+    </td>
+    <td>
+      <div class="score-sel">
+        ${[1,2,3,4].map(v=>`<button class="ss" id="tec-${p.id}-${v}" onclick="setTec('${p.id}',${v})">${v}</button>`).join('')}
+      </div>
+    </td>
+    <td class="avg-cell" id="tec-avg-${p.id}">—</td>
+  </tr>`;
+}
+
+function setTec(pid, val){
+  scoreTec[pid] = val;
+  [1,2,3,4].forEach(v=>{
+    const b = document.getElementById(`tec-${pid}-${v}`);
+    if(b) b.className = 'ss'+(v===val?' s'+v:'');
+  });
+  calcTec();
+}
+
+function calcTec(){
+  const rol = document.getElementById('i-rol').value;
+  const todos = [...(PROCS_TEC[rol]||[]), ...PROCS_DUP];
+  todos.forEach(p=>{
+    const el = document.getElementById('tec-avg-'+p.id);
+    const v = scoreTec[p.id];
+    if(el){ el.textContent = v||'—'; el.style.color = scColor(v); }
+  });
+  const vals = Object.values(scoreTec).filter(v=>v);
+  const tot = vals.length ? +(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : null;
+  const el = document.getElementById('tec-avg-total');
+  if(el){ el.textContent = tot||'—'; el.style.color = scColor(tot); }
+
+  // SHyMA check
+  const shyBad = todos.filter(p=>p.shyma).some(p=>scoreTec[p.id]===1);
+  document.getElementById('shyAlerta').style.display = shyBad?'block':'none';
+
+  document.getElementById('tNum').textContent = tot||'—';
+  document.getElementById('tPct').textContent = tot ? Math.round((tot/4)*100)+'%' : '—';
+  const est = estTec(tot, shyBad);
+  const re = document.getElementById('tEst');
+  re.textContent = est.t; re.style.color = est.c;
+}
+
+function buildMatrizLider(){
+  const grid = document.getElementById('liderGrid');
+  grid.innerHTML = COMPS_LIDER.map(c=>`
+    <div class="lider-comp" id="lc-${c.id}">
+      <div class="lc-name">${c.nombre}</div>
+      <div class="lc-desc">${c.desc}</div>
+      <div class="lc-btns">
+        ${[1,2,3,4].map(v=>`
+          <button class="lb" id="lb-${c.id}-${v}" onclick="setLider('${c.id}',${v})">
+            <span class="ln">${v}</span>
+            <span class="ll">${['No obs.','En des.','Consol.','Referente'][v-1]}</span>
+          </button>`).join('')}
+      </div>
+    </div>`).join('');
+  calcLider();
+}
+
+function setLider(cid, val){
+  scoreLider[cid] = val;
+  [1,2,3,4].forEach(v=>{
+    const b = document.getElementById(`lb-${cid}-${v}`);
+    if(b) b.className = 'lb'+(v===val?' sel-'+v:'');
+  });
+  calcLider();
+}
+
+function calcLider(){
+  const vals = Object.values(scoreLider).filter(v=>v);
+  const tot = vals.length ? +(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : null;
+  document.getElementById('lNum').textContent = tot||'—';
+  document.getElementById('lPct').textContent = tot ? Math.round((tot/4)*100)+'%' : '—';
+  const est = estLider(tot);
+  const re = document.getElementById('lEst');
+  re.textContent = est.t; re.style.color = est.c;
+}
+
+// ════════════════════════════════════════════════════════════
+//  GUARDAR INDIVIDUAL
+// ════════════════════════════════════════════════════════════
+function guardarIndividual(){
+  const nom   = document.getElementById('i-nom').value.trim();
+  const rol   = document.getElementById('i-rol').value;
+  const eval_ = document.getElementById('i-eval').value.trim();
+  const inst  = document.getElementById('i-inst').value;
+  const fecha = document.getElementById('i-fecha').value || new Date().toISOString().split('T')[0];
+  const msg   = document.getElementById('form-msg');
+
+  if(!nom||!rol){ msg.style.color='var(--r)'; msg.textContent='⚠ Completá nombre y rol.'; return; }
+
+  const vTec = Object.values(scoreTec).filter(v=>v);
+  const avgTec = vTec.length ? +(vTec.reduce((a,b)=>a+b,0)/vTec.length).toFixed(2) : 0;
+  const vLid = Object.values(scoreLider).filter(v=>v);
+  const avgLid = vLid.length ? +(vLid.reduce((a,b)=>a+b,0)/vLid.length).toFixed(2) : 0;
+
+  const todos = [...(PROCS_TEC[rol]||[]), ...PROCS_DUP];
+  const shyBad = todos.filter(p=>p.shyma).some(p=>scoreTec[p.id]===1);
+
+  let estadoTec;
+  if(shyBad) estadoTec='shyma';
+  else if(avgTec>=3.5) estadoTec='avanzado';
+  else if(avgTec>=3)   estadoTec='competente';
+  else if(avgTec>=2)   estadoTec='basico';
+  else estadoTec='inicial';
+
+  let estadoLid;
+  if(avgLid>=3.5) estadoLid='referente';
+  else if(avgLid>=3) estadoLid='consolidado';
+  else if(avgLid>=2) estadoLid='en_desarrollo';
+  else estadoLid='no_observable';
+
+  const rec = {
+    nom, rol, eval:eval_, inst, fecha,
+    scoreTec:{...scoreTec}, avgTec,
+    scoreLider:{...scoreLider}, avgLid,
+    estadoTec, estadoLid, shyBad,
+    ts: Date.now()
+  };
+
+  refInd.push(rec)
+    .then(()=>{
+      msg.style.color='var(--g)';
+      msg.textContent='✅ Evaluación de '+nom+' guardada correctamente.';
+      notif('✅ Evaluación de '+nom+' guardada en Firebase');
+      limpiarIndividual();
+      setTimeout(()=>msg.textContent='',4000);
+    })
+    .catch(e=>{ msg.style.color='var(--r)'; msg.textContent='⚠ Error: '+e.message; });
+}
+
+function limpiarIndividual(){
+  document.getElementById('i-nom').value='';
+  document.getElementById('i-rol').value='';
+  document.getElementById('i-eval').value='';
+  document.getElementById('matricesWrap').style.display='none';
+  scoreTec={}; scoreLider={};
+}
+
+// ════════════════════════════════════════════════════════════
+//  EVALUACIÓN DE EQUIPO
+// ════════════════════════════════════════════════════════════
+function buildEquipoGrid(){
+  const grid = document.getElementById('equipoGrid');
+  grid.innerHTML = COMPS_LIDER.map(c=>`
+    <div class="equipo-comp">
+      <div class="eq-header">
+        <div>
+          <div class="eq-name">${c.nombre}</div>
+          <div class="eq-desc">${c.desc}</div>
+        </div>
+      </div>
+      <div class="eq-btns">
+        ${[1,2,3,4].map(v=>`
+          <button class="eqb" id="eqb-${c.id}-${v}" onclick="setEq('${c.id}',${v})">
+            <span class="en">${v}</span>
+            <span class="el">${['No observable','En desarrollo','Consolidado','Referente colectivo'][v-1]}</span>
+          </button>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function setEq(cid, val){
+  scoreEq[cid] = val;
+  [1,2,3,4].forEach(v=>{
+    const b = document.getElementById(`eqb-${cid}-${v}`);
+    if(b) b.className = 'eqb'+(v===val?' sel-'+v:'');
+  });
+  calcEq();
+}
+
+function calcEq(){
+  const vals = Object.values(scoreEq).filter(v=>v);
+  const tot = vals.length ? +(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : null;
+  document.getElementById('eqNum').textContent = tot||'—';
+  document.getElementById('eqPct').textContent = tot ? Math.round((tot/4)*100)+'%' : '—';
+  const est = estLider(tot);
+  const re = document.getElementById('eqEst');
+  re.textContent = est.t; re.style.color = est.c;
+}
+
+function guardarEquipo(){
+  const eval_ = document.getElementById('eq-eval').value.trim();
+  const inst  = document.getElementById('eq-inst').value;
+  const fecha = document.getElementById('eq-fecha').value || new Date().toISOString().split('T')[0];
+  const obs   = document.getElementById('eq-obs').value.trim();
+  const msg   = document.getElementById('eq-msg');
+
+  const vals = Object.values(scoreEq).filter(v=>v);
+  if(!vals.length){ msg.style.color='var(--r)'; msg.textContent='⚠ Completá al menos una competencia.'; return; }
+
+  const avgEq = +(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2);
+  let estadoEq;
+  if(avgEq>=3.5) estadoEq='referente';
+  else if(avgEq>=3) estadoEq='consolidado';
+  else if(avgEq>=2) estadoEq='en_desarrollo';
+  else estadoEq='no_observable';
+
+  const rec = {eval:eval_, inst, fecha, obs, scoreEq:{...scoreEq}, avgEq, estadoEq, ts:Date.now()};
+  refEq.push(rec)
+    .then(()=>{
+      msg.style.color='var(--g)'; msg.textContent='✅ Evaluación de equipo guardada.';
+      notif('✅ Evaluación de equipo guardada en Firebase');
+      limpiarEquipo();
+      setTimeout(()=>msg.textContent='',4000);
+    })
+    .catch(e=>{ msg.style.color='var(--r)'; msg.textContent='⚠ Error: '+e.message; });
+}
+
+function limpiarEquipo(){
+  document.getElementById('eq-eval').value='';
+  document.getElementById('eq-obs').value='';
+  scoreEq={};
+  buildEquipoGrid();
+}
+
+// ════════════════════════════════════════════════════════════
+//  DASHBOARD
+// ════════════════════════════════════════════════════════════
+function renderDash(){
+  // Role cards
+  let rh='';
+  ['JCOD','SCOD','JTMT'].forEach(r=>{
+    const d=DATA_IND.filter(x=>x.rol===r);
+    const av=d.length?+(d.reduce((a,b)=>a+(b.avgTec||0),0)/d.length).toFixed(1):0;
+    const avL=d.length?+(d.reduce((a,b)=>a+(b.avgLid||0),0)/d.length).toFixed(1):0;
+    const rc=r==='JCOD'?'rc-j':r==='SCOD'?'rc-s':'rc-t';
+    rh+=`<div class="rcard ${rc}">
+      <div style="font-size:9px;font-weight:600;color:var(--tm);margin-bottom:3px;">${ROLE_N[r]}</div>
+      <div class="rcn">${av||'—'}</div>
+      <div class="rcl">Técnico · ${d.length} evaluaciones</div>
+      <div style="font-size:11px;font-weight:600;color:${scColor(avL)};margin-top:4px;">Liderazgo: ${avL||'—'}/4</div>
+    </div>`;
+  });
+  document.getElementById('rolCards').innerHTML=rh;
+
+  // Stats
+  const apt=DATA_IND.filter(d=>d.estadoTec==='avanzado'||d.estadoTec==='competente').length;
+  const dev=DATA_IND.filter(d=>d.estadoTec==='basico').length;
+  const mal=DATA_IND.filter(d=>d.estadoTec==='inicial'||d.estadoTec==='shyma').length;
+  document.getElementById('stats4').innerHTML=`
+    <div class="sc"><div class="sn">${DATA_IND.length}</div><div class="sl">Evaluaciones individuales</div></div>
+    <div class="sc"><div class="sn" style="color:#218570">${apt}</div><div class="sl">Aptos técnicos</div></div>
+    <div class="sc"><div class="sn" style="color:#f39c12">${dev}</div><div class="sl">Básico supervisado</div></div>
+    <div class="sc"><div class="sn" style="color:#c02133">${mal+DATA_EQ.length}</div><div class="sl">Inicial / Eval. equipo</div></div>`;
+
+  // Chart técnico — promedio por proceso (todos los roles)
+  const todosProcs = [...PROCS_DUP];
+  const avgPorProc = todosProcs.slice(0,8).map(p=>{
+    const vals=DATA_IND.map(d=>d.scoreTec?.[p.id]).filter(v=>v);
+    return vals.length?+(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):0;
+  });
+  if(cBarTec)cBarTec.destroy();
+  cBarTec=new Chart(document.getElementById('cBarTec').getContext('2d'),{type:'bar',data:{
+    labels:todosProcs.slice(0,8).map(p=>p.id),
+    datasets:[{data:avgPorProc,backgroundColor:avgPorProc.map(v=>v>=3.5?'#218570':v>=3?'#2BA888':v>=2?'#f39c12':'#c02133'),borderRadius:5}]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:4,ticks:{stepSize:1}},x:{ticks:{font:{size:9}}}}}});
+
+  // Radar liderazgo en dashboard
+  const avgLComp=COMPS_LIDER.map(c=>{
+    const vals=DATA_IND.map(d=>d.scoreLider?.[c.id]).filter(v=>v);
+    return vals.length?+(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):0;
+  });
+  if(cRadarDash)cRadarDash.destroy();
+  cRadarDash=new Chart(document.getElementById('cRadarDash').getContext('2d'),{type:'radar',data:{
+    labels:COMPS_LIDER.map(c=>c.nombre.split(' ').slice(0,2).join(' ')),
+    datasets:[
+      {label:'Requerido',data:COMPS_LIDER.map(()=>4),borderColor:'#218570',backgroundColor:'rgba(33,133,112,.1)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#218570'},
+      {label:'Equipo',data:avgLComp,borderColor:'#c02133',backgroundColor:'rgba(192,33,51,.12)',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#c02133'}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:8}},pointLabels:{font:{size:9}}}},plugins:{legend:{display:false}}}});
+
+  // Top evaluaciones
+  const sorted=[...DATA_IND].sort((a,b)=>((b.avgTec||0)+(b.avgLid||0))-((a.avgTec||0)+(a.avgLid||0))).slice(0,5);
+  const rc2={JCOD:'bj',SCOD:'bs',JTMT:'bt'};
+  let th='<table class="pt"><thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Fecha</th><th>Técnico</th><th>Liderazgo</th><th>Estado</th></tr></thead><tbody>';
+  if(!sorted.length) th+='<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--tm)">Sin evaluaciones aún</td></tr>';
+  sorted.forEach(d=>{
+    const cT=scColor(d.avgTec); const cL=scColor(d.avgLid);
+    th+=`<tr><td><strong>${d.nom}</strong></td><td><span class="badge ${rc2[d.rol]}">${d.rol}</span></td><td>${INST_N[d.inst]||d.inst}</td><td>${d.fecha}</td>
+    <td style="color:${cT};font-weight:600">${(d.avgTec||0).toFixed(1)}/4</td>
+    <td style="color:${cL};font-weight:600">${(d.avgLid||0).toFixed(1)}/4</td>
+    <td style="font-size:10px;color:${cT}">${(d.estadoTec||'').replace('_',' ')}</td></tr>`;
+  });
+  document.getElementById('topTbl').innerHTML=th+'</tbody></table>';
+}
+
+// ════════════════════════════════════════════════════════════
+//  HISTORIAL
+// ════════════════════════════════════════════════════════════
+function filP(tipo,btn){
+  document.querySelectorAll('#s-personas .rtab').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  pfiltro=tipo; renderPersonas(tipo);
+}
+function renderPersonas(tipo){
+  const rc={JCOD:'bj',SCOD:'bs',JTMT:'bt'};
+  let h='';
+  if(tipo==='individual'){
+    h='<thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Evaluador</th><th>Fecha</th><th>Técnico</th><th>Liderazgo</th><th>Estado Tec.</th><th></th></tr></thead><tbody>';
+    if(!DATA_IND.length) h+='<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--tm)">Sin registros</td></tr>';
+    [...DATA_IND].sort((a,b)=>new Date(b.fecha)-new Date(a.fecha)).forEach(d=>{
+      const cT=scColor(d.avgTec); const cL=scColor(d.avgLid);
+      const est=d.shyBad?'⛔ SHyMA':d.estadoTec==='avanzado'?'✅ Avanzado':d.estadoTec==='competente'?'✅ Competente':d.estadoTec==='basico'?'🔄 Básico':'⚠ Inicial';
+      h+=`<tr><td><strong>${d.nom}</strong></td><td><span class="badge ${rc[d.rol]}">${d.rol}</span></td><td>${INST_N[d.inst]||d.inst}</td><td>${d.eval||'—'}</td><td>${d.fecha}</td>
+      <td style="color:${cT};font-weight:600">${(d.avgTec||0).toFixed(1)}/4</td>
+      <td style="color:${cL};font-weight:600">${(d.avgLid||0).toFixed(1)}/4</td>
+      <td style="font-size:10px;color:${cT}">${est}</td>
+      <td><button class="bdel" onclick="delInd('${d.fbKey}')"><i class="ti ti-trash"></i></button></td></tr>`;
+    });
+  } else {
+    h='<thead><tr><th>Evaluador</th><th>Instancia</th><th>Fecha</th><th>Promedio Equipo</th><th>Estado</th><th>Observaciones</th><th></th></tr></thead><tbody>';
+    if(!DATA_EQ.length) h+='<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--tm)">Sin evaluaciones de equipo</td></tr>';
+    [...DATA_EQ].sort((a,b)=>new Date(b.fecha)-new Date(a.fecha)).forEach(d=>{
+      const c=scColor(d.avgEq);
+      const est=d.estadoEq==='referente'?'✅ Referente':d.estadoEq==='consolidado'?'✅ Consolidado':d.estadoEq==='en_desarrollo'?'🔄 En desarrollo':'⚠ No observable';
+      h+=`<tr><td>${d.eval||'—'}</td><td>${INST_N[d.inst]||d.inst}</td><td>${d.fecha}</td>
+      <td style="color:${c};font-weight:600">${(d.avgEq||0).toFixed(1)}/4</td>
+      <td style="color:${c};font-size:10px">${est}</td>
+      <td style="font-size:11px;color:var(--tm)">${d.obs||'—'}</td>
+      <td><button class="bdel" onclick="delEq('${d.fbKey}')"><i class="ti ti-trash"></i></button></td></tr>`;
+    });
+  }
+  document.getElementById('pTbl').innerHTML=h+'</tbody>';
+}
+function delInd(key){if(!confirm('¿Eliminar esta evaluación?'))return;refInd.child(key).remove().then(()=>notif('Evaluación eliminada'));}
+function delEq(key){if(!confirm('¿Eliminar esta evaluación de equipo?'))return;refEq.child(key).remove().then(()=>notif('Evaluación de equipo eliminada'));}
+
+// ════════════════════════════════════════════════════════════
+//  RADAR
+// ════════════════════════════════════════════════════════════
+function renderRadarTec(){
+  const rol=document.getElementById('rRolTec').value;
+  const evals=DATA_IND.filter(d=>d.rol===rol);
+  const todos=[...(PROCS_TEC[rol]||[]),...PROCS_DUP].slice(0,8);
+  const vals=todos.map(p=>{const v=evals.map(d=>d.scoreTec?.[p.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
+  if(cRadarTec)cRadarTec.destroy();
+  cRadarTec=new Chart(document.getElementById('cRadarTec').getContext('2d'),{type:'radar',data:{
+    labels:todos.map(p=>p.id),
+    datasets:[
+      {label:'Requerido',data:todos.map(()=>4),borderColor:'#218570',backgroundColor:'rgba(33,133,112,.1)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#218570'},
+      {label:'Real',data:vals,borderColor:'#c02133',backgroundColor:'rgba(192,33,51,.12)',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#c02133'}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:8}},pointLabels:{font:{size:9}}}},plugins:{legend:{display:false}}}});
+}
+
+function renderRadarLider(){
+  const modo=document.getElementById('rModLider').value;
+  let avgL;
+  if(modo==='equipo'){
+    avgL=COMPS_LIDER.map(c=>{const v=DATA_EQ.map(d=>d.scoreEq?.[c.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
+  } else {
+    avgL=COMPS_LIDER.map(c=>{const v=DATA_IND.map(d=>d.scoreLider?.[c.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
+  }
+  if(cRadarLider)cRadarLider.destroy();
+  cRadarLider=new Chart(document.getElementById('cRadarLider').getContext('2d'),{type:'radar',data:{
+    labels:COMPS_LIDER.map(c=>c.nombre.split(' ').slice(0,2).join(' ')),
+    datasets:[
+      {label:'Requerido',data:COMPS_LIDER.map(()=>4),borderColor:'#218570',backgroundColor:'rgba(33,133,112,.1)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#218570'},
+      {label:modo==='equipo'?'Equipo':'Individual',data:avgL,borderColor:'#1a5276',backgroundColor:'rgba(26,82,118,.12)',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#1a5276'}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:8}},pointLabels:{font:{size:9}}}},plugins:{legend:{display:false}}}});
+}
+
+function renderBrecha(){
+  const avgL=COMPS_LIDER.map(c=>{const v=DATA_IND.map(d=>d.scoreLider?.[c.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
+  const brechas=avgL.map(v=>+(4-v).toFixed(1));
+  if(cBrecha)cBrecha.destroy();
+  cBrecha=new Chart(document.getElementById('cBrecha').getContext('2d'),{type:'bar',data:{
+    labels:COMPS_LIDER.map(c=>c.nombre.split(' ').slice(0,3).join(' ')),
+    datasets:[
+      {label:'Nivel alcanzado',data:avgL,backgroundColor:'#218570',borderRadius:4},
+      {label:'Brecha',data:brechas,backgroundColor:'rgba(192,33,51,.3)',borderRadius:4}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:9},boxWidth:9}}},scales:{x:{stacked:true,ticks:{font:{size:9},maxRotation:30}},y:{stacked:true,min:0,max:4}}}});
+}
+
+// ════════════════════════════════════════════════════════════
+//  TENDENCIA
+// ════════════════════════════════════════════════════════════
+function renderTendTec(){
+  const rFil=document.getElementById('tRolTec').value;
+  const roles=rFil==='all'?['JCOD','SCOD','JTMT']:[rFil];
+  const insts=['diagnostico','seguimiento','certificacion'];
+  const ds=roles.map(r=>({
+    label:ROLE_N[r],
+    data:insts.map(i=>{const ev=DATA_IND.filter(d=>d.rol===r&&d.inst===i);return ev.length?+(ev.reduce((a,b)=>a+(b.avgTec||0),0)/ev.length).toFixed(1):null;}),
+    borderColor:ROLE_C[r],backgroundColor:ROLE_C[r]+'22',borderWidth:2.5,pointRadius:5,pointBackgroundColor:ROLE_C[r],fill:true,tension:.35,spanGaps:true
+  }));
+  if(cTendTec)cTendTec.destroy();
+  cTendTec=new Chart(document.getElementById('cTendTec').getContext('2d'),{type:'line',data:{labels:['Diagnóstico','Seguimiento','Certificación'],datasets:ds},options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:1,max:4,ticks:{callback:v=>['','Inicial','Básico','Competente','Avanzado'][v]||v,font:{size:9}}}},plugins:{legend:{display:true,position:'bottom',labels:{font:{size:9},boxWidth:9}}}}});
+}
+
+function renderTendLider(){
+  const insts=['diagnostico','seguimiento','certificacion','cierre'];
+  const dsInd={
+    label:'Individual (promedio)',
+    data:insts.map(i=>{const ev=DATA_IND.filter(d=>d.inst===i);return ev.length?+(ev.reduce((a,b)=>a+(b.avgLid||0),0)/ev.length).toFixed(1):null;}),
+    borderColor:'#218570',backgroundColor:'rgba(33,133,112,.15)',borderWidth:2.5,pointRadius:5,pointBackgroundColor:'#218570',fill:true,tension:.35,spanGaps:true
+  };
+  const dsEq={
+    label:'Equipo',
+    data:insts.map(i=>{const ev=DATA_EQ.filter(d=>d.inst===i);return ev.length?+(ev.reduce((a,b)=>a+(b.avgEq||0),0)/ev.length).toFixed(1):null;}),
+    borderColor:'#1a5276',backgroundColor:'rgba(26,82,118,.1)',borderWidth:2.5,pointRadius:5,pointBackgroundColor:'#1a5276',fill:true,tension:.35,spanGaps:true,borderDash:[6,3]
+  };
+  if(cTendLider)cTendLider.destroy();
+  cTendLider=new Chart(document.getElementById('cTendLider').getContext('2d'),{type:'line',data:{labels:['Diagnóstico','Seguimiento','Certificación','Cierre'],datasets:[dsInd,dsEq]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:1,max:4,ticks:{callback:v=>['','No obs.','En des.','Consol.','Referente'][v]||v,font:{size:9}}}},plugins:{legend:{display:true,position:'bottom',labels:{font:{size:9},boxWidth:9}}}}});
+}
+
+function renderAlertas(){
+  let alerts='';
+  DATA_IND.forEach(d=>{
+    const prev=DATA_IND.filter(x=>x.nom===d.nom&&x.rol===d.rol&&new Date(x.fecha)<new Date(d.fecha)).sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
+    if(prev.length){
+      const dT=(d.avgTec||0)-(prev[0].avgTec||0);
+      const dL=(d.avgLid||0)-(prev[0].avgLid||0);
+      if(dT>=0.5) alerts+=`<div class="al al-g">📈 <strong>${d.nom}</strong> mejoró <strong>+${dT.toFixed(1)} pts técnicos</strong> entre evaluaciones.</div>`;
+      if(dT<=-0.5) alerts+=`<div class="al al-a">📉 <strong>${d.nom}</strong> bajó ${Math.abs(dT).toFixed(1)} pts técnicos. Revisar con el tutor.</div>`;
+      if(dL>=0.5) alerts+=`<div class="al al-g">🌟 <strong>${d.nom}</strong> mejoró <strong>+${dL.toFixed(1)} pts de liderazgo</strong>.</div>`;
+    }
+    if(d.shyBad) alerts+=`<div class="al al-r">⛔ <strong>${d.nom}</strong> activó override SHyMA el ${d.fecha}. No habilitado.</div>`;
+  });
+  document.getElementById('alertas').innerHTML=alerts||'<div style="color:var(--tm);text-align:center;padding:20px;font-size:12px;">Registrá múltiples evaluaciones para ver alertas automáticas.</div>';
+}
+
+// ════════════════════════════════════════════════════════════
+//  PLANILLAS TÉCNICAS
+// ════════════════════════════════════════════════════════════
+const planScores = {};
+
+// Helper que genera HTML de botones 1-2-3-4 para una planilla
+function planBtns(id){
+  return [1,2,3,4].map(v=>`<button class="ps" id="ps-btn-${id}-${v}" onclick="setPlan('${id}',${v})">${v}</button>`).join('');
+}
+
+function setPlan(id, val){
+  planScores[id] = val;
+  [1,2,3,4].forEach(v=>{
+    const b = document.getElementById(`ps-btn-${id}-${v}`);
+    if(b) b.className = 'ps'+(v===val?' sel-'+v:'');
+  });
+  calcPlanTotal();
+}
+
+function calcPlanTotal(){
+  // Calcular por grupo y mostrar totales
+  const grupos = {
+    jcod:  ['jcod-01','jcod-02','jcod-03','jcod-04','jcod-05'],
+    scod:  ['scod-01','scod-02','scod-03'],
+    jtmt:  ['jtmt-01','jtmt-02','jtmt-03'],
+    dup:   ['dup-01','dup-02','dup-03','dup-04','dup-05','dup-06','dup-07','dup-08','dup-09','dup-10','dup-11','dup-12','dup-13','dup-14','dup-15'],
+    tec:   ['tec-01','tec-02'],
+  };
+  Object.entries(grupos).forEach(([grupo, ids])=>{
+    const vals = ids.map(id=>planScores[id]).filter(v=>v);
+    const tot = vals.length ? +(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : null;
+    const pct = tot ? Math.round((tot/4)*100)+'%' : '—';
+    const nEl = document.getElementById('pn-'+grupo);
+    const pEl = document.getElementById('pp-'+grupo);
+    const eEl = document.getElementById('pe-'+grupo);
+    if(nEl){ nEl.textContent=tot||'—'; nEl.style.color=scColor(tot); }
+    if(pEl){ pEl.textContent=pct; }
+    if(eEl){
+      let est='—', col='var(--tm)';
+      if(grupo==='tec' && planScores['tec-02']===1){
+        est='⛔ No habilitado (SHyMA)'; col='#c02133';
+      } else if(tot>=3.5){est='✅ Avanzado Referente';col='#218570';}
+      else if(tot>=3){est='✅ Competente Autónomo';col='#218570';}
+      else if(tot>=2){est='🔄 Básico Supervisado';col='#f39c12';}
+      else if(tot){est='⚠ Inicial';col='#c02133';}
+      eEl.textContent=est; eEl.style.color=col;
+    }
+  });
+}
+
+function showPlan(id, btn){
+  document.querySelectorAll('.plan-tab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.plan-panel').forEach(p=>p.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  const el = document.getElementById('plan-'+id);
+  if(el) el.classList.add('on');
+}
+
+function initPlanillas(){
+  // Insertar botones en todos los contenedores de planillas
+  const ids = [
+    'jcod-01','jcod-02','jcod-03','jcod-04','jcod-05',
+    'scod-01','scod-02','scod-03',
+    'jtmt-01','jtmt-02','jtmt-03',
+    'dup-01','dup-02','dup-03','dup-04','dup-05','dup-06','dup-07','dup-08',
+    'dup-09','dup-10','dup-11','dup-12','dup-13','dup-14','dup-15',
+    'tec-01','tec-02'
+  ];
+  ids.forEach(id=>{
+    const cont = document.getElementById('ps-'+id);
+    if(cont && !cont.dataset.built){
+      cont.innerHTML = [1,2,3,4].map(v=>`<button class="ps${planScores[id]===v?' sel-'+v:''}" id="ps-btn-${id}-${v}" onclick="setPlan('${id}',${v})">${v}</button>`).join('');
+      cont.dataset.built='1';
+    }
+  });
+  calcPlanTotal();
+}
+
+// ════════════════════════════════════════════════════════════
+//  NINE BOX
+// ════════════════════════════════════════════════════════════
+const NB9_DEF = [
+  {r:2,c:0,l:'Dilema',              bg:'#fde8eb',tx:'#9b1c2e'},
+  {r:2,c:1,l:'Estrella en formación',bg:'#fef3c7',tx:'#92400e'},
+  {r:2,c:2,l:'Referente COD',       bg:'#218570', tx:'#ffffff'},
+  {r:1,c:0,l:'Bajo rendimiento',    bg:'#fee2e2', tx:'#991b1b'},
+  {r:1,c:1,l:'Núcleo operativo',    bg:'#fff7ed', tx:'#7c2d12'},
+  {r:1,c:2,l:'Alto potencial',      bg:'#dbeafe', tx:'#1e3a8a'},
+  {r:0,c:0,l:'Marginal',            bg:'#fde8eb', tx:'#9b1c2e'},
+  {r:0,c:1,l:'Sólido',              bg:'#e0f2fe', tx:'#0c4a6e'},
+  {r:0,c:2,l:'Pot. inconsistente',  bg:'#d1fae5', tx:'#065f46'},
+];
+
+function buildNB9People(fil, avgKey){
+  const cells = NB9_DEF.map(c=>({...c, ppl:[]}));
+  const people = [...new Map(fil.map(d=>[d.nom+'_'+(d.rol||'eq'), d])).values()];
+  people.forEach(p=>{
+    const ev = fil.filter(d=>d.nom===p.nom).sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
+    const cur = ev[0]?.[avgKey]||0;
+    const trend = ev.length>=2?(ev[0][avgKey]||0)-(ev[ev.length-1][avgKey]||0):0;
+    const pot = Math.min(4, Math.max(0, cur+trend*0.4));
+    const col = cur<2?0:cur<3?1:2;
+    const row = pot<2?0:pot<3?1:2;
+    const cell = cells.find(c=>c.r===row&&c.c===col);
+    if(cell) cell.ppl.push({...p, cur, pot});
+  });
+  return cells;
+}
+
+function renderNBGrid(containerId, cells, colorKey){
+  let h='';
+  [2,1,0].forEach(row=>{
+    [0,1,2].forEach(col=>{
+      const cell = cells.find(c=>c.r===row&&c.c===col);
+      const dots = cell.ppl.map(p=>`<div class="nbdot" style="color:${ROLE_C[p.rol]||'#218570'};border-color:${ROLE_C[p.rol]||'#218570'};" title="${p.nom||'Equipo'} — ${(p.cur||0).toFixed(1)}/4">${(p.nom||'EQ').split(',')[0].slice(0,3)}</div>`).join('');
+      h+=`<div class="nbc" style="background:${cell.bg};color:${cell.tx};">
+        <div class="nbl">${cell.l}</div>
+        <div class="nbdots">${dots||'<span style="opacity:.3;font-size:8px;">vacío</span>'}</div>
+      </div>`;
+    });
+  });
+  document.getElementById(containerId).innerHTML=h;
+}
+
+function renderNineBox(){
+  const fil = document.getElementById('nbRol').value;
+  const data = fil==='all'?DATA_IND:DATA_IND.filter(d=>d.rol===fil);
+
+  // Nine Box Técnico
+  const cellsTec = buildNB9People(data, 'avgTec');
+  renderNBGrid('nb9g', cellsTec);
+
+  // Nine Box Liderazgo
+  const cellsLid = buildNB9People(data, 'avgLid');
+  renderNBGrid('nb9lider', cellsLid);
+
+  // Leyenda roles
+  const leyHTML = Object.entries(ROLE_C).map(([r,c])=>
+    `<span style="display:flex;align-items:center;gap:5px;font-size:10px;">
+      <span style="width:10px;height:10px;border-radius:50%;background:${c};display:inline-block;"></span>${ROLE_N[r]}
+    </span>`).join('');
+  document.getElementById('nb9leyenda').innerHTML=leyHTML;
+  document.getElementById('nb9liderLey').innerHTML=leyHTML;
+}
+
+// ════════════════════════════════════════════════════════════
+//  REPORTES PDF
+// ════════════════════════════════════════════════════════════
+let cPdfRadarTec, cPdfRadarLider, cPdfBar;
+
+function buildPdfPreview(){
+  const rolFil  = document.getElementById('pdfRol').value;
+  const instFil = document.getElementById('pdfInst').value;
+  let fil = DATA_IND;
+  if(rolFil!=='all')  fil = fil.filter(d=>d.rol===rolFil);
+  if(instFil!=='all') fil = fil.filter(d=>d.inst===instFil);
+
+  document.getElementById('pdfPreviewWrap').style.display='block';
+
+  const rolLbl  = rolFil==='all'?'Todos los roles':ROLE_N[rolFil];
+  const instLbl = instFil==='all'?'Todas las instancias':INST_N[instFil];
+  document.getElementById('pdfMainTitle').textContent='Reporte de Competencias COD — '+rolLbl;
+  document.getElementById('pdfSubTitle').textContent='EPEC S.A.U. · '+instLbl+' · Emitido: '+new Date().toLocaleDateString('es-AR');
+
+  // KPIs
+  const apt = fil.filter(d=>d.estadoTec==='avanzado'||d.estadoTec==='competente').length;
+  const mal = fil.filter(d=>d.estadoTec==='inicial'||d.estadoTec==='shyma').length;
+  const avgT = fil.length?+(fil.reduce((a,b)=>a+(b.avgTec||0),0)/fil.length).toFixed(1):0;
+  const avgL = fil.length?+(fil.reduce((a,b)=>a+(b.avgLid||0),0)/fil.length).toFixed(1):0;
+  document.getElementById('pdfKpis').innerHTML=`
+    <div class="sc"><div class="sn">${fil.length}</div><div class="sl">Evaluaciones</div></div>
+    <div class="sc"><div class="sn" style="color:var(--g)">${avgT}</div><div class="sl">Prom. técnico</div></div>
+    <div class="sc"><div class="sn" style="color:#1a5276">${avgL}</div><div class="sl">Prom. liderazgo</div></div>
+    <div class="sc"><div class="sn" style="color:var(--g)">${apt}</div><div class="sl">Aptos técnicos</div></div>`;
+
+  // Radar técnico PDF
+  const todos = [...PROCS_DUP].slice(0,8);
+  const valsTec = todos.map(p=>{const v=fil.map(d=>d.scoreTec?.[p.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
+  if(cPdfRadarTec)cPdfRadarTec.destroy();
+  cPdfRadarTec=new Chart(document.getElementById('pdfRadarTec').getContext('2d'),{type:'radar',data:{
+    labels:todos.map(p=>p.id),
+    datasets:[
+      {label:'Requerido',data:todos.map(()=>4),borderColor:'#218570',backgroundColor:'rgba(33,133,112,.1)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#218570'},
+      {label:'Real',data:valsTec,borderColor:'#c02133',backgroundColor:'rgba(192,33,51,.12)',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#c02133'}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:8}},pointLabels:{font:{size:8}}}},plugins:{legend:{display:false}}}});
+
+  // Radar liderazgo PDF
+  const valsLid=COMPS_LIDER.map(c=>{const v=fil.map(d=>d.scoreLider?.[c.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
+  if(cPdfRadarLider)cPdfRadarLider.destroy();
+  cPdfRadarLider=new Chart(document.getElementById('pdfRadarLider').getContext('2d'),{type:'radar',data:{
+    labels:COMPS_LIDER.map(c=>c.nombre.split(' ').slice(0,2).join(' ')),
+    datasets:[
+      {label:'Requerido',data:COMPS_LIDER.map(()=>4),borderColor:'#218570',backgroundColor:'rgba(33,133,112,.1)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#218570'},
+      {label:'Real',data:valsLid,borderColor:'#1a5276',backgroundColor:'rgba(26,82,118,.12)',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#1a5276'}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:8}},pointLabels:{font:{size:8}}}},plugins:{legend:{display:false}}}});
+
+  // Barras brechas PDF
+  const brechas=valsLid.map(v=>+(4-v).toFixed(1));
+  if(cPdfBar)cPdfBar.destroy();
+  cPdfBar=new Chart(document.getElementById('pdfBarBrecha').getContext('2d'),{type:'bar',data:{
+    labels:COMPS_LIDER.map(c=>c.nombre.split(' ').slice(0,3).join(' ')),
+    datasets:[
+      {label:'Alcanzado',data:valsLid,backgroundColor:'#218570',borderRadius:4},
+      {label:'Brecha',data:brechas,backgroundColor:'rgba(192,33,51,.3)',borderRadius:4}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:8},boxWidth:8}}},scales:{x:{stacked:true,ticks:{font:{size:8},maxRotation:30}},y:{stacked:true,min:0,max:4}}}});
+
+  // Nine Box técnico PDF
+  const cellsTec = buildNB9People(fil, 'avgTec');
+  renderNBGrid('pdfNb9Tec', cellsTec);
+
+  // Tabla detalle individuales
+  const rc2={JCOD:'bj',SCOD:'bs',JTMT:'bt'};
+  let th='<table class="pdf-table"><thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Fecha</th><th>Técnico</th><th>Liderazgo</th><th>Estado Téc.</th><th>Estado Lid.</th></tr></thead><tbody>';
+  if(!fil.length) th+='<tr><td colspan="8" style="text-align:center;padding:12px;color:var(--tm)">Sin datos</td></tr>';
+  [...fil].sort((a,b)=>(b.avgTec||0)-(a.avgTec||0)).forEach(d=>{
+    const cT=scColor(d.avgTec); const cL=scColor(d.avgLid);
+    th+=`<tr>
+      <td><strong>${d.nom}</strong></td>
+      <td><span class="badge ${rc2[d.rol]}">${d.rol}</span></td>
+      <td>${INST_N[d.inst]||d.inst}</td>
+      <td>${d.fecha}</td>
+      <td style="color:${cT};font-weight:600">${(d.avgTec||0).toFixed(1)}/4</td>
+      <td style="color:${cL};font-weight:600">${(d.avgLid||0).toFixed(1)}/4</td>
+      <td style="color:${cT};font-size:10px">${(d.estadoTec||'').replace('_',' ')}</td>
+      <td style="color:${cL};font-size:10px">${(d.estadoLid||'').replace('_',' ')}</td>
+    </tr>`;
+  });
+  document.getElementById('pdfTableWrap').innerHTML=th+'</tbody></table>';
+
+  // Tabla evaluaciones de equipo
+  let teq='<table class="pdf-table"><thead><tr><th>Evaluador</th><th>Instancia</th><th>Fecha</th><th>Prom. Equipo</th><th>Estado</th><th>Observaciones</th></tr></thead><tbody>';
+  if(!DATA_EQ.length) teq+='<tr><td colspan="6" style="text-align:center;padding:12px;color:var(--tm)">Sin evaluaciones de equipo</td></tr>';
+  [...DATA_EQ].sort((a,b)=>new Date(b.fecha)-new Date(a.fecha)).forEach(d=>{
+    const c=scColor(d.avgEq);
+    teq+=`<tr><td>${d.eval||'—'}</td><td>${INST_N[d.inst]||d.inst}</td><td>${d.fecha}</td>
+    <td style="color:${c};font-weight:600">${(d.avgEq||0).toFixed(1)}/4</td>
+    <td style="color:${c};font-size:10px">${(d.estadoEq||'').replace('_',' ')}</td>
+    <td style="font-size:10px">${d.obs||'—'}</td></tr>`;
+  });
+  document.getElementById('pdfEqWrap').innerHTML=teq+'</tbody></table>';
+
+  // Footer
+  document.getElementById('pdfFooter').textContent='EPEC S.A.U. · Centro Operativo de Distribución · Reporte generado el '+new Date().toLocaleString('es-AR');
+
+  document.getElementById('pdfPreviewWrap').scrollIntoView({behavior:'smooth'});
+  notif('✅ Vista previa generada — hacé clic en "Exportar PDF" para descargar');
+}
+
+async function exportPDF(){
+  const el = document.getElementById('pdfContent');
+  if(!el||document.getElementById('pdfPreviewWrap').style.display==='none'){
+    alert('Primero generá la vista previa');return;
+  }
+  notif('⏳ Generando PDF... aguardá unos segundos');
+  try{
+    await new Promise(r=>setTimeout(r,600));
+    const canvas = await html2canvas(el,{scale:1.8,useCORS:true,backgroundColor:'#ffffff',logging:false});
+    const{jsPDF}=window.jspdf;
+    const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    const imgData=canvas.toDataURL('image/jpeg',0.92);
+    const pdfW=pdf.internal.pageSize.getWidth();
+    const pdfH=(canvas.height*pdfW)/canvas.width;
+    let y=0, pageH=pdf.internal.pageSize.getHeight();
+    while(y<pdfH){
+      if(y>0)pdf.addPage();
+      pdf.addImage(imgData,'JPEG',0,-y,pdfW,pdfH,undefined,'FAST');
+      y+=pageH;
+    }
+    const fecha=new Date().toISOString().split('T')[0];
+    pdf.save('EPEC_COD_Competencias_'+fecha+'.pdf');
+    notif('✅ PDF descargado correctamente');
+  }catch(e){ alert('Error al generar PDF: '+e.message); }
+}
+
+// ════════════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════════════
+document.getElementById('i-fecha').value = new Date().toISOString().split('T')[0];
+document.getElementById('eq-fecha').value = new Date().toISOString().split('T')[0];
+buildEquipoGrid();
+</script>
+</body>
+</html>
