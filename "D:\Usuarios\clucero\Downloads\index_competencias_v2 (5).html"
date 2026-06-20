@@ -1331,17 +1331,19 @@ function limpiarEquipo(){
 //  DASHBOARD
 // ════════════════════════════════════════════════════════════
 function renderDash(){
-  // Role cards
+  // Role cards — usa todos los registros sin agrupar por nombre
   let rh='';
   ['JCOD','SCOD','JTMT'].forEach(r=>{
     const d=DATA_IND.filter(x=>x.rol===r);
     const av=d.length?+(d.reduce((a,b)=>a+(b.avgTec||0),0)/d.length).toFixed(1):0;
     const avL=d.length?+(d.reduce((a,b)=>a+(b.avgLid||0),0)/d.length).toFixed(1):0;
+    // Personas únicas por fbKey
+    const personas = new Set(d.map(x=>x.nom)).size;
     const rc=r==='JCOD'?'rc-j':r==='SCOD'?'rc-s':'rc-t';
     rh+=`<div class="rcard ${rc}">
       <div style="font-size:9px;font-weight:600;color:var(--tm);margin-bottom:3px;">${ROLE_N[r]}</div>
       <div class="rcn">${av||'—'}</div>
-      <div class="rcl">Técnico · ${d.length} evaluaciones</div>
+      <div class="rcl">${personas} persona${personas!==1?'s':''} · ${d.length} evaluación${d.length!==1?'es':''}</div>
       <div style="font-size:11px;font-weight:600;color:${scColor(avL)};margin-top:4px;">Liderazgo: ${avL||'—'}/4</div>
     </div>`;
   });
@@ -1631,11 +1633,13 @@ const NB9_DEF = [
 
 function buildNB9People(fil, avgKey){
   const cells = NB9_DEF.map(c=>({...c, ppl:[]}));
-  const people = [...new Map(fil.map(d=>[d.nom+'_'+(d.rol||'eq'), d])).values()];
+  // Agrupar por fbKey (identificador único de Firebase) — así dos Walter distintos no se confunden
+  const people = [...new Map(fil.map(d=>[d.fbKey, d])).values()];
   people.forEach(p=>{
-    const ev = fil.filter(d=>d.nom===p.nom).sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
-    const cur = ev[0]?.[avgKey]||0;
-    const trend = ev.length>=2?(ev[0][avgKey]||0)-(ev[ev.length-1][avgKey]||0):0;
+    const cur = p[avgKey]||0;
+    // Tendencia: buscar evaluaciones anteriores de la misma persona por nombre+rol
+    const historial = fil.filter(d=>d.nom===p.nom&&d.rol===p.rol).sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
+    const trend = historial.length>=2?(historial[0][avgKey]||0)-(historial[historial.length-1][avgKey]||0):0;
     const pot = Math.min(4, Math.max(0, cur+trend*0.4));
     const col = cur<2?0:cur<3?1:2;
     const row = pot<2?0:pot<3?1:2;
