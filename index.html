@@ -12,6 +12,7 @@
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script> 
 <style>
 :root{
   --g:#218570;--gd:#155748;--gm:#2BA888;--gl:#e1f5ee;--g2:#d0ece6;
@@ -958,6 +959,7 @@ const firebaseConfig = {
   appId:             "1:990909328558:web:ead9e4118a814e0d20513f"
 };
 firebase.initializeApp(firebaseConfig);
+ firebase.auth().signInAnonymously().catch(e=>console.error('Auth anónima falló:', e)); 
 const db = firebase.database();
 const refInd = db.ref('cod_individual');
 const refEq  = db.ref('cod_equipo');
