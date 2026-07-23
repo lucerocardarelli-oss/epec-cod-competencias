@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -545,6 +544,34 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
     </div>
   </div>
 
+  <!-- Consultar evaluaciones cargadas en la Planilla Técnica -->
+  <div class="card" id="consultaCard">
+    <div class="ct"><i class="ti ti-search"></i>Consultar lo cargado en la Planilla Técnica</div>
+    <div class="sub">Buscá el histórico de evaluaciones ya guardadas en Firebase, filtrando por rol y/o por persona, y mirá el detalle proceso por proceso.</div>
+    <div class="g3">
+      <div class="fg"><label>Rol</label>
+        <select id="q-rol" onchange="onQRolChange()">
+          <option value="">Todos los roles</option>
+          <option value="JCOD">Jefe COD</option>
+          <option value="SCOD">SubJefe COD</option>
+          <option value="JTMT">Jefe de Turno MT</option>
+        </select>
+      </div>
+      <div class="fg"><label>Persona</label>
+        <select id="q-persona" onchange="onQPersonaChange()">
+          <option value="">Todas las personas</option>
+        </select>
+      </div>
+      <div class="fg"><label>Evaluación cargada</label>
+        <select id="q-registro" onchange="renderQResultado()" disabled>
+          <option value="">—</option>
+        </select>
+      </div>
+    </div>
+    <div id="qResumenWrap"></div>
+    <div id="qDetalleWrap"></div>
+  </div>
+
   <!-- Contenedor de las dos matrices -->
   <div id="matricesWrap" style="display:none;">
 
@@ -1055,6 +1082,7 @@ refInd.on('value', snap => {
   if(document.getElementById('s-radar').classList.contains('on')){renderRadarTec();renderRadarLider();renderBrecha();}
   if(document.getElementById('s-ninebox').classList.contains('on')) renderNineBox();
   if(document.getElementById('s-tendencia').classList.contains('on')){renderTendTec();renderTendLider();renderAlertas();}
+  if(document.getElementById('s-individual').classList.contains('on')){ populateQPersonas(); renderQResultado(); }
 });
 
 refEq.on('value', snap => {
@@ -1095,6 +1123,7 @@ function go(id){
   if(id==='planillas'){initPlanillas();}
   if(id==='tendencia'){renderTendTec();renderTendLider();renderAlertas();}
   if(id==='personas') renderPersonas(pfiltro);
+  if(id==='individual'){ populateQPersonas(); renderQResultado(); }
 }
 
 // ════════════════════════════════════════════════════════════
@@ -1291,6 +1320,167 @@ function limpiarIndividual(){
   document.getElementById('i-eval').value='';
   document.getElementById('matricesWrap').style.display='none';
   scoreTec={}; scoreLider={};
+}
+
+// ════════════════════════════════════════════════════════════
+//  CONSULTAR EVALUACIONES CARGADAS (Planilla Técnica) — por rol e individualmente
+// ════════════════════════════════════════════════════════════
+function onQRolChange(){
+  populateQPersonas();
+  document.getElementById('q-registro').innerHTML = '<option value="">—</option>';
+  document.getElementById('q-registro').disabled = true;
+  renderQResultado();
+}
+
+function populateQPersonas(){
+  const rol = document.getElementById('q-rol').value;
+  const sel = document.getElementById('q-persona');
+  const cur = sel.value;
+  const base = rol ? DATA_IND.filter(x=>x.rol===rol) : DATA_IND;
+  const nombres = [...new Set(base.map(x=>x.nom))].sort((a,b)=>a.localeCompare(b,'es'));
+  sel.innerHTML = '<option value="">Todas las personas'+(rol?' — '+ROLE_N[rol]:'')+'</option>' +
+    nombres.map(n=>`<option value="${n.replace(/"/g,'&quot;')}">${n}</option>`).join('');
+  if(nombres.includes(cur)) sel.value = cur; else sel.value = '';
+}
+
+function onQPersonaChange(){
+  populateQRegistros();
+  renderQResultado();
+}
+
+function populateQRegistros(){
+  const persona = document.getElementById('q-persona').value;
+  const rol = document.getElementById('q-rol').value;
+  const sel = document.getElementById('q-registro');
+  if(!persona){ sel.innerHTML = '<option value="">—</option>'; sel.disabled = true; return; }
+  const regs = DATA_IND.filter(x=>x.nom===persona && (!rol||x.rol===rol)).sort((a,b)=>(b.ts||0)-(a.ts||0));
+  sel.disabled = false;
+  sel.innerHTML = '<option value="">Evaluación más reciente</option>' +
+    regs.map(r=>`<option value="${r.fbKey}">${INST_N[r.inst]||r.inst} — ${r.fecha} · ${ROLE_N[r.rol]}</option>`).join('');
+}
+
+function qFiltrados(){
+  const rol = document.getElementById('q-rol').value;
+  const persona = document.getElementById('q-persona').value;
+  let d = [...DATA_IND];
+  if(rol) d = d.filter(x=>x.rol===rol);
+  if(persona) d = d.filter(x=>x.nom===persona);
+  return d.sort((a,b)=>(b.ts||0)-(a.ts||0));
+}
+
+function renderQResultado(){
+  const persona = document.getElementById('q-persona').value;
+  const regKey  = document.getElementById('q-registro').value;
+  const resumenWrap = document.getElementById('qResumenWrap');
+  const detalleWrap = document.getElementById('qDetalleWrap');
+
+  if(!persona){
+    // Sin persona seleccionada: listado resumen filtrado por rol (o todos)
+    detalleWrap.innerHTML = '';
+    if(!DATA_IND.length){
+      resumenWrap.innerHTML = '<p style="font-size:11px;color:var(--tm);padding:10px 0;">Todavía no hay evaluaciones cargadas en Firebase.</p>';
+      return;
+    }
+    const d = qFiltrados();
+    const rc = {JCOD:'bj',SCOD:'bs',JTMT:'bt'};
+    let h = '<div class="mx-wrap" style="margin-top:8px;"><table class="pt"><thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Fecha</th><th>Técnico</th><th>Liderazgo</th><th>Estado</th><th></th></tr></thead><tbody>';
+    if(!d.length) h += '<tr><td colspan="8" style="text-align:center;padding:16px;color:var(--tm)">Sin coincidencias para el filtro seleccionado</td></tr>';
+    d.forEach(x=>{
+      const est = x.shyBad?'⛔ SHyMA':x.estadoTec==='avanzado'?'✅ Avanzado':x.estadoTec==='competente'?'✅ Competente':x.estadoTec==='basico'?'🔄 Básico':'⚠ Inicial';
+      h += `<tr><td><strong>${x.nom}</strong></td><td><span class="badge ${rc[x.rol]}">${x.rol}</span></td><td>${INST_N[x.inst]||x.inst}</td><td>${x.fecha}</td>
+      <td style="color:${scColor(x.avgTec)};font-weight:600">${(x.avgTec||0).toFixed(1)}/4</td>
+      <td style="color:${scColor(x.avgLid)};font-weight:600">${(x.avgLid||0).toFixed(1)}/4</td>
+      <td style="font-size:10px;color:${scColor(x.avgTec)}">${est}</td>
+      <td><button class="bsec" style="padding:5px 10px;font-size:10px;" onclick="verRegistroQ('${x.fbKey}')"><i class="ti ti-eye"></i> Ver detalle</button></td></tr>`;
+    });
+    h += '</tbody></table></div>';
+    resumenWrap.innerHTML = h;
+    return;
+  }
+
+  // Persona seleccionada: mostrar el detalle cargado (registro elegido o el más reciente)
+  const rol = document.getElementById('q-rol').value;
+  const regs = DATA_IND.filter(x=>x.nom===persona && (!rol||x.rol===rol)).sort((a,b)=>(b.ts||0)-(a.ts||0));
+  if(!regs.length){
+    resumenWrap.innerHTML = '<p style="font-size:11px;color:var(--tm);padding:10px 0;">No hay evaluaciones cargadas para esta persona.</p>';
+    detalleWrap.innerHTML = '';
+    return;
+  }
+  const rec = (regKey && DATA_IND.find(x=>x.fbKey===regKey)) || regs[0];
+  resumenWrap.innerHTML = regs.length>1
+    ? `<p style="font-size:10px;color:var(--tm);padding:8px 0 0;">${regs.length} evaluaciones cargadas para ${persona}. Elegí una instancia en "Evaluación cargada" para ver otra.</p>`
+    : '';
+  renderDetalleCargado(rec);
+}
+
+function verRegistroQ(fbKey){
+  const rec = DATA_IND.find(x=>x.fbKey===fbKey);
+  if(!rec) return;
+  document.getElementById('q-rol').value = rec.rol;
+  populateQPersonas();
+  document.getElementById('q-persona').value = rec.nom;
+  populateQRegistros();
+  document.getElementById('q-registro').value = rec.fbKey;
+  renderQResultado();
+  document.getElementById('consultaCard').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function filaDetalleQ(p, scoreTecRec){
+  const v = scoreTecRec ? scoreTecRec[p.id] : null;
+  const shymaStyle = p.shyma ? 'border-left:3px solid #c02133;' : '';
+  return `<tr><td class="pn" style="${shymaStyle}"><span class="pc">${p.id}${p.shyma?' ⚡':''}</span>${p.n}</td>
+  <td class="avg-cell" style="color:${scColor(v)}">${v||'—'}</td></tr>`;
+}
+
+function renderDetalleCargado(rec){
+  const wrap = document.getElementById('qDetalleWrap');
+  if(!rec){ wrap.innerHTML=''; return; }
+  const propsRol = PROCS_TEC[rec.rol] || [];
+  const rc = {JCOD:'bj',SCOD:'bs',JTMT:'bt'};
+  const est = rec.shyBad?'⛔ No habilitado (SHyMA)':rec.estadoTec==='avanzado'?'✅ Avanzado Referente':rec.estadoTec==='competente'?'✅ Competente Autónomo':rec.estadoTec==='basico'?'🔄 Básico Supervisado':'⚠ Inicial — Requiere plan';
+
+  let h = `<div class="sec-divider"><span>Detalle cargado — ${rec.nom}</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;">
+    <span class="badge ${rc[rec.rol]}">${ROLE_N[rec.rol]}</span>
+    <span style="font-size:11px;color:var(--tm);">${INST_N[rec.inst]||rec.inst} · ${rec.fecha}${rec.eval?' · Evaluador: '+rec.eval:''}</span>
+  </div>`;
+
+  h += '<div class="mx-wrap"><table class="mx-tbl"><thead><tr><th class="proc-h">Proceso técnico</th><th style="width:110px">Puntaje cargado</th></tr></thead><tbody>';
+  if(propsRol.length){
+    h += `<tr><td colspan="2" style="background:#f0faf6;text-align:left;font-size:10px;font-weight:700;color:var(--gd);padding:8px 10px;text-transform:uppercase;letter-spacing:.5px;">Procesos exclusivos del rol — ${ROLE_N[rec.rol]}</td></tr>`;
+    propsRol.forEach(p=>{ h += filaDetalleQ(p, rec.scoreTec); });
+  }
+  h += `<tr><td colspan="2" style="background:#f0faf6;text-align:left;font-size:10px;font-weight:700;color:#1a5276;padding:8px 10px;text-transform:uppercase;letter-spacing:.5px;">Procesos compartidos (P-DUP) + Expertiz Técnica y Seguridad</td></tr>`;
+  PROCS_DUP.forEach(p=>{ h += filaDetalleQ(p, rec.scoreTec); });
+  h += `<tr style="background:var(--bg)"><td class="pn" style="font-weight:700;color:var(--gd)">PROMEDIO TÉCNICO TOTAL</td><td class="avg-cell" style="color:${scColor(rec.avgTec)}">${(rec.avgTec||0).toFixed(1)}</td></tr>`;
+  h += '</tbody></table></div>';
+
+  if(rec.shyBad){
+    h += `<div class="shyma-alert" style="display:block;margin-top:10px;">⛔ ALERTA SHyMA cargada en esta evaluación — la persona no puede ser habilitada independientemente del puntaje total.</div>`;
+  }
+
+  h += `<div class="res-box" style="margin-top:12px;">
+    <div class="res-item"><div class="res-num" style="color:${scColor(rec.avgTec)}">${(rec.avgTec||0).toFixed(1)}</div><div class="res-lbl">Promedio técnico / 4</div></div>
+    <div class="res-item"><div class="res-num">${rec.avgTec?Math.round((rec.avgTec/4)*100)+'%':'—'}</div><div class="res-lbl">% sobre nivel requerido</div></div>
+    <div class="res-item"><div class="res-num" style="font-size:12px;color:${scColor(rec.avgTec)}">${est}</div><div class="res-lbl">Estado técnico</div></div>
+  </div>`;
+
+  h += '<div class="sec-divider" style="margin-top:18px;"><span>Liderazgo operativo cargado</span></div>';
+  h += '<div class="lider-grid">';
+  COMPS_LIDER.forEach(c=>{
+    const v = rec.scoreLider ? rec.scoreLider[c.id] : null;
+    h += `<div class="lider-comp"><div class="lc-name">${c.nombre}</div>
+      <div style="margin-top:6px;font-size:20px;font-weight:800;color:${scColor(v)}">${v||'—'}<span style="font-size:10px;font-weight:500;color:var(--tm)"> / 4</span></div></div>`;
+  });
+  h += '</div>';
+
+  h += `<div class="res-box" style="margin-top:12px;margin-bottom:4px;">
+    <div class="res-item"><div class="res-num" style="color:${scColor(rec.avgLid)}">${(rec.avgLid||0).toFixed(1)}</div><div class="res-lbl">Promedio liderazgo / 4</div></div>
+    <div class="res-item"><div class="res-num">${rec.avgLid?Math.round((rec.avgLid/4)*100)+'%':'—'}</div><div class="res-lbl">% sobre nivel requerido</div></div>
+    <div class="res-item"><div class="res-num" style="font-size:12px;">${(INST_N[rec.inst]||rec.inst)}</div><div class="res-lbl">Instancia evaluada</div></div>
+  </div>`;
+
+  wrap.innerHTML = h;
 }
 
 // ════════════════════════════════════════════════════════════
