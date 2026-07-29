@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0077)file:///D:/Usuarios/clucero/Downloads/EPEC_COD_Matriz_Competencias_index.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EPEC SAU — Matriz de Competencias COD</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
- <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script> 
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./index_files/css2" rel="stylesheet">
+<link rel="stylesheet" href="./index_files/tabler-icons.min.css">
+<script src="./index_files/chart.umd.min.js.descargar"></script>
+<script src="./index_files/jspdf.umd.min.js.descargar"></script>
+<script src="./index_files/html2canvas.min.js.descargar"></script>
+<script src="./index_files/firebase-app-compat.js.descargar"></script>
+<script src="./index_files/firebase-database-compat.js.descargar"></script>
+ <script src="./index_files/firebase-auth-compat.js.descargar"></script> 
 <style>
 :root{
   --g:#218570;--gd:#155748;--gm:#2BA888;--gl:#e1f5ee;--g2:#d0ece6;
@@ -253,24 +253,24 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
     <p>EPEC S.A.U. · Evaluación Individual y de Equipo · Técnica + Liderazgo Operativo</p>
   </div>
   <div class="hdr-right">
-    <span style="font-size:10px;color:#fff;opacity:.8;" id="usrCount"></span>
+    <span style="font-size:10px;color:#fff;opacity:.8;" id="usrCount">1 usuario conectado</span>
     <div class="live"><div class="dot"></div>Firebase en vivo</div>
   </div>
 </div>
 
 <!-- NAV -->
 <div class="nav">
-  <button class="nt on" onclick="go('dash')"><i class="ti ti-dashboard"></i>Dashboard</button>
-  <button class="nt" onclick="go('individual')"><i class="ti ti-user-check"></i>Evaluación Individual</button>
-  <button class="nt" onclick="go('planillas')"><i class="ti ti-clipboard-list"></i>Planillas Técnicas</button>
-  <button class="nt" onclick="go('equipo')"><i class="ti ti-users"></i>Evaluación de Equipo</button>
-  <button class="nt" onclick="go('feedback')"><i class="ti ti-message-report"></i>Feedback</button>
-  <button class="nt" onclick="go('acciones')"><i class="ti ti-list-check"></i>Plan de Acción</button>
-  <button class="nt" onclick="go('personas')"><i class="ti ti-address-book"></i>Historial</button>
-  <button class="nt" onclick="go('radar')"><i class="ti ti-chart-radar"></i>Radar</button>
-  <button class="nt" onclick="go('tendencia')"><i class="ti ti-trending-up"></i>Tendencia</button>
-  <button class="nt" onclick="go('ninebox')"><i class="ti ti-layout-grid"></i>Nine Box</button>
-  <button class="nt" onclick="go('reportes')"><i class="ti ti-file-type-pdf"></i>Reportes PDF</button>
+  <button class="nt on" onclick="go(&#39;dash&#39;)"><i class="ti ti-dashboard"></i>Dashboard</button>
+  <button class="nt" onclick="go(&#39;individual&#39;)"><i class="ti ti-user-check"></i>Evaluación Individual</button>
+  <button class="nt" onclick="go(&#39;planillas&#39;)"><i class="ti ti-clipboard-list"></i>Planillas Técnicas</button>
+  <button class="nt" onclick="go(&#39;equipo&#39;)"><i class="ti ti-users"></i>Evaluación de Equipo</button>
+  <button class="nt" onclick="go(&#39;feedback&#39;)"><i class="ti ti-message-report"></i>Feedback</button>
+  <button class="nt" onclick="go(&#39;acciones&#39;)"><i class="ti ti-list-check"></i>Plan de Acción</button>
+  <button class="nt" onclick="go(&#39;personas&#39;)"><i class="ti ti-address-book"></i>Historial</button>
+  <button class="nt" onclick="go(&#39;radar&#39;)"><i class="ti ti-chart-radar"></i>Radar</button>
+  <button class="nt" onclick="go(&#39;tendencia&#39;)"><i class="ti ti-trending-up"></i>Tendencia</button>
+  <button class="nt" onclick="go(&#39;ninebox&#39;)"><i class="ti ti-layout-grid"></i>Nine Box</button>
+  <button class="nt" onclick="go(&#39;reportes&#39;)"><i class="ti ti-file-type-pdf"></i>Reportes PDF</button>
 </div>
 
 <div class="cnt">
@@ -279,21 +279,55 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
      DASHBOARD
 ═══════════════════════════════════════════ -->
 <div class="sec on" id="s-dash">
-  <div class="rcards" id="rolCards"></div>
-  <div class="g4" id="stats4" style="margin-bottom:14px;"></div>
+  <div class="rcards" id="rolCards"><div class="rcard rc-j">
+      <div style="font-size:9px;font-weight:600;color:var(--tm);margin-bottom:3px;">Jefe COD</div>
+      <div class="rcn">—</div>
+      <div class="rcl">0 personas · 0 evaluaciónes</div>
+      <div style="font-size:11px;font-weight:600;color:var(--tm);margin-top:4px;">Liderazgo: —/4</div>
+    </div><div class="rcard rc-s">
+      <div style="font-size:9px;font-weight:600;color:var(--tm);margin-bottom:3px;">SubJefe COD</div>
+      <div class="rcn">1.4</div>
+      <div class="rcl">3 personas · 3 evaluaciónes</div>
+      <div style="font-size:11px;font-weight:600;color:#f39c12;margin-top:4px;">Liderazgo: 2/4</div>
+    </div><div class="rcard rc-t">
+      <div style="font-size:9px;font-weight:600;color:var(--tm);margin-bottom:3px;">Jefe Turno MT</div>
+      <div class="rcn">1.3</div>
+      <div class="rcl">6 personas · 7 evaluaciónes</div>
+      <div style="font-size:11px;font-weight:600;color:#c02133;margin-top:4px;">Liderazgo: 1.3/4</div>
+    </div></div>
+  <div class="g4" id="stats4" style="margin-bottom:14px;">
+    <div class="sc"><div class="sn">10</div><div class="sl">Evaluaciones individuales</div></div>
+    <div class="sc"><div class="sn" style="color:#218570">0</div><div class="sl">Aptos técnicos</div></div>
+    <div class="sc"><div class="sn" style="color:#f39c12">2</div><div class="sl">Básico supervisado</div></div>
+    <div class="sc"><div class="sn" style="color:#c02133">8</div><div class="sl">Inicial / Eval. equipo</div></div></div>
   <div class="g2">
     <div class="card">
       <div class="ct"><i class="ti ti-chart-bar"></i>Promedio Técnico por proceso — equipo COD</div>
-      <div style="position:relative;height:220px;"><canvas id="cBarTec"></canvas></div>
+      <div style="position:relative;height:220px;"><canvas id="cBarTec" width="543" height="220" style="display: block; box-sizing: border-box; height: 220px; width: 543px;"></canvas></div>
     </div>
     <div class="card">
       <div class="ct"><i class="ti ti-chart-radar"></i>Perfil de Liderazgo — equipo COD</div>
-      <div style="position:relative;height:220px;"><canvas id="cRadarDash"></canvas></div>
+      <div style="position:relative;height:220px;"><canvas id="cRadarDash" width="543" height="220" style="display: block; box-sizing: border-box; height: 220px; width: 543px;"></canvas></div>
     </div>
   </div>
   <div class="card">
     <div class="ct"><i class="ti ti-star"></i>Últimas evaluaciones individuales</div>
-    <div id="topTbl"></div>
+    <div id="topTbl"><table class="pt"><thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Fecha</th><th>Técnico</th><th>Liderazgo</th><th>Estado</th></tr></thead><tbody><tr><td><strong>NUÑEZ HERNAN</strong></td><td><span class="badge bt">JTMT</span></td><td>Diagnóstico</td><td>2026-07-29</td>
+    <td style="color:#f39c12;font-weight:600">2.6/4</td>
+    <td style="color:#2BA888;font-weight:600">3.0/4</td>
+    <td style="font-size:10px;color:#f39c12">basico</td></tr><tr><td><strong>BARRERA WALTER</strong></td><td><span class="badge bs">SCOD</span></td><td>Diagnóstico</td><td>2026-06-20</td>
+    <td style="color:#f39c12;font-weight:600">2.0/4</td>
+    <td style="color:#f39c12;font-weight:600">2.0/4</td>
+    <td style="font-size:10px;color:#f39c12">basico</td></tr><tr><td><strong>BARROS FRANCISCO</strong></td><td><span class="badge bs">SCOD</span></td><td>Diagnóstico</td><td>2026-06-20</td>
+    <td style="color:#c02133;font-weight:600">1.2/4</td>
+    <td style="color:#f39c12;font-weight:600">2.0/4</td>
+    <td style="font-size:10px;color:#c02133">inicial</td></tr><tr><td><strong>SQUIRE WALTER</strong></td><td><span class="badge bs">SCOD</span></td><td>Diagnóstico</td><td>2026-06-20</td>
+    <td style="color:#c02133;font-weight:600">1.1/4</td>
+    <td style="color:#f39c12;font-weight:600">2.0/4</td>
+    <td style="font-size:10px;color:#c02133">inicial</td></tr><tr><td><strong>ÑAÑEZ LUCIANO</strong></td><td><span class="badge bt">JTMT</span></td><td>Diagnóstico</td><td>2026-07-22</td>
+    <td style="color:#c02133;font-weight:600">1.2/4</td>
+    <td style="color:#c02133;font-weight:600">1.0/4</td>
+    <td style="font-size:10px;color:#c02133">inicial</td></tr></tbody></table></div>
   </div>
 </div>
 
@@ -346,11 +380,11 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
     <div id="plan-msg" style="margin:-6px 0 14px;font-size:13px;font-weight:500;min-height:18px;"></div>
 
     <div class="plan-tabs">
-      <button class="plan-tab on" onclick="showPlan('jcod',this)"><i class="ti ti-user"></i> Jefe COD</button>
-      <button class="plan-tab" onclick="showPlan('scod',this)"><i class="ti ti-user"></i> SubJefe COD</button>
-      <button class="plan-tab" onclick="showPlan('jtmt',this)"><i class="ti ti-user"></i> Jefe Turno MT</button>
-      <button class="plan-tab" onclick="showPlan('dup',this)"><i class="ti ti-users"></i> Procesos Compartidos (P-DUP)</button>
-      <button class="plan-tab" onclick="showPlan('tec',this)"><i class="ti ti-tool"></i> Expertiz + SHyMA</button>
+      <button class="plan-tab on" onclick="showPlan(&#39;jcod&#39;,this)"><i class="ti ti-user"></i> Jefe COD</button>
+      <button class="plan-tab" onclick="showPlan(&#39;scod&#39;,this)"><i class="ti ti-user"></i> SubJefe COD</button>
+      <button class="plan-tab" onclick="showPlan(&#39;jtmt&#39;,this)"><i class="ti ti-user"></i> Jefe Turno MT</button>
+      <button class="plan-tab" onclick="showPlan(&#39;dup&#39;,this)"><i class="ti ti-users"></i> Procesos Compartidos (P-DUP)</button>
+      <button class="plan-tab" onclick="showPlan(&#39;tec&#39;,this)"><i class="ti ti-tool"></i> Expertiz + SHyMA</button>
     </div>
 
     <!-- JEFE COD -->
@@ -594,7 +628,7 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
         </select>
       </div>
       <div class="fg"><label>Evaluación cargada</label>
-        <select id="q-registro" onchange="renderQResultado()" disabled>
+        <select id="q-registro" onchange="renderQResultado()" disabled="">
           <option value="">—</option>
         </select>
       </div>
@@ -717,7 +751,196 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
     </div>
   </div>
 
-  <div id="equipoGrid"></div>
+  <div id="equipoGrid">
+    <div class="equipo-comp">
+      <div class="eq-header">
+        <div>
+          <div class="eq-name">Habilidad y agilidad para alcanzar resultados</div>
+          <div class="eq-desc">Capacidad para orientar las acciones al logro de objetivos operativos, priorizando tareas y manteniendo el foco bajo presión.</div>
+        </div>
+      </div>
+      <div class="eq-btns">
+        
+          <button class="eqb" id="eqb-L1-1" onclick="setEq(&#39;L1&#39;,1)">
+            <span class="en">1</span>
+            <span class="el">No observable</span>
+          </button>
+          <button class="eqb" id="eqb-L1-2" onclick="setEq(&#39;L1&#39;,2)">
+            <span class="en">2</span>
+            <span class="el">En desarrollo</span>
+          </button>
+          <button class="eqb" id="eqb-L1-3" onclick="setEq(&#39;L1&#39;,3)">
+            <span class="en">3</span>
+            <span class="el">Consolidado</span>
+          </button>
+          <button class="eqb" id="eqb-L1-4" onclick="setEq(&#39;L1&#39;,4)">
+            <span class="en">4</span>
+            <span class="el">Referente colectivo</span>
+          </button>
+      </div>
+    </div>
+    <div class="equipo-comp">
+      <div class="eq-header">
+        <div>
+          <div class="eq-name">Gestión del cambio e incertidumbre operativa</div>
+          <div class="eq-desc">Capacidad para adaptarse a situaciones nuevas, gestionar contingencias y mantener la calma del equipo ante escenarios inciertos.</div>
+        </div>
+      </div>
+      <div class="eq-btns">
+        
+          <button class="eqb" id="eqb-L2-1" onclick="setEq(&#39;L2&#39;,1)">
+            <span class="en">1</span>
+            <span class="el">No observable</span>
+          </button>
+          <button class="eqb" id="eqb-L2-2" onclick="setEq(&#39;L2&#39;,2)">
+            <span class="en">2</span>
+            <span class="el">En desarrollo</span>
+          </button>
+          <button class="eqb" id="eqb-L2-3" onclick="setEq(&#39;L2&#39;,3)">
+            <span class="en">3</span>
+            <span class="el">Consolidado</span>
+          </button>
+          <button class="eqb" id="eqb-L2-4" onclick="setEq(&#39;L2&#39;,4)">
+            <span class="en">4</span>
+            <span class="el">Referente colectivo</span>
+          </button>
+      </div>
+    </div>
+    <div class="equipo-comp">
+      <div class="eq-header">
+        <div>
+          <div class="eq-name">Comunicación y coordinación operativa</div>
+          <div class="eq-desc">Transmite información con claridad, escucha activamente y coordina acciones entre áreas con efectividad.</div>
+        </div>
+      </div>
+      <div class="eq-btns">
+        
+          <button class="eqb" id="eqb-L3-1" onclick="setEq(&#39;L3&#39;,1)">
+            <span class="en">1</span>
+            <span class="el">No observable</span>
+          </button>
+          <button class="eqb" id="eqb-L3-2" onclick="setEq(&#39;L3&#39;,2)">
+            <span class="en">2</span>
+            <span class="el">En desarrollo</span>
+          </button>
+          <button class="eqb" id="eqb-L3-3" onclick="setEq(&#39;L3&#39;,3)">
+            <span class="en">3</span>
+            <span class="el">Consolidado</span>
+          </button>
+          <button class="eqb" id="eqb-L3-4" onclick="setEq(&#39;L3&#39;,4)">
+            <span class="en">4</span>
+            <span class="el">Referente colectivo</span>
+          </button>
+      </div>
+    </div>
+    <div class="equipo-comp">
+      <div class="eq-header">
+        <div>
+          <div class="eq-name">Comunicación asertiva</div>
+          <div class="eq-desc">Expresa ideas, límites y necesidades de forma directa, respetuosa y constructiva en situaciones de tensión o conflicto operativo.</div>
+        </div>
+      </div>
+      <div class="eq-btns">
+        
+          <button class="eqb" id="eqb-L4-1" onclick="setEq(&#39;L4&#39;,1)">
+            <span class="en">1</span>
+            <span class="el">No observable</span>
+          </button>
+          <button class="eqb" id="eqb-L4-2" onclick="setEq(&#39;L4&#39;,2)">
+            <span class="en">2</span>
+            <span class="el">En desarrollo</span>
+          </button>
+          <button class="eqb" id="eqb-L4-3" onclick="setEq(&#39;L4&#39;,3)">
+            <span class="en">3</span>
+            <span class="el">Consolidado</span>
+          </button>
+          <button class="eqb" id="eqb-L4-4" onclick="setEq(&#39;L4&#39;,4)">
+            <span class="en">4</span>
+            <span class="el">Referente colectivo</span>
+          </button>
+      </div>
+    </div>
+    <div class="equipo-comp">
+      <div class="eq-header">
+        <div>
+          <div class="eq-name">Desarrollo de personas y conducción de equipos</div>
+          <div class="eq-desc">Lidera, motiva y desarrolla al equipo operativo. Delega adecuadamente y genera un clima de trabajo colaborativo y de alto rendimiento.</div>
+        </div>
+      </div>
+      <div class="eq-btns">
+        
+          <button class="eqb" id="eqb-L5-1" onclick="setEq(&#39;L5&#39;,1)">
+            <span class="en">1</span>
+            <span class="el">No observable</span>
+          </button>
+          <button class="eqb" id="eqb-L5-2" onclick="setEq(&#39;L5&#39;,2)">
+            <span class="en">2</span>
+            <span class="el">En desarrollo</span>
+          </button>
+          <button class="eqb" id="eqb-L5-3" onclick="setEq(&#39;L5&#39;,3)">
+            <span class="en">3</span>
+            <span class="el">Consolidado</span>
+          </button>
+          <button class="eqb" id="eqb-L5-4" onclick="setEq(&#39;L5&#39;,4)">
+            <span class="en">4</span>
+            <span class="el">Referente colectivo</span>
+          </button>
+      </div>
+    </div>
+    <div class="equipo-comp">
+      <div class="eq-header">
+        <div>
+          <div class="eq-name">Feedback</div>
+          <div class="eq-desc">Brinda retroalimentación oportuna, específica y orientada al desarrollo. Reconoce logros y aborda desvíos con enfoque constructivo.</div>
+        </div>
+      </div>
+      <div class="eq-btns">
+        
+          <button class="eqb" id="eqb-L6-1" onclick="setEq(&#39;L6&#39;,1)">
+            <span class="en">1</span>
+            <span class="el">No observable</span>
+          </button>
+          <button class="eqb" id="eqb-L6-2" onclick="setEq(&#39;L6&#39;,2)">
+            <span class="en">2</span>
+            <span class="el">En desarrollo</span>
+          </button>
+          <button class="eqb" id="eqb-L6-3" onclick="setEq(&#39;L6&#39;,3)">
+            <span class="en">3</span>
+            <span class="el">Consolidado</span>
+          </button>
+          <button class="eqb" id="eqb-L6-4" onclick="setEq(&#39;L6&#39;,4)">
+            <span class="en">4</span>
+            <span class="el">Referente colectivo</span>
+          </button>
+      </div>
+    </div>
+    <div class="equipo-comp">
+      <div class="eq-header">
+        <div>
+          <div class="eq-name">Escucha activa</div>
+          <div class="eq-desc">Presta atención genuina a lo que dice el equipo, valida las ideas recibidas y genera espacios de diálogo antes de decidir.</div>
+        </div>
+      </div>
+      <div class="eq-btns">
+        
+          <button class="eqb" id="eqb-L7-1" onclick="setEq(&#39;L7&#39;,1)">
+            <span class="en">1</span>
+            <span class="el">No observable</span>
+          </button>
+          <button class="eqb" id="eqb-L7-2" onclick="setEq(&#39;L7&#39;,2)">
+            <span class="en">2</span>
+            <span class="el">En desarrollo</span>
+          </button>
+          <button class="eqb" id="eqb-L7-3" onclick="setEq(&#39;L7&#39;,3)">
+            <span class="en">3</span>
+            <span class="el">Consolidado</span>
+          </button>
+          <button class="eqb" id="eqb-L7-4" onclick="setEq(&#39;L7&#39;,4)">
+            <span class="en">4</span>
+            <span class="el">Referente colectivo</span>
+          </button>
+      </div>
+    </div></div>
 
   <div class="res-box" id="resEquipo" style="margin-bottom:14px;">
     <div class="res-item"><div class="res-num" id="eqNum">—</div><div class="res-lbl">Promedio equipo / 4</div></div>
@@ -823,8 +1046,8 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
   <div class="card">
     <div class="ct"><i class="ti ti-address-book"></i>Historial de evaluaciones</div>
     <div class="rtabs">
-      <button class="rtab on" onclick="filP('individual',this)">Individuales</button>
-      <button class="rtab" onclick="filP('equipo',this)">Equipo</button>
+      <button class="rtab on" onclick="filP(&#39;individual&#39;,this)">Individuales</button>
+      <button class="rtab" onclick="filP(&#39;equipo&#39;,this)">Equipo</button>
     </div>
     <div style="overflow-x:auto;"><table class="pt" id="pTbl"></table></div>
   </div>
@@ -1475,3 +1698,1271 @@ function guardarIndividual(){
       .catch(e=>{ msg.style.color='var(--r)'; msg.textContent='⚠ Error: '+e.message; });
   }
 }
+
+function limpiarIndividual(){
+  document.getElementById('i-nom').value='';
+  document.getElementById('i-rol').value='';
+  document.getElementById('i-eval').value='';
+  document.getElementById('matricesWrap').style.display='none';
+  scoreTec={}; scoreLider={};
+  editKey = null;
+  document.getElementById('editBanner').style.display='none';
+  document.getElementById('btnGuardarInd').innerHTML = '<i class="ti ti-device-floppy"></i>Guardar evaluación individual';
+}
+
+// ════════════════════════════════════════════════════════════
+//  VER Y EDITAR UNA EVALUACIÓN YA GUARDADA (aunque esté en Firebase)
+// ════════════════════════════════════════════════════════════
+function pintarScoresGuardados(rol){
+  // Repinta visualmente los botones 1-2-3-4 de la matriz técnica y de liderazgo
+  // según los valores ya cargados en scoreTec / scoreLider (usado al editar).
+  const todos = [...(PROCS_TEC[rol]||[]), ...PROCS_DUP];
+  todos.forEach(p=>{
+    const v = scoreTec[p.id];
+    [1,2,3,4].forEach(n=>{
+      const b = document.getElementById(`tec-${p.id}-${n}`);
+      if(b) b.className = 'ss'+(n===v?' s'+n:'');
+    });
+  });
+  COMPS_LIDER.forEach(c=>{
+    const v = scoreLider[c.id];
+    [1,2,3,4].forEach(n=>{
+      const b = document.getElementById(`lb-${c.id}-${n}`);
+      if(b) b.className = 'lb'+(n===v?' sel-'+n:'');
+    });
+  });
+  calcTec();
+  calcLider();
+}
+
+function editarRegistro(fbKey){
+  const rec = DATA_IND.find(x=>x.fbKey===fbKey);
+  if(!rec) return;
+
+  editKey = fbKey;
+
+  document.getElementById('i-nom').value   = rec.nom;
+  document.getElementById('i-rol').value   = rec.rol;
+  document.getElementById('i-eval').value  = rec.eval  || '';
+  document.getElementById('i-inst').value  = rec.inst  || 'diagnostico';
+  document.getElementById('i-fecha').value = rec.fecha || new Date().toISOString().split('T')[0];
+
+  document.getElementById('matricesWrap').style.display='block';
+  scoreTec   = {...(rec.scoreTec   || {})};
+  scoreLider = {...(rec.scoreLider || {})};
+  buildMatrizTec(rec.rol);
+  buildMatrizLider();
+  pintarScoresGuardados(rec.rol);
+
+  document.getElementById('editBannerNom').textContent = rec.nom + ' (' + (INST_N[rec.inst]||rec.inst) + ' · ' + rec.fecha + ')';
+  document.getElementById('editBanner').style.display='flex';
+  document.getElementById('editBanner').style.alignItems='center';
+  document.getElementById('editBanner').style.flexWrap='wrap';
+  document.getElementById('editBanner').style.gap='8px';
+  document.getElementById('btnGuardarInd').innerHTML = '<i class="ti ti-device-floppy"></i>Actualizar evaluación guardada';
+
+  document.querySelector('#s-individual .card').scrollIntoView({behavior:'smooth', block:'start'});
+  notif('✏️ Editando la evaluación de '+rec.nom+' — los cambios se guardarán sobre el registro existente.');
+}
+
+function cancelarEdicion(){
+  limpiarIndividual();
+  notif('Edición cancelada.');
+}
+
+// ════════════════════════════════════════════════════════════
+//  CONSULTAR EVALUACIONES CARGADAS (Planilla Técnica) — por rol e individualmente
+// ════════════════════════════════════════════════════════════
+function onQRolChange(){
+  populateQPersonas();
+  document.getElementById('q-registro').innerHTML = '<option value="">—</option>';
+  document.getElementById('q-registro').disabled = true;
+  renderQResultado();
+}
+
+function populateQPersonas(){
+  const rol = document.getElementById('q-rol').value;
+  const sel = document.getElementById('q-persona');
+  const cur = sel.value;
+  const base = rol ? DATA_IND.filter(x=>x.rol===rol) : DATA_IND;
+  const nombres = [...new Set(base.map(x=>x.nom))].sort((a,b)=>a.localeCompare(b,'es'));
+  sel.innerHTML = '<option value="">Todas las personas'+(rol?' — '+ROLE_N[rol]:'')+'</option>' +
+    nombres.map(n=>`<option value="${n.replace(/"/g,'&quot;')}">${n}</option>`).join('');
+  if(nombres.includes(cur)) sel.value = cur; else sel.value = '';
+}
+
+function onQPersonaChange(){
+  populateQRegistros();
+  renderQResultado();
+}
+
+function populateQRegistros(){
+  const persona = document.getElementById('q-persona').value;
+  const rol = document.getElementById('q-rol').value;
+  const sel = document.getElementById('q-registro');
+  if(!persona){ sel.innerHTML = '<option value="">—</option>'; sel.disabled = true; return; }
+  const regs = DATA_IND.filter(x=>x.nom===persona && (!rol||x.rol===rol)).sort((a,b)=>(b.ts||0)-(a.ts||0));
+  sel.disabled = false;
+  sel.innerHTML = '<option value="">Evaluación más reciente</option>' +
+    regs.map(r=>`<option value="${r.fbKey}">${INST_N[r.inst]||r.inst} — ${r.fecha} · ${ROLE_N[r.rol]}</option>`).join('');
+}
+
+function qFiltrados(){
+  const rol = document.getElementById('q-rol').value;
+  const persona = document.getElementById('q-persona').value;
+  let d = [...DATA_IND];
+  if(rol) d = d.filter(x=>x.rol===rol);
+  if(persona) d = d.filter(x=>x.nom===persona);
+  return d.sort((a,b)=>(b.ts||0)-(a.ts||0));
+}
+
+function renderQResultado(){
+  const persona = document.getElementById('q-persona').value;
+  const regKey  = document.getElementById('q-registro').value;
+  const resumenWrap = document.getElementById('qResumenWrap');
+  const detalleWrap = document.getElementById('qDetalleWrap');
+
+  if(!persona){
+    // Sin persona seleccionada: listado resumen filtrado por rol (o todos)
+    detalleWrap.innerHTML = '';
+    if(!DATA_IND.length){
+      resumenWrap.innerHTML = '<p style="font-size:11px;color:var(--tm);padding:10px 0;">Todavía no hay evaluaciones cargadas en Firebase.</p>';
+      return;
+    }
+    const d = qFiltrados();
+    const rc = {JCOD:'bj',SCOD:'bs',JTMT:'bt'};
+    let h = '<div class="mx-wrap" style="margin-top:8px;"><table class="pt"><thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Fecha</th><th>Técnico</th><th>Liderazgo</th><th>Estado</th><th></th></tr></thead><tbody>';
+    if(!d.length) h += '<tr><td colspan="8" style="text-align:center;padding:16px;color:var(--tm)">Sin coincidencias para el filtro seleccionado</td></tr>';
+    d.forEach(x=>{
+      const est = x.shyBad?'⛔ SHyMA':x.estadoTec==='avanzado'?'✅ Avanzado':x.estadoTec==='competente'?'✅ Competente':x.estadoTec==='basico'?'🔄 Básico':'⚠ Inicial';
+      h += `<tr><td><strong>${x.nom}</strong></td><td><span class="badge ${rc[x.rol]}">${x.rol}</span></td><td>${INST_N[x.inst]||x.inst}</td><td>${x.fecha}</td>
+      <td style="color:${scColor(x.avgTec)};font-weight:600">${(x.avgTec||0).toFixed(1)}/4</td>
+      <td style="color:${scColor(x.avgLid)};font-weight:600">${(x.avgLid||0).toFixed(1)}/4</td>
+      <td style="font-size:10px;color:${scColor(x.avgTec)}">${est}</td>
+      <td><button class="bsec" style="padding:5px 10px;font-size:10px;" onclick="verRegistroQ('${x.fbKey}')"><i class="ti ti-eye"></i> Ver detalle</button></td></tr>`;
+    });
+    h += '</tbody></table></div>';
+    resumenWrap.innerHTML = h;
+    return;
+  }
+
+  // Persona seleccionada: mostrar el detalle cargado (registro elegido o el más reciente)
+  const rol = document.getElementById('q-rol').value;
+  const regs = DATA_IND.filter(x=>x.nom===persona && (!rol||x.rol===rol)).sort((a,b)=>(b.ts||0)-(a.ts||0));
+  if(!regs.length){
+    resumenWrap.innerHTML = '<p style="font-size:11px;color:var(--tm);padding:10px 0;">No hay evaluaciones cargadas para esta persona.</p>';
+    detalleWrap.innerHTML = '';
+    return;
+  }
+  const rec = (regKey && DATA_IND.find(x=>x.fbKey===regKey)) || regs[0];
+  resumenWrap.innerHTML = regs.length>1
+    ? `<p style="font-size:10px;color:var(--tm);padding:8px 0 0;">${regs.length} evaluaciones cargadas para ${persona}. Elegí una instancia en "Evaluación cargada" para ver otra.</p>`
+    : '';
+  renderDetalleCargado(rec);
+}
+
+function verRegistroQ(fbKey){
+  const rec = DATA_IND.find(x=>x.fbKey===fbKey);
+  if(!rec) return;
+  document.getElementById('q-rol').value = rec.rol;
+  populateQPersonas();
+  document.getElementById('q-persona').value = rec.nom;
+  populateQRegistros();
+  document.getElementById('q-registro').value = rec.fbKey;
+  renderQResultado();
+  document.getElementById('consultaCard').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function filaDetalleQ(p, scoreTecRec){
+  const v = scoreTecRec ? scoreTecRec[p.id] : null;
+  const shymaStyle = p.shyma ? 'border-left:3px solid #c02133;' : '';
+  return `<tr><td class="pn" style="${shymaStyle}"><span class="pc">${p.id}${p.shyma?' ⚡':''}</span>${p.n}</td>
+  <td class="avg-cell" style="color:${scColor(v)}">${v||'—'}</td></tr>`;
+}
+
+function renderDetalleCargado(rec){
+  const wrap = document.getElementById('qDetalleWrap');
+  if(!rec){ wrap.innerHTML=''; return; }
+  const propsRol = PROCS_TEC[rec.rol] || [];
+  const rc = {JCOD:'bj',SCOD:'bs',JTMT:'bt'};
+  const est = rec.shyBad?'⛔ No habilitado (SHyMA)':rec.estadoTec==='avanzado'?'✅ Avanzado Referente':rec.estadoTec==='competente'?'✅ Competente Autónomo':rec.estadoTec==='basico'?'🔄 Básico Supervisado':'⚠ Inicial — Requiere plan';
+
+  let h = `<div class="sec-divider"><span>Detalle cargado — ${rec.nom}</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;">
+    <span class="badge ${rc[rec.rol]}">${ROLE_N[rec.rol]}</span>
+    <span style="font-size:11px;color:var(--tm);">${INST_N[rec.inst]||rec.inst} · ${rec.fecha}${rec.eval?' · Evaluador: '+rec.eval:''}</span>
+    <button class="bp" style="padding:6px 14px;font-size:11px;margin-left:auto;" onclick="editarRegistro('${rec.fbKey}')"><i class="ti ti-pencil"></i> Editar esta evaluación</button>
+  </div>`;
+
+  h += '<div class="mx-wrap"><table class="mx-tbl"><thead><tr><th class="proc-h">Proceso técnico</th><th style="width:110px">Puntaje cargado</th></tr></thead><tbody>';
+  if(propsRol.length){
+    h += `<tr><td colspan="2" style="background:#f0faf6;text-align:left;font-size:10px;font-weight:700;color:var(--gd);padding:8px 10px;text-transform:uppercase;letter-spacing:.5px;">Procesos exclusivos del rol — ${ROLE_N[rec.rol]}</td></tr>`;
+    propsRol.forEach(p=>{ h += filaDetalleQ(p, rec.scoreTec); });
+  }
+  h += `<tr><td colspan="2" style="background:#f0faf6;text-align:left;font-size:10px;font-weight:700;color:#1a5276;padding:8px 10px;text-transform:uppercase;letter-spacing:.5px;">Procesos compartidos (P-DUP) + Expertiz Técnica y Seguridad</td></tr>`;
+  PROCS_DUP.forEach(p=>{ h += filaDetalleQ(p, rec.scoreTec); });
+  h += `<tr style="background:var(--bg)"><td class="pn" style="font-weight:700;color:var(--gd)">PROMEDIO TÉCNICO TOTAL</td><td class="avg-cell" style="color:${scColor(rec.avgTec)}">${(rec.avgTec||0).toFixed(1)}</td></tr>`;
+  h += '</tbody></table></div>';
+
+  if(rec.shyBad){
+    h += `<div class="shyma-alert" style="display:block;margin-top:10px;">⛔ ALERTA SHyMA cargada en esta evaluación — la persona no puede ser habilitada independientemente del puntaje total.</div>`;
+  }
+
+  h += `<div class="res-box" style="margin-top:12px;">
+    <div class="res-item"><div class="res-num" style="color:${scColor(rec.avgTec)}">${(rec.avgTec||0).toFixed(1)}</div><div class="res-lbl">Promedio técnico / 4</div></div>
+    <div class="res-item"><div class="res-num">${rec.avgTec?Math.round((rec.avgTec/4)*100)+'%':'—'}</div><div class="res-lbl">% sobre nivel requerido</div></div>
+    <div class="res-item"><div class="res-num" style="font-size:12px;color:${scColor(rec.avgTec)}">${est}</div><div class="res-lbl">Estado técnico</div></div>
+  </div>`;
+
+  h += '<div class="sec-divider" style="margin-top:18px;"><span>Liderazgo operativo cargado</span></div>';
+  h += '<div class="lider-grid">';
+  COMPS_LIDER.forEach(c=>{
+    const v = rec.scoreLider ? rec.scoreLider[c.id] : null;
+    h += `<div class="lider-comp"><div class="lc-name">${c.nombre}</div>
+      <div style="margin-top:6px;font-size:20px;font-weight:800;color:${scColor(v)}">${v||'—'}<span style="font-size:10px;font-weight:500;color:var(--tm)"> / 4</span></div></div>`;
+  });
+  h += '</div>';
+
+  h += `<div class="res-box" style="margin-top:12px;margin-bottom:4px;">
+    <div class="res-item"><div class="res-num" style="color:${scColor(rec.avgLid)}">${(rec.avgLid||0).toFixed(1)}</div><div class="res-lbl">Promedio liderazgo / 4</div></div>
+    <div class="res-item"><div class="res-num">${rec.avgLid?Math.round((rec.avgLid/4)*100)+'%':'—'}</div><div class="res-lbl">% sobre nivel requerido</div></div>
+    <div class="res-item"><div class="res-num" style="font-size:12px;">${(INST_N[rec.inst]||rec.inst)}</div><div class="res-lbl">Instancia evaluada</div></div>
+  </div>`;
+
+  wrap.innerHTML = h;
+}
+
+// ════════════════════════════════════════════════════════════
+//  EVALUACIÓN DE EQUIPO
+// ════════════════════════════════════════════════════════════
+function buildEquipoGrid(){
+  const grid = document.getElementById('equipoGrid');
+  grid.innerHTML = COMPS_LIDER.map(c=>`
+    <div class="equipo-comp">
+      <div class="eq-header">
+        <div>
+          <div class="eq-name">${c.nombre}</div>
+          <div class="eq-desc">${c.desc}</div>
+        </div>
+      </div>
+      <div class="eq-btns">
+        ${[1,2,3,4].map(v=>`
+          <button class="eqb" id="eqb-${c.id}-${v}" onclick="setEq('${c.id}',${v})">
+            <span class="en">${v}</span>
+            <span class="el">${['No observable','En desarrollo','Consolidado','Referente colectivo'][v-1]}</span>
+          </button>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function setEq(cid, val){
+  scoreEq[cid] = val;
+  [1,2,3,4].forEach(v=>{
+    const b = document.getElementById(`eqb-${cid}-${v}`);
+    if(b) b.className = 'eqb'+(v===val?' sel-'+v:'');
+  });
+  calcEq();
+}
+
+function calcEq(){
+  const vals = Object.values(scoreEq).filter(v=>v);
+  const tot = vals.length ? +(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : null;
+  document.getElementById('eqNum').textContent = tot||'—';
+  document.getElementById('eqPct').textContent = tot ? Math.round((tot/4)*100)+'%' : '—';
+  const est = estLider(tot);
+  const re = document.getElementById('eqEst');
+  re.textContent = est.t; re.style.color = est.c;
+}
+
+function guardarEquipo(){
+  const eval_ = document.getElementById('eq-eval').value.trim();
+  const inst  = document.getElementById('eq-inst').value;
+  const fecha = document.getElementById('eq-fecha').value || new Date().toISOString().split('T')[0];
+  const obs   = document.getElementById('eq-obs').value.trim();
+  const msg   = document.getElementById('eq-msg');
+
+  const vals = Object.values(scoreEq).filter(v=>v);
+  if(!vals.length){ msg.style.color='var(--r)'; msg.textContent='⚠ Completá al menos una competencia.'; return; }
+
+  const avgEq = +(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2);
+  let estadoEq;
+  if(avgEq>=3.5) estadoEq='referente';
+  else if(avgEq>=3) estadoEq='consolidado';
+  else if(avgEq>=2) estadoEq='en_desarrollo';
+  else estadoEq='no_observable';
+
+  const rec = {eval:eval_, inst, fecha, obs, scoreEq:{...scoreEq}, avgEq, estadoEq, ts:Date.now()};
+  refEq.push(rec)
+    .then(()=>{
+      msg.style.color='var(--g)'; msg.textContent='✅ Evaluación de equipo guardada.';
+      notif('✅ Evaluación de equipo guardada en Firebase');
+      limpiarEquipo();
+      setTimeout(()=>msg.textContent='',4000);
+    })
+    .catch(e=>{ msg.style.color='var(--r)'; msg.textContent='⚠ Error: '+e.message; });
+}
+
+function limpiarEquipo(){
+  document.getElementById('eq-eval').value='';
+  document.getElementById('eq-obs').value='';
+  scoreEq={};
+  buildEquipoGrid();
+}
+
+// ════════════════════════════════════════════════════════════
+//  DASHBOARD
+// ════════════════════════════════════════════════════════════
+function renderDash(){
+  // Role cards — usa todos los registros sin agrupar por nombre
+  let rh='';
+  ['JCOD','SCOD','JTMT'].forEach(r=>{
+    const d=DATA_IND.filter(x=>x.rol===r);
+    const av=d.length?+(d.reduce((a,b)=>a+(b.avgTec||0),0)/d.length).toFixed(1):0;
+    const avL=d.length?+(d.reduce((a,b)=>a+(b.avgLid||0),0)/d.length).toFixed(1):0;
+    // Personas únicas por fbKey
+    const personas = new Set(d.map(x=>x.nom)).size;
+    const rc=r==='JCOD'?'rc-j':r==='SCOD'?'rc-s':'rc-t';
+    rh+=`<div class="rcard ${rc}">
+      <div style="font-size:9px;font-weight:600;color:var(--tm);margin-bottom:3px;">${ROLE_N[r]}</div>
+      <div class="rcn">${av||'—'}</div>
+      <div class="rcl">${personas} persona${personas!==1?'s':''} · ${d.length} evaluación${d.length!==1?'es':''}</div>
+      <div style="font-size:11px;font-weight:600;color:${scColor(avL)};margin-top:4px;">Liderazgo: ${avL||'—'}/4</div>
+    </div>`;
+  });
+  document.getElementById('rolCards').innerHTML=rh;
+
+  // Stats
+  const apt=DATA_IND.filter(d=>d.estadoTec==='avanzado'||d.estadoTec==='competente').length;
+  const dev=DATA_IND.filter(d=>d.estadoTec==='basico').length;
+  const mal=DATA_IND.filter(d=>d.estadoTec==='inicial'||d.estadoTec==='shyma').length;
+  document.getElementById('stats4').innerHTML=`
+    <div class="sc"><div class="sn">${DATA_IND.length}</div><div class="sl">Evaluaciones individuales</div></div>
+    <div class="sc"><div class="sn" style="color:#218570">${apt}</div><div class="sl">Aptos técnicos</div></div>
+    <div class="sc"><div class="sn" style="color:#f39c12">${dev}</div><div class="sl">Básico supervisado</div></div>
+    <div class="sc"><div class="sn" style="color:#c02133">${mal+DATA_EQ.length}</div><div class="sl">Inicial / Eval. equipo</div></div>`;
+
+  // Chart técnico — promedio por proceso (todos los roles)
+  const todosProcs = [...PROCS_DUP];
+  const avgPorProc = todosProcs.slice(0,8).map(p=>{
+    const vals=DATA_IND.map(d=>d.scoreTec?.[p.id]).filter(v=>v);
+    return vals.length?+(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):0;
+  });
+  if(cBarTec)cBarTec.destroy();
+  cBarTec=new Chart(document.getElementById('cBarTec').getContext('2d'),{type:'bar',data:{
+    labels:todosProcs.slice(0,8).map(p=>p.id),
+    datasets:[{data:avgPorProc,backgroundColor:avgPorProc.map(v=>v>=3.5?'#218570':v>=3?'#2BA888':v>=2?'#f39c12':'#c02133'),borderRadius:5}]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:4,ticks:{stepSize:1}},x:{ticks:{font:{size:9}}}}}});
+
+  // Radar liderazgo en dashboard
+  const avgLComp=COMPS_LIDER.map(c=>{
+    const vals=DATA_IND.map(d=>d.scoreLider?.[c.id]).filter(v=>v);
+    return vals.length?+(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1):0;
+  });
+  if(cRadarDash)cRadarDash.destroy();
+  cRadarDash=new Chart(document.getElementById('cRadarDash').getContext('2d'),{type:'radar',data:{
+    labels:COMPS_LIDER.map(c=>c.nombre.split(' ').slice(0,2).join(' ')),
+    datasets:[
+      {label:'Requerido',data:COMPS_LIDER.map(()=>4),borderColor:'#218570',backgroundColor:'rgba(33,133,112,.1)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#218570'},
+      {label:'Equipo',data:avgLComp,borderColor:'#c02133',backgroundColor:'rgba(192,33,51,.12)',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#c02133'}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:8}},pointLabels:{font:{size:9}}}},plugins:{legend:{display:false}}}});
+
+  // Top evaluaciones
+  const sorted=[...DATA_IND].sort((a,b)=>((b.avgTec||0)+(b.avgLid||0))-((a.avgTec||0)+(a.avgLid||0))).slice(0,5);
+  const rc2={JCOD:'bj',SCOD:'bs',JTMT:'bt'};
+  let th='<table class="pt"><thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Fecha</th><th>Técnico</th><th>Liderazgo</th><th>Estado</th></tr></thead><tbody>';
+  if(!sorted.length) th+='<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--tm)">Sin evaluaciones aún</td></tr>';
+  sorted.forEach(d=>{
+    const cT=scColor(d.avgTec); const cL=scColor(d.avgLid);
+    th+=`<tr><td><strong>${d.nom}</strong></td><td><span class="badge ${rc2[d.rol]}">${d.rol}</span></td><td>${INST_N[d.inst]||d.inst}</td><td>${d.fecha}</td>
+    <td style="color:${cT};font-weight:600">${(d.avgTec||0).toFixed(1)}/4</td>
+    <td style="color:${cL};font-weight:600">${(d.avgLid||0).toFixed(1)}/4</td>
+    <td style="font-size:10px;color:${cT}">${(d.estadoTec||'').replace('_',' ')}</td></tr>`;
+  });
+  document.getElementById('topTbl').innerHTML=th+'</tbody></table>';
+}
+
+// ════════════════════════════════════════════════════════════
+//  HISTORIAL
+// ════════════════════════════════════════════════════════════
+function filP(tipo,btn){
+  document.querySelectorAll('#s-personas .rtab').forEach(b=>b.classList.remove('on'));
+  if(btn)btn.classList.add('on');
+  pfiltro=tipo; renderPersonas(tipo);
+}
+function renderPersonas(tipo){
+  const rc={JCOD:'bj',SCOD:'bs',JTMT:'bt'};
+  let h='';
+  if(tipo==='individual'){
+    h='<thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Evaluador</th><th>Fecha</th><th>Técnico</th><th>Liderazgo</th><th>Estado Tec.</th><th></th></tr></thead><tbody>';
+    if(!DATA_IND.length) h+='<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--tm)">Sin registros</td></tr>';
+    [...DATA_IND].sort((a,b)=>(b.ts||0)-(a.ts||0)).forEach(d=>{
+      const cT=scColor(d.avgTec); const cL=scColor(d.avgLid);
+      const est=d.shyBad?'⛔ SHyMA':d.estadoTec==='avanzado'?'✅ Avanzado':d.estadoTec==='competente'?'✅ Competente':d.estadoTec==='basico'?'🔄 Básico':'⚠ Inicial';
+      h+=`<tr><td><strong>${d.nom}</strong></td><td><span class="badge ${rc[d.rol]}">${d.rol}</span></td><td>${INST_N[d.inst]||d.inst}</td><td>${d.eval||'—'}</td><td>${d.fecha}</td>
+      <td style="color:${cT};font-weight:600">${(d.avgTec||0).toFixed(1)}/4</td>
+      <td style="color:${cL};font-weight:600">${(d.avgLid||0).toFixed(1)}/4</td>
+      <td style="font-size:10px;color:${cT}">${est}</td>
+      <td><button class="bdel" onclick="delInd('${d.fbKey}')"><i class="ti ti-trash"></i></button></td></tr>`;
+    });
+  } else {
+    h='<thead><tr><th>Evaluador</th><th>Instancia</th><th>Fecha</th><th>Promedio Equipo</th><th>Estado</th><th>Observaciones</th><th></th></tr></thead><tbody>';
+    if(!DATA_EQ.length) h+='<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--tm)">Sin evaluaciones de equipo</td></tr>';
+    [...DATA_EQ].sort((a,b)=>new Date(b.fecha)-new Date(a.fecha)).forEach(d=>{
+      const c=scColor(d.avgEq);
+      const est=d.estadoEq==='referente'?'✅ Referente':d.estadoEq==='consolidado'?'✅ Consolidado':d.estadoEq==='en_desarrollo'?'🔄 En desarrollo':'⚠ No observable';
+      h+=`<tr><td>${d.eval||'—'}</td><td>${INST_N[d.inst]||d.inst}</td><td>${d.fecha}</td>
+      <td style="color:${c};font-weight:600">${(d.avgEq||0).toFixed(1)}/4</td>
+      <td style="color:${c};font-size:10px">${est}</td>
+      <td style="font-size:11px;color:var(--tm)">${d.obs||'—'}</td>
+      <td><button class="bdel" onclick="delEq('${d.fbKey}')"><i class="ti ti-trash"></i></button></td></tr>`;
+    });
+  }
+  document.getElementById('pTbl').innerHTML=h+'</tbody>';
+}
+function delInd(key){if(!confirm('¿Eliminar esta evaluación?'))return;refInd.child(key).remove().then(()=>notif('Evaluación eliminada'));}
+function delEq(key){if(!confirm('¿Eliminar esta evaluación de equipo?'))return;refEq.child(key).remove().then(()=>notif('Evaluación de equipo eliminada'));}
+
+// ════════════════════════════════════════════════════════════
+//  RADAR
+// ════════════════════════════════════════════════════════════
+function renderRadarTec(){
+  const rol=document.getElementById('rRolTec').value;
+  const evals=DATA_IND.filter(d=>d.rol===rol);
+  const todos=[...(PROCS_TEC[rol]||[]),...PROCS_DUP].slice(0,8);
+  const vals=todos.map(p=>{const v=evals.map(d=>d.scoreTec?.[p.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
+  if(cRadarTec)cRadarTec.destroy();
+  cRadarTec=new Chart(document.getElementById('cRadarTec').getContext('2d'),{type:'radar',data:{
+    labels:todos.map(p=>p.id),
+    datasets:[
+      {label:'Requerido',data:todos.map(()=>4),borderColor:'#218570',backgroundColor:'rgba(33,133,112,.1)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#218570'},
+      {label:'Real',data:vals,borderColor:'#c02133',backgroundColor:'rgba(192,33,51,.12)',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#c02133'}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:8}},pointLabels:{font:{size:9}}}},plugins:{legend:{display:false}}}});
+}
+
+function renderRadarLider(){
+  const modo=document.getElementById('rModLider').value;
+  let avgL;
+  if(modo==='equipo'){
+    avgL=COMPS_LIDER.map(c=>{const v=DATA_EQ.map(d=>d.scoreEq?.[c.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
+  } else {
+    avgL=COMPS_LIDER.map(c=>{const v=DATA_IND.map(d=>d.scoreLider?.[c.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
+  }
+  if(cRadarLider)cRadarLider.destroy();
+  cRadarLider=new Chart(document.getElementById('cRadarLider').getContext('2d'),{type:'radar',data:{
+    labels:COMPS_LIDER.map(c=>c.nombre.split(' ').slice(0,2).join(' ')),
+    datasets:[
+      {label:'Requerido',data:COMPS_LIDER.map(()=>4),borderColor:'#218570',backgroundColor:'rgba(33,133,112,.1)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#218570'},
+      {label:modo==='equipo'?'Equipo':'Individual',data:avgL,borderColor:'#1a5276',backgroundColor:'rgba(26,82,118,.12)',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#1a5276'}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:8}},pointLabels:{font:{size:9}}}},plugins:{legend:{display:false}}}});
+}
+
+function renderBrecha(){
+  const avgL=COMPS_LIDER.map(c=>{const v=DATA_IND.map(d=>d.scoreLider?.[c.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
+  const brechas=avgL.map(v=>+(4-v).toFixed(1));
+  if(cBrecha)cBrecha.destroy();
+  cBrecha=new Chart(document.getElementById('cBrecha').getContext('2d'),{type:'bar',data:{
+    labels:COMPS_LIDER.map(c=>c.nombre.split(' ').slice(0,3).join(' ')),
+    datasets:[
+      {label:'Nivel alcanzado',data:avgL,backgroundColor:'#218570',borderRadius:4},
+      {label:'Brecha',data:brechas,backgroundColor:'rgba(192,33,51,.3)',borderRadius:4}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:9},boxWidth:9}}},scales:{x:{stacked:true,ticks:{font:{size:9},maxRotation:30}},y:{stacked:true,min:0,max:4}}}});
+}
+
+// ════════════════════════════════════════════════════════════
+//  TENDENCIA
+// ════════════════════════════════════════════════════════════
+function renderTendTec(){
+  const rFil=document.getElementById('tRolTec').value;
+  const roles=rFil==='all'?['JCOD','SCOD','JTMT']:[rFil];
+  const insts=['diagnostico','seguimiento','certificacion'];
+  const ds=roles.map(r=>({
+    label:ROLE_N[r],
+    data:insts.map(i=>{const ev=DATA_IND.filter(d=>d.rol===r&&d.inst===i);return ev.length?+(ev.reduce((a,b)=>a+(b.avgTec||0),0)/ev.length).toFixed(1):null;}),
+    borderColor:ROLE_C[r],backgroundColor:ROLE_C[r]+'22',borderWidth:2.5,pointRadius:5,pointBackgroundColor:ROLE_C[r],fill:true,tension:.35,spanGaps:true
+  }));
+  if(cTendTec)cTendTec.destroy();
+  cTendTec=new Chart(document.getElementById('cTendTec').getContext('2d'),{type:'line',data:{labels:['Diagnóstico','Seguimiento','Certificación'],datasets:ds},options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:1,max:4,ticks:{callback:v=>['','Inicial','Básico','Competente','Avanzado'][v]||v,font:{size:9}}}},plugins:{legend:{display:true,position:'bottom',labels:{font:{size:9},boxWidth:9}}}}});
+}
+
+function renderTendLider(){
+  const insts=['diagnostico','seguimiento','certificacion','cierre'];
+  const dsInd={
+    label:'Individual (promedio)',
+    data:insts.map(i=>{const ev=DATA_IND.filter(d=>d.inst===i);return ev.length?+(ev.reduce((a,b)=>a+(b.avgLid||0),0)/ev.length).toFixed(1):null;}),
+    borderColor:'#218570',backgroundColor:'rgba(33,133,112,.15)',borderWidth:2.5,pointRadius:5,pointBackgroundColor:'#218570',fill:true,tension:.35,spanGaps:true
+  };
+  const dsEq={
+    label:'Equipo',
+    data:insts.map(i=>{const ev=DATA_EQ.filter(d=>d.inst===i);return ev.length?+(ev.reduce((a,b)=>a+(b.avgEq||0),0)/ev.length).toFixed(1):null;}),
+    borderColor:'#1a5276',backgroundColor:'rgba(26,82,118,.1)',borderWidth:2.5,pointRadius:5,pointBackgroundColor:'#1a5276',fill:true,tension:.35,spanGaps:true,borderDash:[6,3]
+  };
+  if(cTendLider)cTendLider.destroy();
+  cTendLider=new Chart(document.getElementById('cTendLider').getContext('2d'),{type:'line',data:{labels:['Diagnóstico','Seguimiento','Certificación','Cierre'],datasets:[dsInd,dsEq]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{min:1,max:4,ticks:{callback:v=>['','No obs.','En des.','Consol.','Referente'][v]||v,font:{size:9}}}},plugins:{legend:{display:true,position:'bottom',labels:{font:{size:9},boxWidth:9}}}}});
+}
+
+function renderAlertas(){
+  let alerts='';
+  DATA_IND.forEach(d=>{
+    const prev=DATA_IND.filter(x=>x.nom===d.nom&&x.rol===d.rol&&new Date(x.fecha)<new Date(d.fecha)).sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
+    if(prev.length){
+      const dT=(d.avgTec||0)-(prev[0].avgTec||0);
+      const dL=(d.avgLid||0)-(prev[0].avgLid||0);
+      if(dT>=0.5) alerts+=`<div class="al al-g">📈 <strong>${d.nom}</strong> mejoró <strong>+${dT.toFixed(1)} pts técnicos</strong> entre evaluaciones.</div>`;
+      if(dT<=-0.5) alerts+=`<div class="al al-a">📉 <strong>${d.nom}</strong> bajó ${Math.abs(dT).toFixed(1)} pts técnicos. Revisar con el tutor.</div>`;
+      if(dL>=0.5) alerts+=`<div class="al al-g">🌟 <strong>${d.nom}</strong> mejoró <strong>+${dL.toFixed(1)} pts de liderazgo</strong>.</div>`;
+    }
+    if(d.shyBad) alerts+=`<div class="al al-r">⛔ <strong>${d.nom}</strong> activó override SHyMA el ${d.fecha}. No habilitado.</div>`;
+  });
+  document.getElementById('alertas').innerHTML=alerts||'<div style="color:var(--tm);text-align:center;padding:20px;font-size:12px;">Registrá múltiples evaluaciones para ver alertas automáticas.</div>';
+}
+
+// ════════════════════════════════════════════════════════════
+//  PLANILLAS TÉCNICAS
+// ════════════════════════════════════════════════════════════
+const planScores = {};
+
+// Agrupación de ids de la planilla (reutilizada también para guardar en Firebase)
+const PLAN_GRUPOS = {
+  jcod:  ['jcod-01','jcod-02','jcod-03','jcod-04','jcod-05'],
+  scod:  ['scod-01','scod-02','scod-03'],
+  jtmt:  ['jtmt-01','jtmt-02','jtmt-03'],
+  dup:   ['dup-01','dup-02','dup-03','dup-04','dup-05','dup-06','dup-07','dup-08','dup-09','dup-10','dup-11','dup-12','dup-13','dup-14','dup-15'],
+  tec:   ['tec-01','tec-02'],
+};
+const ROL_TAB_TO_FB = {jcod:'JCOD', scod:'SCOD', jtmt:'JTMT'};
+let currentRolTab = 'jcod'; // último tab de rol (jcod/scod/jtmt) visitado — dup y tec cuelgan de este rol
+
+// Helper que genera HTML de botones 1-2-3-4 para una planilla
+function planBtns(id){
+  return [1,2,3,4].map(v=>`<button class="ps" id="ps-btn-${id}-${v}" onclick="setPlan('${id}',${v})">${v}</button>`).join('');
+}
+
+function setPlan(id, val){
+  planScores[id] = val;
+  [1,2,3,4].forEach(v=>{
+    const b = document.getElementById(`ps-btn-${id}-${v}`);
+    if(b) b.className = 'ps'+(v===val?' sel-'+v:'');
+  });
+  calcPlanTotal();
+}
+
+function calcPlanTotal(){
+  // Calcular por grupo y mostrar totales
+  const grupos = PLAN_GRUPOS;
+  Object.entries(grupos).forEach(([grupo, ids])=>{
+    const vals = ids.map(id=>planScores[id]).filter(v=>v);
+    const tot = vals.length ? +(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : null;
+    const pct = tot ? Math.round((tot/4)*100)+'%' : '—';
+    const nEl = document.getElementById('pn-'+grupo);
+    const pEl = document.getElementById('pp-'+grupo);
+    const eEl = document.getElementById('pe-'+grupo);
+    if(nEl){ nEl.textContent=tot||'—'; nEl.style.color=scColor(tot); }
+    if(pEl){ pEl.textContent=pct; }
+    if(eEl){
+      let est='—', col='var(--tm)';
+      if(grupo==='tec' && planScores['tec-02']===1){
+        est='⛔ No habilitado (SHyMA)'; col='#c02133';
+      } else if(tot>=3.5){est='✅ Avanzado Referente';col='#218570';}
+      else if(tot>=3){est='✅ Competente Autónomo';col='#218570';}
+      else if(tot>=2){est='🔄 Básico Supervisado';col='#f39c12';}
+      else if(tot){est='⚠ Inicial';col='#c02133';}
+      eEl.textContent=est; eEl.style.color=col;
+    }
+  });
+}
+
+function showPlan(id, btn){
+  document.querySelectorAll('.plan-tab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.plan-panel').forEach(p=>p.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  const el = document.getElementById('plan-'+id);
+  if(el) el.classList.add('on');
+  if(id==='jcod'||id==='scod'||id==='jtmt'){
+    currentRolTab = id;
+    document.getElementById('plan-rol-lbl').textContent = ROLE_N[ROL_TAB_TO_FB[id]];
+    populatePlanDatalist();
+    tryLoadExistingPlanilla();
+  }
+}
+
+const PLAN_IDS_ALL = [
+  'jcod-01','jcod-02','jcod-03','jcod-04','jcod-05',
+  'scod-01','scod-02','scod-03',
+  'jtmt-01','jtmt-02','jtmt-03',
+  'dup-01','dup-02','dup-03','dup-04','dup-05','dup-06','dup-07','dup-08',
+  'dup-09','dup-10','dup-11','dup-12','dup-13','dup-14','dup-15',
+  'tec-01','tec-02'
+];
+
+function initPlanillas(){
+  // Insertar botones en todos los contenedores de planillas
+  PLAN_IDS_ALL.forEach(id=>{
+    const cont = document.getElementById('ps-'+id);
+    if(cont && !cont.dataset.built){
+      cont.innerHTML = [1,2,3,4].map(v=>`<button class="ps${planScores[id]===v?' sel-'+v:''}" id="ps-btn-${id}-${v}" onclick="setPlan('${id}',${v})">${v}</button>`).join('');
+      cont.dataset.built='1';
+    }
+  });
+  calcPlanTotal();
+  if(!document.getElementById('plan-fecha').value){
+    document.getElementById('plan-fecha').value = new Date().toISOString().split('T')[0];
+  }
+  document.getElementById('plan-rol-lbl').textContent = ROLE_N[ROL_TAB_TO_FB[currentRolTab]];
+  populatePlanDatalist();
+}
+
+// ── conversión de ids de planilla ('jcod-01') <-> ids de Firebase ('P-JCOD-01') ──
+function planIdToFirebaseId(pid){
+  const i = pid.lastIndexOf('-');
+  return 'P-'+pid.slice(0,i).toUpperCase()+pid.slice(i);
+}
+function firebaseIdToPlanId(fid){
+  // 'P-JCOD-01' -> 'jcod-01'
+  const parts = fid.split('-');
+  return parts.slice(1,-1).join('-').toLowerCase()+'-'+parts[parts.length-1];
+}
+
+function pintarPlanBtns(){
+  PLAN_IDS_ALL.forEach(id=>{
+    const v = planScores[id];
+    [1,2,3,4].forEach(n=>{
+      const b = document.getElementById(`ps-btn-${id}-${n}`);
+      if(b) b.className = 'ps'+(n===v?' sel-'+n:'');
+    });
+  });
+  calcPlanTotal();
+}
+
+function populatePlanDatalist(){
+  const dl = document.getElementById('plan-persona-list');
+  if(!dl) return;
+  const rolFB = ROL_TAB_TO_FB[currentRolTab];
+  const nombres = [...new Set(DATA_IND.filter(x=>x.rol===rolFB).map(x=>x.nom))].sort((a,b)=>a.localeCompare(b,'es'));
+  dl.innerHTML = nombres.map(n=>`<option value="${n.replace(/"/g,'&quot;')}">`).join('');
+}
+
+function onPlanPersonaChange(){
+  tryLoadExistingPlanilla();
+}
+
+function tryLoadExistingPlanilla(){
+  const nom = document.getElementById('plan-persona').value.trim();
+  const status = document.getElementById('plan-persona-status');
+  const rolFB = ROL_TAB_TO_FB[currentRolTab];
+  if(!nom){
+    Object.keys(planScores).forEach(k=>delete planScores[k]);
+    pintarPlanBtns();
+    status.textContent = 'Escribí un nombre para empezar a cargar la planilla de '+ROLE_N[rolFB]+'.';
+    return;
+  }
+  const existing = DATA_IND.filter(x=>x.nom===nom && x.rol===rolFB).sort((a,b)=>(b.ts||0)-(a.ts||0))[0];
+  Object.keys(planScores).forEach(k=>delete planScores[k]);
+  if(existing && existing.scoreTec){
+    Object.entries(existing.scoreTec).forEach(([fid,val])=>{
+      planScores[firebaseIdToPlanId(fid)] = val;
+    });
+    status.innerHTML = `📋 Ya existe una evaluación cargada para <strong>${nom}</strong> (${ROLE_N[rolFB]}) — se precargaron sus puntajes. Al guardar, se actualiza ese mismo registro.`;
+  } else {
+    status.textContent = `✨ ${nom} (${ROLE_N[rolFB]}) es una persona/evaluación nueva — al guardar se creará un registro.`;
+  }
+  pintarPlanBtns();
+}
+
+function guardarPlanilla(){
+  const nom   = document.getElementById('plan-persona').value.trim();
+  const rolFB = ROL_TAB_TO_FB[currentRolTab];
+  const eval_ = document.getElementById('plan-eval').value.trim();
+  const inst  = document.getElementById('plan-inst').value;
+  const fecha = document.getElementById('plan-fecha').value || new Date().toISOString().split('T')[0];
+  const msg   = document.getElementById('plan-msg');
+
+  if(!nom){ msg.style.color='var(--r)'; msg.textContent='⚠ Escribí el nombre de la persona antes de guardar.'; return; }
+
+  const relevantIds = [...(PLAN_GRUPOS[currentRolTab]||[]), ...PLAN_GRUPOS.dup, ...PLAN_GRUPOS.tec];
+  const scoreTecFB = {};
+  relevantIds.forEach(pid=>{ if(planScores[pid]) scoreTecFB[planIdToFirebaseId(pid)] = planScores[pid]; });
+
+  const allProcsDefs = [...(PROCS_TEC[rolFB]||[]), ...PROCS_DUP];
+  const existing = DATA_IND.filter(x=>x.nom===nom && x.rol===rolFB).sort((a,b)=>(b.ts||0)-(a.ts||0))[0];
+
+  function estadoDeAvg(avg, shy){
+    if(shy) return 'shyma';
+    if(avg>=3.5) return 'avanzado';
+    if(avg>=3)   return 'competente';
+    if(avg>=2)   return 'basico';
+    return 'inicial';
+  }
+
+  if(existing){
+    const mergedScoreTec = {...existing.scoreTec, ...scoreTecFB};
+    const vals = Object.values(mergedScoreTec).filter(v=>v);
+    const avgTec = vals.length ? +(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2) : 0;
+    const shyBad = allProcsDefs.filter(p=>p.shyma).some(p=>mergedScoreTec[p.id]===1);
+    refInd.child(existing.fbKey).update({
+      scoreTec: mergedScoreTec, avgTec, estadoTec: estadoDeAvg(avgTec, shyBad), shyBad,
+      eval: eval_ || existing.eval, inst: inst || existing.inst, fecha: fecha || existing.fecha
+    }).then(()=>{
+      msg.style.color='var(--g)';
+      msg.textContent='✅ Planilla técnica de '+nom+' actualizada sobre el registro existente.';
+      notif('✅ Planilla técnica de '+nom+' guardada en Firebase');
+      setTimeout(()=>msg.textContent='',4000);
+    }).catch(e=>{ msg.style.color='var(--r)'; msg.textContent='⚠ Error: '+e.message; });
+  } else {
+    const vals = Object.values(scoreTecFB).filter(v=>v);
+    const avgTec = vals.length ? +(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2) : 0;
+    const shyBad = allProcsDefs.filter(p=>p.shyma).some(p=>scoreTecFB[p.id]===1);
+    const rec = {
+      nom, rol: rolFB, eval: eval_, inst, fecha,
+      scoreTec: scoreTecFB, avgTec,
+      scoreLider: {}, avgLid: 0,
+      estadoTec: estadoDeAvg(avgTec, shyBad), estadoLid: 'no_observable', shyBad,
+      ts: Date.now()
+    };
+    refInd.push(rec).then(()=>{
+      msg.style.color='var(--g)';
+      msg.textContent='✅ Planilla técnica de '+nom+' guardada como nueva evaluación.';
+      notif('✅ Planilla técnica de '+nom+' guardada en Firebase');
+      setTimeout(()=>msg.textContent='',4000);
+    }).catch(e=>{ msg.style.color='var(--r)'; msg.textContent='⚠ Error: '+e.message; });
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+//  NINE BOX
+// ════════════════════════════════════════════════════════════
+const NB9_DEF = [
+  {r:2,c:0,l:'Dilema',              bg:'#fde8eb',tx:'#9b1c2e'},
+  {r:2,c:1,l:'Estrella en formación',bg:'#fef3c7',tx:'#92400e'},
+  {r:2,c:2,l:'Referente COD',       bg:'#218570', tx:'#ffffff'},
+  {r:1,c:0,l:'Bajo rendimiento',    bg:'#fee2e2', tx:'#991b1b'},
+  {r:1,c:1,l:'Núcleo operativo',    bg:'#fff7ed', tx:'#7c2d12'},
+  {r:1,c:2,l:'Alto potencial',      bg:'#dbeafe', tx:'#1e3a8a'},
+  {r:0,c:0,l:'Marginal',            bg:'#fde8eb', tx:'#9b1c2e'},
+  {r:0,c:1,l:'Sólido',              bg:'#e0f2fe', tx:'#0c4a6e'},
+  {r:0,c:2,l:'Pot. inconsistente',  bg:'#d1fae5', tx:'#065f46'},
+];
+
+function buildNB9People(fil, avgKey){
+  const cells = NB9_DEF.map(c=>({...c, ppl:[]}));
+  // Agrupar por fbKey (identificador único de Firebase) — así dos Walter distintos no se confunden
+  const people = [...new Map(fil.map(d=>[d.fbKey, d])).values()];
+  people.forEach(p=>{
+    const cur = p[avgKey]||0;
+    // Tendencia: buscar evaluaciones anteriores de la misma persona por nombre+rol
+    const historial = fil.filter(d=>d.nom===p.nom&&d.rol===p.rol).sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
+    const trend = historial.length>=2?(historial[0][avgKey]||0)-(historial[historial.length-1][avgKey]||0):0;
+    const pot = Math.min(4, Math.max(0, cur+trend*0.4));
+    const col = cur<2?0:cur<3?1:2;
+    const row = pot<2?0:pot<3?1:2;
+    const cell = cells.find(c=>c.r===row&&c.c===col);
+    if(cell) cell.ppl.push({...p, cur, pot});
+  });
+  return cells;
+}
+
+function renderNBGrid(containerId, cells, colorKey){
+  let h='';
+  [2,1,0].forEach(row=>{
+    [0,1,2].forEach(col=>{
+      const cell = cells.find(c=>c.r===row&&c.c===col);
+      const dots = cell.ppl.map(p=>`<div class="nbdot" style="color:${ROLE_C[p.rol]||'#218570'};border-color:${ROLE_C[p.rol]||'#218570'};" title="${p.nom||'Equipo'} — ${(p.cur||0).toFixed(1)}/4">${(p.nom||'EQ').split(',')[0].slice(0,3)}</div>`).join('');
+      h+=`<div class="nbc" style="background:${cell.bg};color:${cell.tx};">
+        <div class="nbl">${cell.l}</div>
+        <div class="nbdots">${dots||'<span style="opacity:.3;font-size:8px;">vacío</span>'}</div>
+      </div>`;
+    });
+  });
+  document.getElementById(containerId).innerHTML=h;
+}
+
+function renderNineBox(){
+  const fil = document.getElementById('nbRol').value;
+  const data = fil==='all'?DATA_IND:DATA_IND.filter(d=>d.rol===fil);
+
+  // Nine Box Técnico
+  const cellsTec = buildNB9People(data, 'avgTec');
+  renderNBGrid('nb9g', cellsTec);
+
+  // Nine Box Liderazgo
+  const cellsLid = buildNB9People(data, 'avgLid');
+  renderNBGrid('nb9lider', cellsLid);
+
+  // Leyenda roles
+  const leyHTML = Object.entries(ROLE_C).map(([r,c])=>
+    `<span style="display:flex;align-items:center;gap:5px;font-size:10px;">
+      <span style="width:10px;height:10px;border-radius:50%;background:${c};display:inline-block;"></span>${ROLE_N[r]}
+    </span>`).join('');
+  document.getElementById('nb9leyenda').innerHTML=leyHTML;
+  document.getElementById('nb9liderLey').innerHTML=leyHTML;
+}
+
+// ════════════════════════════════════════════════════════════
+//  REPORTES PDF
+// ════════════════════════════════════════════════════════════
+let cPdfRadarTec, cPdfRadarLider, cPdfBar;
+
+function buildPdfPreview(){
+  const rolFil  = document.getElementById('pdfRol').value;
+  const instFil = document.getElementById('pdfInst').value;
+  let fil = DATA_IND;
+  if(rolFil!=='all')  fil = fil.filter(d=>d.rol===rolFil);
+  if(instFil!=='all') fil = fil.filter(d=>d.inst===instFil);
+
+  document.getElementById('pdfPreviewWrap').style.display='block';
+
+  const rolLbl  = rolFil==='all'?'Todos los roles':ROLE_N[rolFil];
+  const instLbl = instFil==='all'?'Todas las instancias':INST_N[instFil];
+  document.getElementById('pdfMainTitle').textContent='Reporte de Competencias COD — '+rolLbl;
+  document.getElementById('pdfSubTitle').textContent='EPEC S.A.U. · '+instLbl+' · Emitido: '+new Date().toLocaleDateString('es-AR');
+
+  // KPIs
+  const apt = fil.filter(d=>d.estadoTec==='avanzado'||d.estadoTec==='competente').length;
+  const mal = fil.filter(d=>d.estadoTec==='inicial'||d.estadoTec==='shyma').length;
+  const avgT = fil.length?+(fil.reduce((a,b)=>a+(b.avgTec||0),0)/fil.length).toFixed(1):0;
+  const avgL = fil.length?+(fil.reduce((a,b)=>a+(b.avgLid||0),0)/fil.length).toFixed(1):0;
+  document.getElementById('pdfKpis').innerHTML=`
+    <div class="sc"><div class="sn">${fil.length}</div><div class="sl">Evaluaciones</div></div>
+    <div class="sc"><div class="sn" style="color:var(--g)">${avgT}</div><div class="sl">Prom. técnico</div></div>
+    <div class="sc"><div class="sn" style="color:#1a5276">${avgL}</div><div class="sl">Prom. liderazgo</div></div>
+    <div class="sc"><div class="sn" style="color:var(--g)">${apt}</div><div class="sl">Aptos técnicos</div></div>`;
+
+  // Radar técnico PDF
+  const todos = [...PROCS_DUP].slice(0,8);
+  const valsTec = todos.map(p=>{const v=fil.map(d=>d.scoreTec?.[p.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
+  if(cPdfRadarTec)cPdfRadarTec.destroy();
+  cPdfRadarTec=new Chart(document.getElementById('pdfRadarTec').getContext('2d'),{type:'radar',data:{
+    labels:todos.map(p=>p.id),
+    datasets:[
+      {label:'Requerido',data:todos.map(()=>4),borderColor:'#218570',backgroundColor:'rgba(33,133,112,.1)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#218570'},
+      {label:'Real',data:valsTec,borderColor:'#c02133',backgroundColor:'rgba(192,33,51,.12)',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#c02133'}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:8}},pointLabels:{font:{size:8}}}},plugins:{legend:{display:false}}}});
+
+  // Radar liderazgo PDF
+  const valsLid=COMPS_LIDER.map(c=>{const v=fil.map(d=>d.scoreLider?.[c.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
+  if(cPdfRadarLider)cPdfRadarLider.destroy();
+  cPdfRadarLider=new Chart(document.getElementById('pdfRadarLider').getContext('2d'),{type:'radar',data:{
+    labels:COMPS_LIDER.map(c=>c.nombre.split(' ').slice(0,2).join(' ')),
+    datasets:[
+      {label:'Requerido',data:COMPS_LIDER.map(()=>4),borderColor:'#218570',backgroundColor:'rgba(33,133,112,.1)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#218570'},
+      {label:'Real',data:valsLid,borderColor:'#1a5276',backgroundColor:'rgba(26,82,118,.12)',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#1a5276'}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:8}},pointLabels:{font:{size:8}}}},plugins:{legend:{display:false}}}});
+
+  // Barras brechas PDF
+  const brechas=valsLid.map(v=>+(4-v).toFixed(1));
+  if(cPdfBar)cPdfBar.destroy();
+  cPdfBar=new Chart(document.getElementById('pdfBarBrecha').getContext('2d'),{type:'bar',data:{
+    labels:COMPS_LIDER.map(c=>c.nombre.split(' ').slice(0,3).join(' ')),
+    datasets:[
+      {label:'Alcanzado',data:valsLid,backgroundColor:'#218570',borderRadius:4},
+      {label:'Brecha',data:brechas,backgroundColor:'rgba(192,33,51,.3)',borderRadius:4}
+    ]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:8},boxWidth:8}}},scales:{x:{stacked:true,ticks:{font:{size:8},maxRotation:30}},y:{stacked:true,min:0,max:4}}}});
+
+  // Nine Box técnico PDF
+  const cellsTec = buildNB9People(fil, 'avgTec');
+  renderNBGrid('pdfNb9Tec', cellsTec);
+
+  // Tabla detalle individuales
+  const rc2={JCOD:'bj',SCOD:'bs',JTMT:'bt'};
+  let th='<table class="pdf-table"><thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Fecha</th><th>Técnico</th><th>Liderazgo</th><th>Estado Téc.</th><th>Estado Lid.</th></tr></thead><tbody>';
+  if(!fil.length) th+='<tr><td colspan="8" style="text-align:center;padding:12px;color:var(--tm)">Sin datos</td></tr>';
+  [...fil].sort((a,b)=>(b.avgTec||0)-(a.avgTec||0)).forEach(d=>{
+    const cT=scColor(d.avgTec); const cL=scColor(d.avgLid);
+    th+=`<tr>
+      <td><strong>${d.nom}</strong></td>
+      <td><span class="badge ${rc2[d.rol]}">${d.rol}</span></td>
+      <td>${INST_N[d.inst]||d.inst}</td>
+      <td>${d.fecha}</td>
+      <td style="color:${cT};font-weight:600">${(d.avgTec||0).toFixed(1)}/4</td>
+      <td style="color:${cL};font-weight:600">${(d.avgLid||0).toFixed(1)}/4</td>
+      <td style="color:${cT};font-size:10px">${(d.estadoTec||'').replace('_',' ')}</td>
+      <td style="color:${cL};font-size:10px">${(d.estadoLid||'').replace('_',' ')}</td>
+    </tr>`;
+  });
+  document.getElementById('pdfTableWrap').innerHTML=th+'</tbody></table>';
+
+  // Tabla evaluaciones de equipo
+  let teq='<table class="pdf-table"><thead><tr><th>Evaluador</th><th>Instancia</th><th>Fecha</th><th>Prom. Equipo</th><th>Estado</th><th>Observaciones</th></tr></thead><tbody>';
+  if(!DATA_EQ.length) teq+='<tr><td colspan="6" style="text-align:center;padding:12px;color:var(--tm)">Sin evaluaciones de equipo</td></tr>';
+  [...DATA_EQ].sort((a,b)=>new Date(b.fecha)-new Date(a.fecha)).forEach(d=>{
+    const c=scColor(d.avgEq);
+    teq+=`<tr><td>${d.eval||'—'}</td><td>${INST_N[d.inst]||d.inst}</td><td>${d.fecha}</td>
+    <td style="color:${c};font-weight:600">${(d.avgEq||0).toFixed(1)}/4</td>
+    <td style="color:${c};font-size:10px">${(d.estadoEq||'').replace('_',' ')}</td>
+    <td style="font-size:10px">${d.obs||'—'}</td></tr>`;
+  });
+  document.getElementById('pdfEqWrap').innerHTML=teq+'</tbody></table>';
+
+  // Footer
+  document.getElementById('pdfFooter').textContent='EPEC S.A.U. · Centro Operativo de Distribución · Reporte generado el '+new Date().toLocaleString('es-AR');
+
+  document.getElementById('pdfPreviewWrap').scrollIntoView({behavior:'smooth'});
+  notif('✅ Vista previa generada — hacé clic en "Exportar PDF" para descargar');
+}
+
+async function exportPDF(){
+  const el = document.getElementById('pdfContent');
+  if(!el||document.getElementById('pdfPreviewWrap').style.display==='none'){
+    alert('Primero generá la vista previa');return;
+  }
+  notif('⏳ Generando PDF... aguardá unos segundos');
+  try{
+    await new Promise(r=>setTimeout(r,600));
+    const canvas = await html2canvas(el,{scale:1.8,useCORS:true,backgroundColor:'#ffffff',logging:false});
+    const{jsPDF}=window.jspdf;
+    const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    const imgData=canvas.toDataURL('image/jpeg',0.92);
+    const pdfW=pdf.internal.pageSize.getWidth();
+    const pdfH=(canvas.height*pdfW)/canvas.width;
+    let y=0, pageH=pdf.internal.pageSize.getHeight();
+    while(y<pdfH){
+      if(y>0)pdf.addPage();
+      pdf.addImage(imgData,'JPEG',0,-y,pdfW,pdfH,undefined,'FAST');
+      y+=pageH;
+    }
+    const fecha=new Date().toISOString().split('T')[0];
+    pdf.save('EPEC_COD_Competencias_'+fecha+'.pdf');
+    notif('✅ PDF descargado correctamente');
+  }catch(e){ alert('Error al generar PDF: '+e.message); }
+}
+
+// ════════════════════════════════════════════════════════════
+//  BRECHAS DE COMPETENCIAS — helper compartido por Feedback y Plan de Acción
+// ════════════════════════════════════════════════════════════
+function personasConEval(rolFiltro){
+  const base = rolFiltro ? DATA_IND.filter(x=>x.rol===rolFiltro) : DATA_IND;
+  const seen = new Map();
+  base.forEach(x=>{
+    const key = x.nom+'|'+x.rol;
+    if(!seen.has(key)) seen.set(key, {nom:x.nom, rol:x.rol});
+  });
+  return [...seen.values()].sort((a,b)=>a.nom.localeCompare(b.nom,'es'));
+}
+function ultimaEvalDe(nom, rol){
+  return DATA_IND.filter(x=>x.nom===nom && x.rol===rol).sort((a,b)=>(b.ts||0)-(a.ts||0))[0];
+}
+function calcularBrechas(rec){
+  if(!rec) return [];
+  const brechas = [];
+  const propsRol = PROCS_TEC[rec.rol] || [];
+  const todosTec = [...propsRol, ...PROCS_DUP];
+  todosTec.forEach(p=>{
+    const v = rec.scoreTec ? rec.scoreTec[p.id] : null;
+    if(v && v<3) brechas.push({tipo:'tecnico', id:p.id, nombre:p.n, score:v, gap:+(4-v).toFixed(1), shyma:p.shyma});
+  });
+  COMPS_LIDER.forEach(c=>{
+    const v = rec.scoreLider ? rec.scoreLider[c.id] : null;
+    if(v && v<3) brechas.push({tipo:'liderazgo', id:c.id, nombre:c.nombre, score:v, gap:+(4-v).toFixed(1)});
+  });
+  return brechas.sort((a,b)=>b.gap-a.gap);
+}
+function textoFeedback(b){
+  if(b.tipo==='tecnico'){
+    const desc = b.score===1
+      ? 'Inicial — requiere guía directa y supervisión permanente'
+      : 'Básico Supervisado — conoce la tarea pero requiere validación frecuente';
+    return `En "${b.nombre}" el nivel actual es ${b.score}/4 (${desc}). Se recomienda reforzar con práctica supervisada, casos aplicados y seguimiento cercano del tutor hasta alcanzar el nivel Competente Autónomo (3/4).`;
+  }
+  const desc = b.score===1
+    ? 'No observable — el comportamiento no se evidencia en el desempeño diario'
+    : 'En desarrollo — aparece de forma inconsistente, requiere orientación';
+  return `En "${b.nombre}" el nivel actual es ${b.score}/4 (${desc}). Se recomienda trabajar con ejemplos concretos, modelado del tutor y feedback situado en el día a día del turno hasta alcanzar el nivel Consolidado (3/4).`;
+}
+
+// ════════════════════════════════════════════════════════════
+//  FEEDBACK (todos los roles)
+// ════════════════════════════════════════════════════════════
+function populateFeedbackPersonas(){
+  const rol = document.getElementById('fb-rol').value;
+  const sel = document.getElementById('fb-persona');
+  const cur = sel.value;
+  const personas = personasConEval(rol);
+  sel.innerHTML = '<option value="">Seleccionar persona...</option>' +
+    personas.map(p=>`<option value="${p.nom.replace(/"/g,'&quot;')}|${p.rol}">${p.nom} — ${ROLE_N[p.rol]}</option>`).join('');
+  if([...sel.options].some(o=>o.value===cur)) sel.value = cur;
+}
+
+function renderFeedback(){
+  const wrap = document.getElementById('fb-wrap');
+  const val = document.getElementById('fb-persona').value;
+  if(!val){
+    wrap.innerHTML = '<div class="card"><p style="font-size:12px;color:var(--tm);text-align:center;padding:20px;">Elegí una persona para ver sus brechas de competencias.</p></div>';
+    return;
+  }
+  const [nom, rol] = val.split('|');
+  const rec = ultimaEvalDe(nom, rol);
+  if(!rec){
+    wrap.innerHTML = '<div class="card"><p style="font-size:12px;color:var(--tm);text-align:center;padding:20px;">No hay evaluaciones cargadas para esta persona.</p></div>';
+    return;
+  }
+  const brechas = calcularBrechas(rec);
+  const rc = {JCOD:'bj',SCOD:'bs',JTMT:'bt'};
+
+  let h = `<div class="card">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px;">
+      <span class="ct" style="margin-bottom:0;"><i class="ti ti-message-report"></i>Brechas de ${nom}</span>
+      <span class="badge ${rc[rol]}">${ROLE_N[rol]}</span>
+      <span style="font-size:11px;color:var(--tm);">${INST_N[rec.inst]||rec.inst} · ${rec.fecha}</span>
+    </div>`;
+
+  if(!brechas.length){
+    h += `<div class="al al-g">✅ Sin brechas relevantes en la última evaluación — desempeño técnico y de liderazgo dentro de lo esperado (≥ 3/4 en todos los procesos y competencias evaluadas).</div></div>`;
+    wrap.innerHTML = h;
+    return;
+  }
+
+  h += `<div class="al al-a">Se detectaron <strong>${brechas.length}</strong> brecha${brechas.length!==1?'s':''} (procesos/competencias por debajo de "Competente Autónomo" / "Consolidado"). Este feedback puede compartirse directamente con la persona o usarse como base del Plan de Acción.</div>`;
+
+  const tecB = brechas.filter(b=>b.tipo==='tecnico');
+  const lidB = brechas.filter(b=>b.tipo==='liderazgo');
+
+  function filaBrecha(b){
+    return `<div style="display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd);">
+      <div style="flex:none;width:44px;height:44px;border-radius:10px;background:${scColor(b.score)};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;">${b.score}</div>
+      <div style="flex:1;">
+        <div style="font-weight:600;font-size:12px;color:var(--tx);">${b.nombre}${b.shyma?' <span class="shyma-tag">⚡SHyMA</span>':''}</div>
+        <div style="font-size:11.5px;color:var(--tm);margin-top:3px;line-height:1.5;">${textoFeedback(b)}</div>
+      </div>
+    </div>`;
+  }
+
+  if(tecB.length){ h += `<div class="sec-divider"><span>Brechas técnicas</span></div>`; tecB.forEach(b=>h+=filaBrecha(b)); }
+  if(lidB.length){ h += `<div class="sec-divider"><span>Brechas de liderazgo operativo</span></div>`; lidB.forEach(b=>h+=filaBrecha(b)); }
+
+  h += `<div class="acts">
+    <button class="bsec" onclick="copiarFeedback('${nom.replace(/'/g,"\\'")}','${rol}')"><i class="ti ti-copy"></i>Copiar feedback como texto</button>
+    <button class="bp" onclick="irAAccionesDesdeFeedback('${nom.replace(/'/g,"\\'")}','${rol}')"><i class="ti ti-list-check"></i>Definir plan de acción</button>
+  </div>`;
+  h += `</div>`;
+  wrap.innerHTML = h;
+}
+
+function copiarFeedback(nom, rol){
+  const rec = ultimaEvalDe(nom, rol);
+  const brechas = calcularBrechas(rec);
+  let txt = `FEEDBACK — ${nom} (${ROLE_N[rol]}) — ${INST_N[rec.inst]||rec.inst} · ${rec.fecha}\n\n`;
+  if(!brechas.length){ txt += 'Sin brechas relevantes. Desempeño dentro de lo esperado.\n'; }
+  else brechas.forEach(b=>{ txt += `• ${b.nombre} (${b.score}/4): ${textoFeedback(b)}\n\n`; });
+  navigator.clipboard.writeText(txt)
+    .then(()=>notif('📋 Feedback copiado al portapapeles'))
+    .catch(()=>notif('No se pudo copiar automáticamente — seleccioná el texto manualmente.'));
+}
+
+function irAAccionesDesdeFeedback(nom, rol){
+  go('acciones');
+  document.querySelectorAll('.nt').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.nt').forEach(b=>{ if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'acciones'")) b.classList.add('on'); });
+  document.getElementById('acc-rol').value = rol;
+  populateAccionesPersonas();
+  document.getElementById('acc-persona').value = nom+'|'+rol;
+  renderAcciones();
+}
+
+// ════════════════════════════════════════════════════════════
+//  PLAN DE ACCIÓN + REPORTE
+// ════════════════════════════════════════════════════════════
+function populateAccionesPersonas(){
+  const rol = document.getElementById('acc-rol').value;
+  const sel = document.getElementById('acc-persona');
+  const cur = sel.value;
+  const personas = personasConEval(rol);
+  sel.innerHTML = '<option value="">Seleccionar persona...</option>' +
+    personas.map(p=>`<option value="${p.nom.replace(/"/g,'&quot;')}|${p.rol}">${p.nom} — ${ROLE_N[p.rol]}</option>`).join('');
+  if([...sel.options].some(o=>o.value===cur)) sel.value = cur;
+}
+
+function renderAcciones(){
+  const wrap = document.getElementById('acc-wrap');
+  document.getElementById('accReportPreviewWrap').style.display = 'none';
+  const val = document.getElementById('acc-persona').value;
+  if(!val){
+    wrap.innerHTML = '<div class="card"><p style="font-size:12px;color:var(--tm);text-align:center;padding:20px;">Elegí una persona para definir su plan de acción.</p></div>';
+    return;
+  }
+  const [nom, rol] = val.split('|');
+  const rec = ultimaEvalDe(nom, rol);
+  if(!rec){
+    wrap.innerHTML = '<div class="card"><p style="font-size:12px;color:var(--tm);text-align:center;padding:20px;">No hay evaluaciones cargadas para esta persona.</p></div>';
+    return;
+  }
+  const brechas = calcularBrechas(rec);
+  const rc = {JCOD:'bj',SCOD:'bs',JTMT:'bt'};
+  const misAcciones = DATA_ACC.filter(a=>a.nom===nom && a.rol===rol);
+
+  let h = `<div class="card">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;">
+      <span class="ct" style="margin-bottom:0;"><i class="ti ti-list-check"></i>Plan de acción de ${nom}</span>
+      <span class="badge ${rc[rol]}">${ROLE_N[rol]}</span>
+      <span style="font-size:11px;color:var(--tm);">Última evaluación: ${INST_N[rec.inst]||rec.inst} · ${rec.fecha}</span>
+    </div>`;
+
+  if(!brechas.length){
+    h += `<div class="al al-g">✅ No hay brechas pendientes sobre la última evaluación de ${nom}.</div></div>`;
+    wrap.innerHTML = h + renderTablaAcciones(misAcciones, nom);
+    return;
+  }
+
+  h += `<div class="sub">Definí la acción a implementar para cada brecha. Al guardar una fila, queda registrada en Firebase y disponible para el reporte final.</div>`;
+  h += `<table class="plan-tbl"><thead><tr><th style="width:200px">Brecha detectada</th><th style="width:70px;text-align:center">Nivel</th><th>Acción a implementar</th><th style="width:130px">Responsable</th><th style="width:130px">Fecha compromiso</th><th style="width:120px">Estado</th><th style="width:70px"></th></tr></thead><tbody>`;
+  brechas.forEach((b,i)=>{
+    const acc = misAcciones.find(a=>a.tipo===b.tipo && a.procId===b.id);
+    const rid = 'acc-row-'+i;
+    h += `<tr>
+      <td><strong style="font-size:11px;">${b.nombre}</strong>${b.shyma?' <span class="shyma-tag">⚡</span>':''}<div style="font-size:9px;color:var(--tm);text-transform:uppercase;margin-top:2px;">${b.tipo==='tecnico'?'Técnico':'Liderazgo'}</div></td>
+      <td style="text-align:center;"><span style="display:inline-block;width:26px;height:26px;line-height:26px;border-radius:6px;background:${scColor(b.score)};color:#fff;font-weight:700;">${b.score}</span></td>
+      <td><textarea id="${rid}-accion" rows="2" placeholder="Ej: práctica supervisada con el tutor, 2 sesiones por semana...">${acc?(acc.accion||'').replace(/</g,'&lt;'):''}</textarea></td>
+      <td><input type="text" id="${rid}-resp" placeholder="Tutor / SubJefe..." value="${acc?(acc.responsable||'').replace(/"/g,'&quot;'):''}"></td>
+      <td><input type="date" id="${rid}-fecha" value="${acc?(acc.fechaComp||''):''}"></td>
+      <td><select id="${rid}-estado">
+            <option value="pendiente" ${(!acc||acc.estado==='pendiente')?'selected':''}>Pendiente</option>
+            <option value="en_curso" ${acc&&acc.estado==='en_curso'?'selected':''}>En curso</option>
+            <option value="cumplida" ${acc&&acc.estado==='cumplida'?'selected':''}>Cumplida</option>
+          </select></td>
+      <td><button class="bp" style="padding:6px 10px;font-size:10px;" onclick="guardarAccionRow(${i},'${nom.replace(/'/g,"\\'")}','${rol}')"><i class="ti ti-device-floppy"></i></button></td>
+    </tr>`;
+  });
+  h += `</tbody></table></div>`;
+
+  h += renderTablaAcciones(misAcciones, nom);
+
+  h += `<div class="card">
+    <div class="ct"><i class="ti ti-file-type-pdf"></i>Reporte de lo trabajado</div>
+    <div class="sub">Genera un reporte con el feedback de brechas y el plan de acción cargado para ${nom}, listo para compartir o archivar.</div>
+    <div class="acts">
+      <button class="bp" onclick="generarReporteAccion('${nom.replace(/'/g,"\\'")}','${rol}')"><i class="ti ti-eye"></i>Vista previa del reporte</button>
+      <button class="bpdf" onclick="exportAccionPDF()"><i class="ti ti-download"></i>Exportar PDF</button>
+    </div>
+  </div>`;
+
+  wrap.innerHTML = h;
+}
+
+function renderTablaAcciones(acciones, nom){
+  if(!acciones.length) return '';
+  let h = `<div class="card"><div class="ct"><i class="ti ti-checklist"></i>Acciones ya guardadas para ${nom}</div>
+  <div style="overflow-x:auto;"><table class="pt"><thead><tr><th>Brecha</th><th>Acción</th><th>Responsable</th><th>Fecha compromiso</th><th>Estado</th><th></th></tr></thead><tbody>`;
+  [...acciones].sort((a,b)=>(b.ts||0)-(a.ts||0)).forEach(a=>{
+    const estColor = a.estado==='cumplida'?'#218570':a.estado==='en_curso'?'#f39c12':'#c02133';
+    const estLbl = a.estado==='cumplida'?'✅ Cumplida':a.estado==='en_curso'?'🔄 En curso':'⚠ Pendiente';
+    h += `<tr><td><strong style="font-size:11px;">${a.procNombre}</strong></td><td style="font-size:11px;max-width:260px;">${a.accion||'—'}</td><td>${a.responsable||'—'}</td><td>${a.fechaComp||'—'}</td>
+    <td style="color:${estColor};font-weight:600;font-size:11px;">${estLbl}</td>
+    <td><button class="bdel" onclick="delAccion('${a.fbKey}')"><i class="ti ti-trash"></i></button></td></tr>`;
+  });
+  h += '</tbody></table></div></div>';
+  return h;
+}
+
+function guardarAccionRow(i, nom, rol){
+  const rec = ultimaEvalDe(nom, rol);
+  const brechas = calcularBrechas(rec);
+  const b = brechas[i];
+  if(!b) return;
+  const rid = 'acc-row-'+i;
+  const accion = document.getElementById(rid+'-accion').value.trim();
+  const responsable = document.getElementById(rid+'-resp').value.trim();
+  const fechaComp = document.getElementById(rid+'-fecha').value;
+  const estado = document.getElementById(rid+'-estado').value;
+
+  if(!accion){ notif('⚠ Escribí la acción a implementar antes de guardar.'); return; }
+
+  const existing = DATA_ACC.find(a=>a.nom===nom && a.rol===rol && a.tipo===b.tipo && a.procId===b.id);
+  const rec2 = { nom, rol, tipo:b.tipo, procId:b.id, procNombre:b.nombre, score:b.score, accion, responsable, fechaComp, estado, ts: Date.now() };
+  const p = existing ? refAcc.child(existing.fbKey).update(rec2) : refAcc.push(rec2);
+  p.then(()=>{ notif('✅ Acción guardada para '+nom); })
+   .catch(e=>notif('⚠ Error: '+e.message));
+}
+
+function delAccion(key){
+  if(!confirm('¿Eliminar esta acción?')) return;
+  refAcc.child(key).remove().then(()=>notif('Acción eliminada'));
+}
+
+function generarReporteAccion(nom, rol){
+  const rec = ultimaEvalDe(nom, rol);
+  if(!rec) return;
+  const brechas = calcularBrechas(rec);
+  const acciones = DATA_ACC.filter(a=>a.nom===nom && a.rol===rol);
+
+  document.getElementById('accRepTitle').textContent = 'Reporte de Feedback y Plan de Acción — '+nom;
+  document.getElementById('accRepSub').textContent = 'EPEC S.A.U. · '+ROLE_N[rol]+' · '+(INST_N[rec.inst]||rec.inst)+' · '+rec.fecha+' · Emitido: '+new Date().toLocaleDateString('es-AR');
+
+  let body = `<div class="pdf-section">Resultado de la evaluación</div>
+  <div class="g4" style="margin-bottom:14px;">
+    <div class="sc"><div class="sn" style="color:${scColor(rec.avgTec)}">${(rec.avgTec||0).toFixed(1)}</div><div class="sl">Técnico / 4</div></div>
+    <div class="sc"><div class="sn" style="color:${scColor(rec.avgLid)}">${(rec.avgLid||0).toFixed(1)}</div><div class="sl">Liderazgo / 4</div></div>
+    <div class="sc"><div class="sn">${brechas.length}</div><div class="sl">Brechas detectadas</div></div>
+    <div class="sc"><div class="sn">${acciones.length}</div><div class="sl">Acciones definidas</div></div>
+  </div>`;
+
+  body += `<div class="pdf-section">Feedback de brechas</div>`;
+  if(!brechas.length){
+    body += `<p style="font-size:11px;color:var(--tm);">Sin brechas relevantes — desempeño dentro de lo esperado.</p>`;
+  } else {
+    body += `<table class="pdf-table"><thead><tr><th>Proceso / Competencia</th><th>Tipo</th><th>Nivel</th><th>Feedback</th></tr></thead><tbody>`;
+    brechas.forEach(b=>{
+      body += `<tr><td><strong>${b.nombre}</strong></td><td>${b.tipo==='tecnico'?'Técnico':'Liderazgo'}</td><td style="color:${scColor(b.score)};font-weight:700;">${b.score}/4</td><td style="font-size:10px;">${textoFeedback(b)}</td></tr>`;
+    });
+    body += `</tbody></table>`;
+  }
+
+  body += `<div class="pdf-section" style="margin-top:14px;">Plan de acción</div>`;
+  if(!acciones.length){
+    body += `<p style="font-size:11px;color:var(--tm);">Todavía no se cargaron acciones para esta persona.</p>`;
+  } else {
+    body += `<table class="pdf-table"><thead><tr><th>Brecha</th><th>Acción</th><th>Responsable</th><th>Compromiso</th><th>Estado</th></tr></thead><tbody>`;
+    [...acciones].sort((a,b)=>(b.ts||0)-(a.ts||0)).forEach(a=>{
+      const estLbl = a.estado==='cumplida'?'Cumplida':a.estado==='en_curso'?'En curso':'Pendiente';
+      body += `<tr><td><strong>${a.procNombre}</strong></td><td style="font-size:10px;">${a.accion||'—'}</td><td>${a.responsable||'—'}</td><td>${a.fechaComp||'—'}</td><td>${estLbl}</td></tr>`;
+    });
+    body += `</tbody></table>`;
+  }
+
+  document.getElementById('accRepBody').innerHTML = body;
+  document.getElementById('accRepFooter').textContent = 'EPEC S.A.U. · Centro Operativo de Distribución · Reporte generado el '+new Date().toLocaleString('es-AR');
+  document.getElementById('accReportPreviewWrap').style.display = 'block';
+  document.getElementById('accReportPreviewWrap').scrollIntoView({behavior:'smooth'});
+  notif('✅ Vista previa del reporte generada — hacé clic en "Exportar PDF" para descargar');
+}
+
+async function exportAccionPDF(){
+  const el = document.getElementById('accReportContent');
+  if(!el || document.getElementById('accReportPreviewWrap').style.display==='none'){
+    alert('Primero generá la vista previa del reporte'); return;
+  }
+  notif('⏳ Generando PDF... aguardá unos segundos');
+  try{
+    await new Promise(r=>setTimeout(r,500));
+    const canvas = await html2canvas(el,{scale:1.8,useCORS:true,backgroundColor:'#ffffff',logging:false});
+    const{jsPDF}=window.jspdf;
+    const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+    const imgData=canvas.toDataURL('image/jpeg',0.92);
+    const pdfW=pdf.internal.pageSize.getWidth();
+    const pdfH=(canvas.height*pdfW)/canvas.width;
+    let y=0, pageH=pdf.internal.pageSize.getHeight();
+    while(y<pdfH){
+      if(y>0)pdf.addPage();
+      pdf.addImage(imgData,'JPEG',0,-y,pdfW,pdfH,undefined,'FAST');
+      y+=pageH;
+    }
+    const fecha=new Date().toISOString().split('T')[0];
+    pdf.save('EPEC_COD_PlanAccion_'+fecha+'.pdf');
+    notif('✅ PDF descargado correctamente');
+  }catch(e){ alert('Error al generar PDF: '+e.message); }
+}
+
+// ════════════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════════════
+document.getElementById('i-fecha').value = new Date().toISOString().split('T')[0];
+document.getElementById('eq-fecha').value = new Date().toISOString().split('T')[0];
+buildEquipoGrid();
+</script>
+
+
+</body></html>
