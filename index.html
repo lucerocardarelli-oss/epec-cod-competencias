@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPEC SAU — Matriz de Competencias COD</title>
+<title>EPEC SAU — Matriz de Competencias CCOD</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
@@ -13,6 +13,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script> 
+<script>try{var _t=localStorage.getItem("epec_tema");if(_t==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}</script>
 <style>
 :root{
   --g:#218570;--gd:#155748;--gm:#2BA888;--gl:#e1f5ee;--g2:#d0ece6;
@@ -212,11 +213,95 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
 .pt-lbl{font-size:9px;color:var(--tm);margin-top:1px;}
 .shyma-tag{background:var(--rl);color:var(--r);font-size:9px;padding:1px 6px;border-radius:10px;font-weight:700;margin-left:4px;vertical-align:middle;}
 
-.nb9{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;}
-.nbc{border-radius:8px;padding:10px 8px;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;font-weight:600;text-align:center;border:1px solid rgba(0,0,0,.08);}
-.nbl{font-size:9px;opacity:.85;margin-bottom:6px;font-weight:500;}
-.nbdots{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;margin-top:4px;}
-.nbdot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;background:#fff;border:2px solid rgba(0,0,0,.15);cursor:default;}
+@media(max-width:700px){
+  .hdr{position:static;flex-wrap:wrap;padding:10px 12px;gap:8px;}
+  .hdr-info p{display:none;}
+  .hdr-info h1{font-size:14px;}
+  .hdr-right{width:100%;justify-content:space-between;flex-wrap:wrap;gap:6px;}
+  .cnt{padding:12px 8px;}
+}
+/* TEMA OSCURO (verde oscuro) / CLARO */
+html[data-theme="dark"]{--g:#2BA888;--gd:#5fd1b0;--gm:#3dbf9c;--gl:#143a32;--g2:#1f4a3f;--r:#ff7a8a;--rl:#3d1a20;--am:#f5a623;--aml:#3a3414;--bd:#24544a;--bg:#0b1f1a;--tx:#e6f4ef;--tm:#93b8ac;--wh:#12302a;--azul:#7fb8e0;--azul-lt:#1b3a52;color-scheme:dark;}
+html[data-theme="dark"] .hdr,html[data-theme="dark"] .pt th,html[data-theme="dark"] .mx-tbl th,html[data-theme="dark"] .notif,html[data-theme="dark"] .plan-tab.on,html[data-theme="dark"] .plan-header,html[data-theme="dark"] .plan-tbl th,html[data-theme="dark"] .pz-ctbl th,html[data-theme="dark"] .pdf-table th{background:#0f5d49;border-color:#0f5d49;color:#fff;}
+html[data-theme="dark"] .hdr{background:#06382c;}
+html[data-theme="dark"] .sec-header{background:linear-gradient(135deg,#0f5d49,#17806a);}
+html[data-theme="dark"] .hdr-logo{background:#e6f4ef;color:#06382c;}
+html[data-theme="dark"] .fg input,html[data-theme="dark"] .fg select,html[data-theme="dark"] .fg textarea{background:#0e2924;color:var(--tx);}
+html[data-theme="dark"] .mx-tbl tr:hover td{background:var(--gl);}
+html[data-theme="dark"] .nbx-chip{background:#0e2924;color:var(--tx);border-color:rgba(255,255,255,.15);}
+html[data-theme="dark"] .nbx-n{background:rgba(255,255,255,.85);}
+html[data-theme="dark"] .plan-tbl tr:nth-child(even) td,html[data-theme="dark"] .pdf-table tr:nth-child(even) td{background:rgba(255,255,255,.04);}
+html[data-theme="dark"] [style*="background:#f0faf6"]{background:var(--gl)!important;}
+html[data-theme="dark"] [style*="color:#1a5276"]{color:#7fb8e0!important;}
+html[data-theme="dark"] .rc-j{background:#14304f;border-color:#2f6aa8;} html[data-theme="dark"] .rc-s{background:#3a3414;border-color:#8a7420;} html[data-theme="dark"] .rc-t{background:#0f3d33;border-color:#2BA888;}
+html[data-theme="dark"] .rc-j .rcn{color:#8ec0ff;} html[data-theme="dark"] .rc-s .rcn{color:#f6c453;} html[data-theme="dark"] .rc-t .rcn{color:#5fd1b0;}
+html[data-theme="dark"] .bj{background:#14304f;color:#8ec0ff;} html[data-theme="dark"] .bs{background:#3a3414;color:#f6c453;} html[data-theme="dark"] .bt{background:#0f3d33;color:#5fd1b0;}
+html[data-theme="dark"] .nb-step [style*="color:#065f46"]{color:#5fd1b0!important;} html[data-theme="dark"] .nb-step [style*="color:#92400e"]{color:#f6c453!important;} html[data-theme="dark"] .nb-step [style*="color:#9b1c2e"]{color:#ff8a98!important;}
+html[data-theme="dark"] .nb-warn{background:#3a3414;border-color:#6b5a1a;color:#f6e3a1;}
+html[data-theme="dark"] #pdfPreviewWrap{--g:#218570;--gd:#155748;--gm:#2BA888;--gl:#e1f5ee;--g2:#d0ece6;--r:#c02133;--rl:#fde8eb;--bd:#d0e8e0;--bg:#f5f9f7;--tx:#1a2e2a;--tm:#5a7a72;--wh:#ffffff;color-scheme:light;}
+html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
+.tema-sw{display:inline-flex;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:2px;gap:2px;}
+.tema-op{border:none;background:transparent;color:#fff;opacity:.65;width:30px;height:26px;border-radius:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;font-family:inherit;}
+.tema-op.on{background:#fff;color:#06382c;opacity:1;}
+/* NINE BOX (Técnica × Liderazgo) */
+.nb-how{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.nb-step{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;font-size:11px;line-height:1.55;color:var(--tx);}
+.nb-step b{display:flex;align-items:center;gap:7px;color:var(--gd);margin-bottom:4px;font-size:12px;}
+.nb-step .n{background:var(--g);color:#fff;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex:none;}
+.nbx{display:grid;grid-template-columns:22px 64px repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,auto) auto auto;gap:6px;}
+.nbx-yt{writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;font-size:10px;font-weight:700;color:var(--gd);letter-spacing:1px;}
+.nbx-xt{text-align:center;font-size:10px;font-weight:700;color:var(--gd);letter-spacing:1px;margin-top:2px;}
+.nbx-rl,.nbx-cl{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;font-size:11px;color:var(--gd);line-height:1.25;}
+.nbx-rl small,.nbx-cl small{font-size:9px;color:var(--tm);font-weight:400;}
+.nbx-c{border:1.5px solid;border-radius:10px;padding:9px 9px 10px;min-height:118px;display:flex;flex-direction:column;gap:5px;}
+.nbx-h{display:flex;justify-content:space-between;align-items:flex-start;gap:6px;}
+.nbx-t{font-size:12px;font-weight:700;line-height:1.25;}
+.nbx-n{font-size:10px;font-weight:700;border-radius:20px;padding:1px 8px;background:rgba(255,255,255,.75);color:#1a2e2a;white-space:nowrap;}
+.nbx-a{font-size:10px;line-height:1.4;opacity:.92;}
+.nbx-p{display:flex;flex-direction:column;gap:4px;margin-top:2px;}
+.nbx-chip{background:#fff;color:var(--tx);border:1px solid rgba(0,0,0,.12);border-left:5px solid #218570;border-radius:6px;padding:4px 8px;font-size:11px;font-weight:600;line-height:1.3;word-break:break-word;}
+.nbx-chip small{display:block;font-weight:400;font-size:9px;color:var(--tm);}
+.nbx-empty{font-size:10px;opacity:.55;font-style:italic;}
+.nbx-compact .nbx-a{display:none;}
+.nbx-compact .nbx-c{min-height:80px;}
+.nb-ley{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:10px;}
+.nb-ley span{display:inline-flex;align-items:center;gap:5px;}
+.nb-ley i{width:11px;height:11px;border-radius:3px;display:inline-block;}
+.nb-warn{background:var(--aml);border:1px solid #fcd34d;border-radius:10px;padding:10px 12px;font-size:11px;color:#78350f;margin-top:14px;line-height:1.5;}
+.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tbl-scroll .plan-tbl{min-width:680px;}
+.tbl-scroll .pdf-table{min-width:760px;}
+@media(max-width:700px){
+  .nb-how{grid-template-columns:1fr;}
+  .nbx{grid-template-columns:18px 44px repeat(3,minmax(0,1fr));gap:4px;}
+  .nbx-c{padding:6px;min-height:100px;}
+  .nbx-t{font-size:10px;}
+  .nbx-a{font-size:9px;}
+  .nbx-chip{font-size:10px;padding:3px 5px;}
+  .nbx-rl,.nbx-cl{font-size:9px;}
+  .nbx-rl small,.nbx-cl small{font-size:8px;}
+}
+/* GUÍA DE PUESTOS */
+.pz-chain{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:6px 0 4px;}
+.pz-node{border-radius:8px;padding:7px 12px;font-size:11px;font-weight:600;border:1.5px solid var(--bd);background:var(--wh);}
+.pz-arrow{color:var(--tm);font-size:14px;}
+.pz-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+@media(max-width:900px){.pz-grid{grid-template-columns:1fr;}}
+.pz-card{border:1px solid var(--bd);border-top:4px solid var(--g);border-radius:12px;padding:14px;background:var(--wh);}
+.pz-card h3{font-size:14px;color:var(--gd);margin-bottom:2px;}
+.pz-tag{font-size:10px;color:var(--tm);margin-bottom:8px;}
+.pz-card h4{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--gd);margin:10px 0 4px;}
+.pz-card p,.pz-card li{font-size:11px;line-height:1.55;}
+.pz-card ul{padding-left:16px;}
+.pz-det{border:1px solid var(--bd);border-radius:10px;background:var(--bg);margin-bottom:12px;}
+.pz-det summary{cursor:pointer;padding:10px 12px;font-size:12px;font-weight:600;color:var(--gd);display:flex;align-items:center;gap:6px;}
+.pz-body{padding:0 12px 12px;}
+.pz-body h4{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--gd);margin:10px 0 4px;}
+.pz-body p,.pz-body li{font-size:11px;line-height:1.55;}
+.pz-body ul{padding-left:16px;}
+.pz-ctbl{width:100%;border-collapse:collapse;font-size:10px;margin-top:4px;}
+.pz-ctbl th{background:var(--gd);color:#fff;padding:6px 8px;text-align:left;font-weight:500;}
+.pz-ctbl td{padding:6px 8px;border-bottom:1px solid var(--bd);vertical-align:top;line-height:1.45;}
 
 /* PDF PREVIEW */
 .pdf-preview{background:var(--wh);border:1px solid var(--bd);border-radius:12px;padding:20px;margin-top:14px;}
@@ -268,7 +353,7 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
   <div id="lgChecking">Verificando sesión…</div>
   <div class="lg-box" id="lgBox">
     <div class="lg-logo">
-      <div class="lg-badge">EPEC<br>COD</div>
+      <div class="lg-badge">EPEC<br>CCOD</div>
       <h1>Matriz de Competencias</h1>
       <span>Acceso restringido · Ingresá con tu cuenta</span>
     </div>
@@ -281,12 +366,16 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
 
 <!-- HEADER -->
 <div class="hdr">
-  <div class="hdr-logo">EPEC<br>COD</div>
+  <div class="hdr-logo">EPEC<br>CCOD</div>
   <div class="hdr-info">
-    <h1>Matriz de Competencias — Centro Operativo de Distribución</h1>
-    <p>EPEC S.A.U. · Evaluación Individual y de Equipo · Técnica + Liderazgo Operativo</p>
+    <h1>Matriz de Competencias — CCOD</h1>
+    <p>EPEC S.A.U. · Centro de Control de Operación de Distribución · Técnica + Liderazgo Operativo</p>
   </div>
   <div class="hdr-right">
+    <div class="tema-sw" role="group" aria-label="Tema de pantalla">
+      <button class="tema-op" data-t="light" onclick="setTema('light')" title="Pantalla clara" aria-label="Pantalla clara"><i class="ti ti-sun"></i></button>
+      <button class="tema-op" data-t="dark" onclick="setTema('dark')" title="Pantalla oscura (verde)" aria-label="Pantalla oscura"><i class="ti ti-moon"></i></button>
+    </div>
     <span style="font-size:10px;color:#fff;opacity:.8;" id="usrCount"></span>
     <div class="live"><div class="dot"></div>Firebase en vivo</div>
     <span style="font-size:10px;color:#fff;opacity:.85;" id="usrEmail"></span>
@@ -306,6 +395,7 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
   <button class="nt" onclick="go('radar')"><i class="ti ti-chart-radar"></i>Radar</button>
   <button class="nt" onclick="go('tendencia')"><i class="ti ti-trending-up"></i>Tendencia</button>
   <button class="nt" onclick="go('ninebox')"><i class="ti ti-layout-grid"></i>Nine Box</button>
+  <button class="nt" onclick="go('puestos')"><i class="ti ti-sitemap"></i>Guía de puestos</button>
   <button class="nt" onclick="go('reportes')"><i class="ti ti-file-type-pdf"></i>Reportes PDF</button>
 </div>
 
@@ -361,7 +451,7 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
     <div class="sub">Elegí o escribí el nombre de la persona: las puntuaciones que cargues abajo (incluyendo P-DUP y Expertiz+SHyMA) se guardan asociadas a ella y a su rol, no solo al rol en general.</div>
     <div class="g4">
       <div class="fg">
-        <label>Persona (rol: <span id="plan-rol-lbl">Jefe COD</span>)</label>
+        <label>Persona (puesto: <span id="plan-rol-lbl">Jefe CCOD</span>)</label>
         <input type="text" id="plan-persona" list="plan-persona-list" placeholder="Apellido, Nombre" oninput="onPlanPersonaChange()">
         <datalist id="plan-persona-list"></datalist>
       </div>
@@ -382,128 +472,147 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
     <div id="plan-msg" style="margin:-6px 0 14px;font-size:13px;font-weight:500;min-height:18px;"></div>
 
     <div class="plan-tabs">
-      <button class="plan-tab on" onclick="showPlan('jcod',this)"><i class="ti ti-user"></i> Jefe COD</button>
-      <button class="plan-tab" onclick="showPlan('scod',this)"><i class="ti ti-user"></i> SubJefe COD</button>
-      <button class="plan-tab" onclick="showPlan('jtmt',this)"><i class="ti ti-user"></i> Jefe Turno MT</button>
+      <button class="plan-tab on" onclick="showPlan('jcod',this)"><i class="ti ti-user"></i> Jefe CCOD</button>
+      <button class="plan-tab" onclick="showPlan('scod',this)"><i class="ti ti-user"></i> Subjefe CCOD</button>
+      <button class="plan-tab" onclick="showPlan('jtmt',this)"><i class="ti ti-user"></i> Coord. de Turno MT</button>
       <button class="plan-tab" onclick="showPlan('dup',this)"><i class="ti ti-users"></i> Procesos Compartidos (P-DUP)</button>
       <button class="plan-tab" onclick="showPlan('tec',this)"><i class="ti ti-tool"></i> Expertiz + SHyMA</button>
     </div>
 
-    <!-- JEFE COD -->
+    <!-- PANELES POR PUESTO (generados desde Descripción de Puestos v1.1 y Procesos de Trabajo Roles) -->
     <div class="plan-panel on" id="plan-jcod">
       <div class="plan-header">
-        <div class="plan-title">JEFE COD — Procesos exclusivos del rol</div>
-        <div class="plan-sub">P-JCOD-01 al P-JCOD-05 · Rol Accountable (A) en procesos compartidos</div>
+        <div class="plan-title">JEFE CCOD — Procesos exclusivos del puesto</div>
+        <div class="plan-sub">P-JCOD-01 a P-JCOD-05 · Conducción del CCOD · Depende del Jefe de Zona A</div>
       </div>
+      <div id="plan-ref-jcod" class="puesto-ref"></div>
+      <div class="tbl-scroll">
       <table class="plan-tbl">
         <thead><tr><th style="width:120px">Proceso</th><th>Actividad / Evidencia a verificar</th><th style="width:210px">Criterio de aceptación</th><th style="width:140px;text-align:center">Puntuación</th></tr></thead>
         <tbody>
           <tr>
-            <td class="cod">P-JCOD-01<br>Marco Legal</td>
-            <td>Conoce y aplica la normativa vigente (Ley 8.555, resoluciones ERSEP, estatuto EPEC). Fundamenta decisiones en base normativa cuando se lo consulta.</td>
-            <td class="crit">Responde correctamente al menos 3 de 4 consultas normativas tipo sin apoyo documental</td>
+            <td class="cod">P-JCOD-01<br>Marco legal</td>
+            <td>Evalúa los requisitos legales, regulatorios e internos que afectan al CCOD (resoluciones ERSEP, especificaciones técnicas de EPEC), emite instrucciones internas de adecuación y verifica su implementación.</td>
+            <td class="crit">Registro normativo actualizado, instrucciones firmadas y acta de verificación. Desvíos reportados a Zona A.</td>
             <td><div class="plan-score" id="ps-jcod-01"></div></td>
           </tr>
           <tr>
             <td class="cod">P-JCOD-02<br>Config. MT/BT</td>
-            <td>Conoce parámetros de configuración de la red MT/BT del COD: tensiones nominales, límites de corriente, criterios de maniobra y configuración normal/emergencia.</td>
-            <td class="crit">Describe la configuración del sistema sin consultar planos en al menos el 80% de los casos</td>
+            <td>Define criterios permanentes y alternativas de configuración MT/BT con datos de SCADA/SITEC, planimetría y fallas históricas; canaliza su validación con las áreas técnicas por Zona A y los difunde a los turnos.</td>
+            <td class="crit">Documento de criterios con su justificación, validado por el nivel competente y difundido (con evidencia de recepción).</td>
             <td><div class="plan-score" id="ps-jcod-02"></div></td>
           </tr>
           <tr>
-            <td class="cod">P-JCOD-03<br>Contratistas</td>
-            <td>Conoce el proceso completo de habilitación, seguimiento y cierre de contratistas. Verifica que el proceso sea aplicado correctamente por el SubJefe COD.</td>
-            <td class="crit">Puede describir cada etapa del proceso. No ejecuta tareas del SubJefe COD</td>
+            <td class="cod">P-JCOD-03<br>Contrat. servicios</td>
+            <td>Fundamenta necesidades de servicios, define especificaciones y criterios de aceptación y canaliza la solicitud por el circuito administrativo; evalúa la prestación recibida. No tiene atribución presupuestaria ni de adjudicación.</td>
+            <td class="crit">Solicitud y especificación completas; informe de evaluación de la prestación respecto de lo solicitado.</td>
             <td><div class="plan-score" id="ps-jcod-03"></div></td>
           </tr>
           <tr>
-            <td class="cod">P-JCOD-04<br>Presupuesto</td>
-            <td>Gestiona el ciclo presupuestario completo: elabora, somete a Gerencia y controla ejecución mensual. Usa SAP/ERP. Aprueba solicitudes con criterio técnico-presupuestario.</td>
-            <td class="crit">Reporte de ejecución mensual con variaciones explicadas. SAP utilizado correctamente</td>
+            <td class="cod">P-JCOD-04<br>SCADA / SITEC / Reclamos</td>
+            <td>Supervisa la disponibilidad de SCADA, SITEC, Mapa de Reclamos y demás herramientas críticas; escala incidencias, define contingencias operativas y analiza recurrencias.</td>
+            <td class="crit">Incidencias con ticket y seguimiento; contingencias instruidas; análisis de recurrencia con propuestas de mejora.</td>
             <td><div class="plan-score" id="ps-jcod-04"></div></td>
           </tr>
           <tr>
-            <td class="cod">P-JCOD-05<br>Reporte Jefatura</td>
-            <td>Elabora informes ejecutivos con indicadores SAIDI/SAIFI, novedades del período, desvíos y acciones correctivas. Presenta con claridad a la Gerencia.</td>
-            <td class="crit">Reporte entregado en plazo, indicadores calculados correctamente, narrativa de desvíos incluida</td>
+            <td class="cod">P-JCOD-05<br>Informes rendimiento</td>
+            <td>Revisa consistencia, fuentes y análisis de los informes MT/BT elaborados con apoyo de Subjefatura; los aprueba o devuelve para corrección y eleva las conclusiones.</td>
+            <td class="crit">Informe aprobado u observado con fuentes contrastadas, y plan de acciones de mejora.</td>
             <td><div class="plan-score" id="ps-jcod-05"></div></td>
           </tr>
         </tbody>
       </table>
+      </div>
       <div class="plan-total" id="total-jcod">
-        <div class="pt-item"><div class="pt-num" id="pn-jcod">—</div><div class="pt-lbl">Promedio rol</div></div>
+        <div class="pt-item"><div class="pt-num" id="pn-jcod">—</div><div class="pt-lbl">Promedio puesto</div></div>
         <div class="pt-item"><div class="pt-num" id="pp-jcod">—</div><div class="pt-lbl">% requerido</div></div>
         <div class="pt-item"><div class="pt-num" id="pe-jcod" style="font-size:13px;margin-top:4px;">—</div><div class="pt-lbl">Estado</div></div>
       </div>
     </div>
 
-    <!-- SUBJEFE COD -->
     <div class="plan-panel" id="plan-scod">
       <div class="plan-header">
-        <div class="plan-title">SUBJEFE COD — Procesos exclusivos del rol</div>
-        <div class="plan-sub">P-SCOD-01 al P-SCOD-03 · Rol Responsible (R) en procesos compartidos</div>
+        <div class="plan-title">SUBJEFE CCOD — Procesos exclusivos del puesto</div>
+        <div class="plan-sub">P-SCOD-01 a P-SCOD-03 + funciones del relevamiento · Organización y evaluación del personal, maniobras programadas y soporte · Depende del Jefe CCOD</div>
       </div>
+      <div id="plan-ref-scod" class="puesto-ref"></div>
+      <div class="tbl-scroll">
       <table class="plan-tbl">
         <thead><tr><th style="width:120px">Proceso</th><th>Actividad / Evidencia a verificar</th><th style="width:210px">Criterio de aceptación</th><th style="width:140px;text-align:center">Puntuación</th></tr></thead>
         <tbody>
           <tr>
-            <td class="cod">P-SCOD-01<br>Com. Operativas</td>
-            <td>Coordina operaciones diarias con CTZ Capital y Teleoperación Provincial. Registra todas las comunicaciones en bitácora. No delega la coordinación sin respaldo documentado.</td>
-            <td class="crit">Bitácora de coordinación completa sin lagunas. Comunicaciones registradas con hora, interlocutor y contenido</td>
+            <td class="cod">P-SCOD-01<br>Comunicaciones</td>
+            <td>Verifica la disponibilidad de canales y equipos de comunicación, registra fallas, define el canal alternativo mientras se resuelven y comprueba y comunica el restablecimiento.</td>
+            <td class="crit">Checklist por turno, ticket de falla y comunicación de contingencia y de cierre documentados.</td>
             <td><div class="plan-score" id="ps-scod-01"></div></td>
           </tr>
           <tr>
-            <td class="cod">P-SCOD-02<br>Doc. Técnica</td>
-            <td>Gestiona, actualiza y controla la documentación técnica operativa del COD: procedimientos, planos, registros de turno, SITEC/GIS. Detecta documentación desactualizada y la eleva al Jefe COD.</td>
-            <td class="crit">Documentación vigente y accesible. Sin procedimientos desactualizados en uso. SITEC/GIS actualizado</td>
+            <td class="cod">P-SCOD-02<br>Doc. técnica</td>
+            <td>Inventaría la documentación técnica, contrasta discrepancias con información de campo y solicita su actualización; publica versiones vigentes, retira las obsoletas y comunica los cambios a los turnos.</td>
+            <td class="crit">Inventario y repositorio con versiones vigentes; discrepancias con pedido y seguimiento; cambios comunicados.</td>
             <td><div class="plan-score" id="ps-scod-02"></div></td>
           </tr>
           <tr>
-            <td class="cod">P-SCOD-03<br>Supervisión Equipo</td>
-            <td>Supervisa el desempeño operativo del equipo en turno: verifica ejecución de tareas, detecta desvíos, otorga feedback al Jefe de Turno MT y reporta novedades al Jefe COD.</td>
-            <td class="crit">Reportes de supervisión en cada turno. Feedback documentado. Desvíos escalados en tiempo</td>
+            <td class="cod">P-SCOD-03<br>Registro de novedades</td>
+            <td>Controla completitud, clasificación y oportunidad de las novedades MT, solicita correcciones y consolida eventos críticos y recurrentes para Jefatura. Recibe las novedades de cierre del Coordinador.</td>
+            <td class="crit">Registros completos y corregidos; informe consolidado con fuentes y desvíos.</td>
             <td><div class="plan-score" id="ps-scod-03"></div></td>
+          </tr>
+          <tr>
+            <td class="cod">P-SCOD-04<br>Personal y roseta</td>
+            <td>Administra las licencias autorizadas por el Jefe, confecciona la roseta, dispone cambios de turno, organiza la cobertura de ausencias y evalúa al personal del CCOD.<div style="margin-top:4px;font-size:9px;color:#92400e;">Función confirmada en el relevamiento (M2). Código provisorio hasta la próxima revisión del manual.</div></td>
+            <td class="crit">Roseta y registros de coberturas al día; evaluaciones sustentadas en el trabajo, con necesidades de mejora comunicadas.</td>
+            <td><div class="plan-score" id="ps-scod-04"></div></td>
+          </tr>
+          <tr>
+            <td class="cod">P-SCOD-05<br>Maniobras programadas</td>
+            <td>Firma y autoriza las maniobras programadas y transmite la programación autorizada al Coordinador y al Operador para su realización durante el turno.<div style="margin-top:4px;font-size:9px;color:#92400e;">Función confirmada en el relevamiento (M2). Código provisorio hasta la próxima revisión del manual.</div></td>
+            <td class="crit">Programación firmada y autorizada, disponible antes de realizar la maniobra.</td>
+            <td><div class="plan-score" id="ps-scod-05"></div></td>
           </tr>
         </tbody>
       </table>
+      </div>
       <div class="plan-total">
-        <div class="pt-item"><div class="pt-num" id="pn-scod">—</div><div class="pt-lbl">Promedio rol</div></div>
+        <div class="pt-item"><div class="pt-num" id="pn-scod">—</div><div class="pt-lbl">Promedio puesto</div></div>
         <div class="pt-item"><div class="pt-num" id="pp-scod">—</div><div class="pt-lbl">% requerido</div></div>
         <div class="pt-item"><div class="pt-num" id="pe-scod" style="font-size:13px;margin-top:4px;">—</div><div class="pt-lbl">Estado</div></div>
       </div>
     </div>
 
-    <!-- JEFE DE TURNO MT -->
     <div class="plan-panel" id="plan-jtmt">
       <div class="plan-header">
-        <div class="plan-title">JEFE DE TURNO MT — Procesos exclusivos del rol</div>
-        <div class="plan-sub">P-JTMT-01 al P-JTMT-03 · Ejecución operativa directa</div>
+        <div class="plan-title">COORDINADOR DE TURNO MT — Procesos exclusivos del puesto</div>
+        <div class="plan-sub">P-JTMT-01 a P-JTMT-03 · Conducción operativa durante el turno · Depende del Subjefe CCOD (antes "Jefe de Turno MT")</div>
       </div>
+      <div id="plan-ref-jtmt" class="puesto-ref"></div>
+      <div class="tbl-scroll">
       <table class="plan-tbl">
         <thead><tr><th style="width:120px">Proceso</th><th>Actividad / Evidencia a verificar</th><th style="width:210px">Criterio de aceptación</th><th style="width:140px;text-align:center">Puntuación</th></tr></thead>
         <tbody>
           <tr>
-            <td class="cod">P-JTMT-01<br>Conducción Turno</td>
-            <td>Conduce el turno MT: dirige al equipo, gestiona la bitácora, registra novedades en tiempo real, coordina con el SubJefe COD y garantiza la continuidad operativa.</td>
-            <td class="crit">Bitácora de turno completa, sin campos faltantes. Novedades registradas en tiempo real</td>
+            <td class="cod">P-JTMT-01<br>Conducción del turno</td>
+            <td>Recibe el turno y valida estado de red, eventos abiertos, restricciones y consignas; define prioridades, asigna tareas al Operador MT y autoriza y supervisa sus actuaciones; registra ingresos y salidas de operadores MT y BT; cierra y entrega el turno al Coordinador entrante y comunica las novedades al Subjefe.</td>
+            <td class="crit">Bitácora y registro inicial completos, consignas trazables y registro de entrega sin omisiones. El cierre no requiere aprobación de Subjefatura.</td>
             <td><div class="plan-score" id="ps-jtmt-01"></div></td>
           </tr>
-          <tr>
-            <td class="cod">P-JTMT-02<br>Maniobras</td>
-            <td>Ejecuta maniobras de red MT siguiendo la secuencia programada aprobada por el Jefe COD. Registra cada maniobra. Reporta desvíos al SubJefe COD en menos de 5 minutos.</td>
-            <td class="crit">Maniobras conforme al plan aprobado. Registro completo. Desvíos reportados dentro de los 5 minutos</td>
+          <tr style="border-left:3px solid #c02133;">
+            <td class="cod">P-JTMT-02<br>Seguridad y consignación (SG-P200) <span class="shyma-tag">⚡SHyMA</span></td>
+            <td>Conoce el SG-P200 y supervisa desde el CCOD las actuaciones y comunicaciones del Operador (OCOR) en consignación y desconsignación; supervisa el tratamiento de restricciones asociadas a trabajos y licencias y canaliza los desvíos. No realiza tareas de campo.</td>
+            <td class="crit">Comunicaciones y registros ajustados al SG-P200 y a las confirmaciones de los responsables de campo; restricciones conocidas por el turno. <strong>Calificación 1 implica No habilitación (SHyMA).</strong></td>
             <td><div class="plan-score" id="ps-jtmt-02"></div></td>
           </tr>
           <tr>
-            <td class="cod">P-JTMT-03<br>Supervisión SHyMA <span class="shyma-tag">⚡SHyMA</span></td>
-            <td>Controla EPP, enclavamientos y condiciones de seguridad antes de cada intervención. Reporta incidentes y condiciones inseguras al SubJefe COD. Preserva el lugar del incidente.</td>
-            <td class="crit">Check de seguridad documentado antes de cada trabajo. Partes de incidente en plazo. Lugar preservado según protocolo</td>
+            <td class="cod">P-JTMT-03<br>Reclamos técnicos</td>
+            <td>Clasifica la criticidad de los reclamos, deriva la intervención y supervisa la respuesta, el cierre o el escalamiento con información suficiente.</td>
+            <td class="crit">Reclamos atendidos según prioridad; pendientes transferidos formalmente con toda la información.</td>
             <td><div class="plan-score" id="ps-jtmt-03"></div></td>
           </tr>
         </tbody>
       </table>
+      </div>
       <div class="plan-total">
-        <div class="pt-item"><div class="pt-num" id="pn-jtmt">—</div><div class="pt-lbl">Promedio rol</div></div>
+        <div class="pt-item"><div class="pt-num" id="pn-jtmt">—</div><div class="pt-lbl">Promedio puesto</div></div>
         <div class="pt-item"><div class="pt-num" id="pp-jtmt">—</div><div class="pt-lbl">% requerido</div></div>
         <div class="pt-item"><div class="pt-num" id="pe-jtmt" style="font-size:13px;margin-top:4px;">—</div><div class="pt-lbl">Estado</div></div>
       </div>
@@ -513,18 +622,18 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
     <div class="plan-panel" id="plan-dup">
       <div class="plan-header">
         <div class="plan-title">PROCESOS COMPARTIDOS — P-DUP-01 al P-DUP-15</div>
-        <div class="plan-sub">Rediseño de duplicaciones · JCOD=Accountable (A) · SCOD=Responsible (R) · JTMT=R/C/I</div>
+        <div class="plan-sub">Rediseño de duplicaciones · Jefe CCOD=Accountable (A) · Subjefe CCOD=Responsible (R) · Coordinador de Turno MT=R/C/I</div>
       </div>
-      <table class="plan-tbl">
-        <thead><tr><th style="width:90px">Código</th><th>Nombre del proceso</th><th style="width:120px">Rol JCOD</th><th style="width:120px">Rol SCOD</th><th style="width:120px">Rol JTMT</th><th style="width:140px;text-align:center">Puntuación</th></tr></thead>
+      <div class="tbl-scroll"><table class="plan-tbl">
+        <thead><tr><th style="width:90px">Código</th><th>Nombre del proceso</th><th style="width:120px">Jefe CCOD</th><th style="width:120px">Subjefe CCOD</th><th style="width:120px">Coord. Turno MT</th><th style="width:140px;text-align:center">Puntuación</th></tr></thead>
         <tbody>
           <tr><td class="cod">P-DUP-01</td><td>Planes de mantenimiento MT/CRD</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba plan y KPIs</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Elabora y ejecuta</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td><div class="plan-score" id="ps-dup-01"></div></td></tr>
           <tr><td class="cod">P-DUP-02</td><td>Relevamiento de redes y aparamenta</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba informe</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Planifica y actualiza SITEC</td><td style="font-size:10px;color:#065f46">Consultado (C)</td><td><div class="plan-score" id="ps-dup-02"></div></td></tr>
-          <tr><td class="cod">P-DUP-03</td><td>Reclamos técnicos emergentes</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Decide casos críticos</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Evalúa y coordina</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Ejecuta atención</td><td><div class="plan-score" id="ps-dup-03"></div></td></tr>
+          <tr><td class="cod">P-DUP-03</td><td>Reclamos técnicos emergentes</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Decide casos críticos</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Evalúa y coordina</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Clasifica, deriva y supervisa la respuesta</td><td><div class="plan-score" id="ps-dup-03"></div></td></tr>
           <tr><td class="cod">P-DUP-04</td><td>Coordinación COD-CTZ-Teleoperación</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Establece protocolos</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Coordina turno a turno</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td><div class="plan-score" id="ps-dup-04"></div></td></tr>
           <tr><td class="cod">P-DUP-05</td><td>Provisión de equipos, EPP y herramientas</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba adquisiciones</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Gestiona inventario</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td><div class="plan-score" id="ps-dup-05"></div></td></tr>
           <tr><td class="cod">P-DUP-06</td><td>Provisión de insumos y materiales</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba solicitudes</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Gestiona stock</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td><div class="plan-score" id="ps-dup-06"></div></td></tr>
-          <tr><td class="cod">P-DUP-07</td><td>Maniobras programadas</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba plan</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Programa y monitorea</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Ejecuta maniobras</td><td><div class="plan-score" id="ps-dup-07"></div></td></tr>
+          <tr><td class="cod">P-DUP-07</td><td>Maniobras programadas</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba plan</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Firma y autoriza la programación</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Autoriza y supervisa al Operador MT</td><td><div class="plan-score" id="ps-dup-07"></div></td></tr>
           <tr><td class="cod">P-DUP-08</td><td>Comités Técnicos y de Contingencias</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Voz institucional</td><td style="font-size:10px;color:#92400e">Consultado (C)<br>Soporte técnico</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td><div class="plan-score" id="ps-dup-08"></div></td></tr>
           <tr><td class="cod">P-DUP-09</td><td>Capacitación del personal</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba plan</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Elabora y coordina</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Participa y aplica</td><td><div class="plan-score" id="ps-dup-09"></div></td></tr>
           <tr><td class="cod">P-DUP-10</td><td>Cumplimiento SHyMA <span class="shyma-tag">⚡</span></td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Define estándares</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Supervisa y audita</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Controla en turno</td><td><div class="plan-score" id="ps-dup-10"></div></td></tr>
@@ -534,7 +643,7 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
           <tr><td class="cod">P-DUP-14</td><td>Reporte de Gestión O&amp;M</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba y firma</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Elabora reporte</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Provee registros de turno</td><td><div class="plan-score" id="ps-dup-14"></div></td></tr>
           <tr><td class="cod">P-DUP-15</td><td>Gestión administrativa de RRHH</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba diagramas y licencias</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Gestiona administrativamente</td><td style="font-size:10px;color:#065f46">Informado (I)<br>Recibe diagrama aprobado</td><td><div class="plan-score" id="ps-dup-15"></div></td></tr>
         </tbody>
-      </table>
+      </table></div>
       <div class="plan-total">
         <div class="pt-item"><div class="pt-num" id="pn-dup">—</div><div class="pt-lbl">Promedio P-DUP</div></div>
         <div class="pt-item"><div class="pt-num" id="pp-dup">—</div><div class="pt-lbl">% requerido</div></div>
@@ -548,7 +657,7 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
         <div class="plan-title">EXPERTIZ TÉCNICA + SEGURIDAD OPERACIONAL</div>
         <div class="plan-sub">Evaluación transversal aplicable a todos los roles del COD</div>
       </div>
-      <table class="plan-tbl">
+      <div class="tbl-scroll"><table class="plan-tbl">
         <thead><tr><th style="width:120px">Proceso</th><th>Actividad / Evidencia a verificar</th><th style="width:210px">Criterio de aceptación</th><th style="width:140px;text-align:center">Puntuación</th></tr></thead>
         <tbody>
           <tr>
@@ -564,7 +673,7 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
             <td><div class="plan-score" id="ps-tec-02"></div></td>
           </tr>
         </tbody>
-      </table>
+      </table></div>
       <div class="plan-total">
         <div class="pt-item"><div class="pt-num" id="pn-tec">—</div><div class="pt-lbl">Promedio técnico</div></div>
         <div class="pt-item"><div class="pt-num" id="pp-tec">—</div><div class="pt-lbl">% requerido</div></div>
@@ -592,9 +701,9 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
       <div class="fg"><label>Rol *</label>
         <select id="i-rol" onchange="onRolChange()">
           <option value="">Seleccionar rol...</option>
-          <option value="JCOD">Jefe COD</option>
-          <option value="SCOD">SubJefe COD</option>
-          <option value="JTMT">Jefe de Turno MT</option>
+          <option value="JCOD">Jefe CCOD</option>
+          <option value="SCOD">Subjefe CCOD</option>
+          <option value="JTMT">Coordinador de Turno MT</option>
         </select>
       </div>
     </div>
@@ -619,9 +728,9 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
       <div class="fg"><label>Rol</label>
         <select id="q-rol" onchange="onQRolChange()">
           <option value="">Todos los roles</option>
-          <option value="JCOD">Jefe COD</option>
-          <option value="SCOD">SubJefe COD</option>
-          <option value="JTMT">Jefe de Turno MT</option>
+          <option value="JCOD">Jefe CCOD</option>
+          <option value="SCOD">Subjefe CCOD</option>
+          <option value="JTMT">Coordinador de Turno MT</option>
         </select>
       </div>
       <div class="fg"><label>Persona</label>
@@ -787,9 +896,9 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
       <div class="fg"><label>Rol</label>
         <select id="fb-rol" onchange="populateFeedbackPersonas();renderFeedback();">
           <option value="">Todos los roles</option>
-          <option value="JCOD">Jefe COD</option>
-          <option value="SCOD">SubJefe COD</option>
-          <option value="JTMT">Jefe de Turno MT</option>
+          <option value="JCOD">Jefe CCOD</option>
+          <option value="SCOD">Subjefe CCOD</option>
+          <option value="JTMT">Coordinador de Turno MT</option>
         </select>
       </div>
       <div class="fg"><label>Persona</label>
@@ -822,9 +931,9 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
       <div class="fg"><label>Rol</label>
         <select id="acc-rol" onchange="populateAccionesPersonas();renderAcciones();">
           <option value="">Todos los roles</option>
-          <option value="JCOD">Jefe COD</option>
-          <option value="SCOD">SubJefe COD</option>
-          <option value="JTMT">Jefe de Turno MT</option>
+          <option value="JCOD">Jefe CCOD</option>
+          <option value="SCOD">Subjefe CCOD</option>
+          <option value="JTMT">Coordinador de Turno MT</option>
         </select>
       </div>
       <div class="fg"><label>Persona</label>
@@ -876,9 +985,9 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
       <div class="fg" style="max-width:200px;">
         <label>Rol</label>
         <select id="rRolTec" onchange="renderRadarTec()">
-          <option value="JCOD">Jefe COD</option>
-          <option value="SCOD">SubJefe COD</option>
-          <option value="JTMT">Jefe de Turno MT</option>
+          <option value="JCOD">Jefe CCOD</option>
+          <option value="SCOD">Subjefe CCOD</option>
+          <option value="JTMT">Coordinador de Turno MT</option>
         </select>
       </div>
       <div style="position:relative;height:300px;"><canvas id="cRadarTec"></canvas></div>
@@ -912,9 +1021,9 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
         <label>Rol</label>
         <select id="tRolTec" onchange="renderTendTec()">
           <option value="all">Todos los roles</option>
-          <option value="JCOD">Jefe COD</option>
-          <option value="SCOD">SubJefe COD</option>
-          <option value="JTMT">Jefe de Turno MT</option>
+          <option value="JCOD">Jefe CCOD</option>
+          <option value="SCOD">Subjefe CCOD</option>
+          <option value="JTMT">Coordinador de Turno MT</option>
         </select>
       </div>
       <div style="position:relative;height:220px;"><canvas id="cTendTec"></canvas></div>
@@ -935,57 +1044,48 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
 ═══════════════════════════════════════════ -->
 <div class="sec" id="s-ninebox">
   <div class="card">
-    <div class="ct"><i class="ti ti-layout-grid"></i>Nine Box — Potencial × Desempeño Técnico · Equipo COD</div>
-    <div class="sub">Eje Y = potencial (tendencia de mejora técnica) · Eje X = desempeño técnico actual (promedio /4)</div>
-    <div class="fg" style="max-width:200px;margin-bottom:14px;">
-      <label>Filtrar rol</label>
+    <div class="ct"><i class="ti ti-layout-grid"></i>Nine Box — Conocimiento técnico × Liderazgo · Equipo CCOD</div>
+    <div class="sub">Un solo gráfico para ver dónde está cada persona y qué conviene hacer con ella. No usa "potencial" estimado: cruza las dos mediciones reales que ya se cargan en la app.</div>
+
+    <div class="nb-how">
+      <div class="nb-step"><b><span class="n">1</span>Cada persona aparece una sola vez</b>Se toma su última evaluación técnica y su última evaluación de liderazgo. Si hubo evaluaciones anteriores, la tabla de abajo muestra si mejoró o bajó.</div>
+      <div class="nb-step"><b><span class="n">2</span>Cómo se ubica</b>Hacia la <strong>derecha</strong>: más conocimiento técnico (promedio de procesos en las Planillas Técnicas). Hacia <strong>arriba</strong>: más liderazgo (promedio de las 7 competencias de la Evaluación Individual). Cortes en 2 y 3 sobre la escala 1–4.</div>
+      <div class="nb-step"><b><span class="n">3</span>Qué significa el color</b><strong style="color:#065f46">Verde</strong>: sostener y usar como referente. <strong style="color:#92400e">Amarillo</strong>: acompañar el desarrollo. <strong style="color:#9b1c2e">Naranja y rojo</strong>: prioridad para el Plan de Acción.</div>
+    </div>
+
+    <div class="fg" style="max-width:260px;margin-bottom:14px;">
+      <label>Mostrar puesto</label>
       <select id="nbRol" onchange="renderNineBox()">
-        <option value="all">Todos los roles</option>
-        <option value="JCOD">Jefe COD</option>
-        <option value="SCOD">SubJefe COD</option>
-        <option value="JTMT">Jefe de Turno MT</option>
+        <option value="all">Todos los puestos</option>
+        <option value="JCOD">Jefe CCOD</option>
+        <option value="SCOD">Subjefe CCOD</option>
+        <option value="JTMT">Coordinador de Turno MT</option>
       </select>
     </div>
-    <div style="display:flex;gap:8px;align-items:stretch;">
-      <div style="display:flex;flex-direction:column;justify-content:space-between;padding:8px 0;min-width:22px;">
-        <div style="font-size:9px;font-weight:700;color:var(--gd);text-align:center;">Alto</div>
-        <div style="font-size:9px;font-weight:700;color:var(--gd);text-align:center;">Medio</div>
-        <div style="font-size:9px;font-weight:700;color:var(--gd);text-align:center;">Bajo</div>
-      </div>
-      <div style="flex:1;">
-        <div class="nb9" id="nb9g"></div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:6px;">
-          <div style="text-align:center;font-size:9px;color:var(--tm);">Inicial (&lt;2)</div>
-          <div style="text-align:center;font-size:9px;color:var(--tm);">Básico (2–3)</div>
-          <div style="text-align:center;font-size:9px;color:var(--tm);">Competente (&gt;3)</div>
-        </div>
-        <div style="text-align:center;font-size:10px;font-weight:700;color:var(--gd);margin-top:6px;letter-spacing:1px;">DESEMPEÑO TÉCNICO →</div>
-      </div>
-    </div>
-    <div id="nb9leyenda" style="margin-top:14px;display:flex;gap:14px;flex-wrap:wrap;"></div>
+
+    <div id="nbBoard"></div>
+    <div id="nbSinUbicar"></div>
   </div>
 
   <div class="card">
-    <div class="ct"><i class="ti ti-award"></i>Nine Box — Liderazgo Operativo</div>
-    <div class="sub">Eje Y = potencial (tendencia de mejora en liderazgo) · Eje X = nivel de liderazgo actual (promedio /4)</div>
-    <div style="display:flex;gap:8px;align-items:stretch;">
-      <div style="display:flex;flex-direction:column;justify-content:space-between;padding:8px 0;min-width:22px;">
-        <div style="font-size:9px;font-weight:700;color:#1a5276;text-align:center;">Alto</div>
-        <div style="font-size:9px;font-weight:700;color:#1a5276;text-align:center;">Medio</div>
-        <div style="font-size:9px;font-weight:700;color:#1a5276;text-align:center;">Bajo</div>
-      </div>
-      <div style="flex:1;">
-        <div class="nb9" id="nb9lider"></div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:6px;">
-          <div style="text-align:center;font-size:9px;color:var(--tm);">No obs. (&lt;2)</div>
-          <div style="text-align:center;font-size:9px;color:var(--tm);">En des. (2–3)</div>
-          <div style="text-align:center;font-size:9px;color:var(--tm);">Consolidado (&gt;3)</div>
-        </div>
-        <div style="text-align:center;font-size:10px;font-weight:700;color:#1a5276;margin-top:6px;letter-spacing:1px;">LIDERAZGO →</div>
-      </div>
-    </div>
-    <div id="nb9liderLey" style="margin-top:14px;display:flex;gap:14px;flex-wrap:wrap;"></div>
+    <div class="ct"><i class="ti ti-list-details"></i>Detalle por persona</div>
+    <div class="sub">Ordenado por prioridad: primero quienes más acompañamiento necesitan.</div>
+    <div class="tbl-scroll" id="nbDetalle"></div>
   </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     GUÍA DE PUESTOS
+═══════════════════════════════════════════ -->
+<div class="sec" id="s-puestos">
+  <div class="sec-header">
+    <i class="ti ti-sitemap"></i>
+    <div>
+      <h2>Guía de puestos del CCOD</h2>
+      <p>Qué hace cada puesto, qué decide y cómo se comprueba · Descripción de Puestos v1.1 (13/10/2026)</p>
+    </div>
+  </div>
+  <div id="puestosWrap"></div>
 </div>
 
 <!-- ═══════════════════════════════════════════
@@ -1008,9 +1108,9 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
         <label>Filtro de rol</label>
         <select id="pdfRol">
           <option value="all">Todos los roles</option>
-          <option value="JCOD">Jefe COD</option>
-          <option value="SCOD">SubJefe COD</option>
-          <option value="JTMT">Jefe de Turno MT</option>
+          <option value="JCOD">Jefe CCOD</option>
+          <option value="SCOD">Subjefe CCOD</option>
+          <option value="JTMT">Coordinador de Turno MT</option>
         </select>
       </div>
       <div class="fg">
@@ -1061,23 +1161,9 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
         <div style="position:relative;height:160px;"><canvas id="pdfBarBrecha"></canvas></div>
       </div>
 
-      <!-- Nine Box técnico -->
-      <div class="pdf-section">Nine Box — Potencial × Desempeño Técnico</div>
-      <div style="display:flex;gap:6px;margin-bottom:16px;">
-        <div style="display:flex;flex-direction:column;justify-content:space-between;padding:4px 0;min-width:16px;">
-          <div style="font-size:8px;font-weight:700;color:var(--gd);text-align:center;">Alto</div>
-          <div style="font-size:8px;font-weight:700;color:var(--gd);text-align:center;">Med.</div>
-          <div style="font-size:8px;font-weight:700;color:var(--gd);text-align:center;">Bajo</div>
-        </div>
-        <div style="flex:1;">
-          <div class="nb9" id="pdfNb9Tec" style="gap:3px;"></div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:4px;">
-            <div style="text-align:center;font-size:8px;color:var(--tm);">Inicial</div>
-            <div style="text-align:center;font-size:8px;color:var(--tm);">Básico</div>
-            <div style="text-align:center;font-size:8px;color:var(--tm);">Competente</div>
-          </div>
-        </div>
-      </div>
+      <!-- Nine Box técnica x liderazgo -->
+      <div class="pdf-section">Nine Box — Conocimiento técnico × Liderazgo</div>
+      <div id="pdfNbBox" style="margin-bottom:16px;"></div>
 
       <!-- Tabla detalle -->
       <div class="pdf-section">Detalle de evaluaciones individuales</div>
@@ -1096,6 +1182,26 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
 <div class="notif" id="notif"></div>
 
 <script>
+// ════════════════════════════════════════════════════════════
+//  TEMA CLARO / OSCURO
+// ════════════════════════════════════════════════════════════
+function aplicarTema(t){
+  if(t==='dark') document.documentElement.setAttribute('data-theme','dark');
+  else document.documentElement.removeAttribute('data-theme');
+  try{ localStorage.setItem('epec_tema', t); }catch(e){}
+  if(window.Chart){
+    Chart.defaults.color = t==='dark' ? '#b7d6cb' : '#666';
+    Chart.defaults.borderColor = t==='dark' ? 'rgba(255,255,255,.12)' : 'rgba(0,0,0,.1)';
+  }
+  document.querySelectorAll('.tema-op').forEach(b=>b.classList.toggle('on', b.dataset.t===t));
+}
+function setTema(t){
+  aplicarTema(t);
+  const a = document.querySelector('.sec.on');   // redibuja los gráficos con los colores del tema
+  if(a && typeof go==='function') go(a.id.slice(2));
+}
+(function(){ let t='light'; try{ t = localStorage.getItem('epec_tema')==='dark' ? 'dark' : 'light'; }catch(e){} aplicarTema(t); })();
+
 // ════════════════════════════════════════════════════════════
 //  FIREBASE
 // ════════════════════════════════════════════════════════════
@@ -1116,6 +1222,15 @@ const refInd = db.ref('cod_individual');
 const refEq  = db.ref('cod_equipo');
 const refAcc = db.ref('cod_acciones');
 
+// Evaluaciones guardadas antes del catálogo vigente: se descartan sólo los puntajes de procesos
+// cuya definición cambió (para no atribuirles un significado distinto al que se evaluó).
+function limpiarLegacy(sc, cat){
+  if(cat) return sc;
+  const o = {...sc};
+  LEGACY_DROP.forEach(k=>{ delete o[k]; });
+  return o;
+}
+
 // Contador de usuarios (se inicia recién después de ingresar)
 let myConn = null;
 function iniciarConexion(){
@@ -1132,26 +1247,34 @@ function iniciarConexion(){
 //  DATOS ESTRUCTURALES
 // ════════════════════════════════════════════════════════════
 
-// Procesos técnicos por rol
+// Catálogo de procesos exclusivos por puesto — alineado a "Procesos de Trabajo Roles COD" y a
+// "Descripción de los puestos del CCOD v1.1" (13/10/2026). 'prov' = función confirmada en el
+// relevamiento (M2) que todavía no tiene código en el manual: el código es provisorio.
 const PROCS_TEC = {
   JCOD:[
-    {id:'P-JCOD-01', n:'Gestión Marco Legal y Normativo', shyma:false},
-    {id:'P-JCOD-02', n:'Configuración MT/BT', shyma:false},
-    {id:'P-JCOD-03', n:'Gestión de Contratistas', shyma:false},
-    {id:'P-JCOD-04', n:'Gestión Presupuestaria', shyma:false},
-    {id:'P-JCOD-05', n:'Reporte de Gestión a Jefatura', shyma:false},
+    {id:'P-JCOD-01', n:'Gestión del marco legal y normativo', shyma:false},
+    {id:'P-JCOD-02', n:'Criterios de configuración MT/BT', shyma:false},
+    {id:'P-JCOD-03', n:'Contrataciones de servicios (necesidades y evaluación)', shyma:false},
+    {id:'P-JCOD-04', n:'Supervisión de SCADA / SITEC / Mapa de Reclamos', shyma:false},
+    {id:'P-JCOD-05', n:'Aprobación de informes de rendimiento MT/BT', shyma:false},
   ],
   SCOD:[
-    {id:'P-SCOD-01', n:'Gestión de Comunicaciones Operativas', shyma:false},
-    {id:'P-SCOD-02', n:'Gestión de Documentación Técnica', shyma:false},
-    {id:'P-SCOD-03', n:'Supervisión del Equipo Operativo', shyma:false},
+    {id:'P-SCOD-01', n:'Comunicaciones operativas (canales y equipos)', shyma:false},
+    {id:'P-SCOD-02', n:'Documentación técnica MT/BT', shyma:false},
+    {id:'P-SCOD-03', n:'Control del registro de novedades del servicio MT', shyma:false},
+    {id:'P-SCOD-04', n:'Gestión y evaluación del personal (roseta, coberturas)', shyma:false, prov:true},
+    {id:'P-SCOD-05', n:'Autorización de maniobras programadas', shyma:false, prov:true},
   ],
   JTMT:[
-    {id:'P-JTMT-01', n:'Conducción Operativa del Turno MT', shyma:false},
-    {id:'P-JTMT-02', n:'Gestión de Maniobras y Restablecimiento', shyma:false},
-    {id:'P-JTMT-03', n:'Supervisión SHyMA en turno', shyma:true},
+    {id:'P-JTMT-01', n:'Conducción operativa del turno MT', shyma:false},
+    {id:'P-JTMT-02', n:'Seguridad en el punto de trabajo y consignación (SG-P200)', shyma:true},
+    {id:'P-JTMT-03', n:'Atención de reclamos técnicos de turno', shyma:false},
   ],
 };
+// Versión del catálogo con el que se guardan las evaluaciones nuevas. Las evaluaciones anteriores
+// (sin este campo) usaban otro catálogo: se ocultan sólo los puntajes de procesos que cambiaron de significado.
+const CAT_VER = '2026-10';
+const LEGACY_DROP = ['P-JCOD-04','P-SCOD-03','P-JTMT-02','P-JTMT-03'];
 // Procesos compartidos DUP (incluyendo SHyMA y expertiz)
 const PROCS_DUP = [
   {id:'P-DUP-01', n:'Planes de mantenimiento MT/CRD', shyma:false},
@@ -1191,7 +1314,8 @@ const COMPS_LIDER = [
    desc:'Presta atención genuina a lo que dice el equipo, valida las ideas recibidas y genera espacios de diálogo antes de decidir.'},
 ];
 
-const ROLE_N = {JCOD:'Jefe COD', SCOD:'SubJefe COD', JTMT:'Jefe Turno MT'};
+const ROLE_N = {JCOD:'Jefe CCOD', SCOD:'Subjefe CCOD', JTMT:'Coordinador de Turno MT'};
+const ROLE_S = {JCOD:'Jefe CCOD', SCOD:'Subjefe CCOD', JTMT:'Coord. Turno MT'};
 const ROLE_C = {JCOD:'#1e40af', SCOD:'#92400e', JTMT:'#065f46'};
 const INST_N  = {diagnostico:'Diagnóstico', seguimiento:'Seguimiento', certificacion:'Certificación', cierre:'Cierre'};
 
@@ -1229,9 +1353,11 @@ refInd.on('value', snap => {
         estadoTec:  val.estadoTec  || '',
         estadoLid:  val.estadoLid  || '',
         shyBad:     val.shyBad     || false,
-        scoreTec:   val.scoreTec   || {},
+        scoreTec:   limpiarLegacy(val.scoreTec || {}, val.cat),
         scoreLider: val.scoreLider || {},
         ts:         val.ts         || 0,
+        cat:        val.cat        || '',
+        legacy:     !val.cat,
         tipo:       'individual'
       });
     }
@@ -1354,7 +1480,8 @@ function go(id){
   if(id==='dash') renderDash();
   if(id==='radar'){renderRadarTec();renderRadarLider();renderBrecha();}
   if(id==='ninebox'){renderNineBox();}
-  if(id==='planillas'){initPlanillas();}
+  if(id==='puestos'){renderPuestos();}
+  if(id==='planillas'){initPlanillas(); renderPuestosRef();}
   if(id==='tendencia'){renderTendTec();renderTendLider();renderAlertas();}
   if(id==='personas') renderPersonas(pfiltro);
   if(id==='individual'){ populateQPersonas(); renderQResultado(); }
@@ -1535,7 +1662,7 @@ function guardarIndividual(){
     nom, rol, eval:eval_, inst, fecha,
     scoreTec:{...scoreTec}, avgTec,
     scoreLider:{...scoreLider}, avgLid,
-    estadoTec, estadoLid, shyBad,
+    estadoTec, estadoLid, shyBad, cat: CAT_VER,
     ts: editKey ? (DATA_IND.find(x=>x.fbKey===editKey)?.ts || Date.now()) : Date.now()
   };
 
@@ -1699,7 +1826,7 @@ function renderQResultado(){
     if(!d.length) h += '<tr><td colspan="8" style="text-align:center;padding:16px;color:var(--tm)">Sin coincidencias para el filtro seleccionado</td></tr>';
     d.forEach(x=>{
       const est = x.shyBad?'⛔ SHyMA':x.estadoTec==='avanzado'?'✅ Avanzado':x.estadoTec==='competente'?'✅ Competente':x.estadoTec==='basico'?'🔄 Básico':'⚠ Inicial';
-      h += `<tr><td><strong>${x.nom}</strong></td><td><span class="badge ${rc[x.rol]}">${x.rol}</span></td><td>${INST_N[x.inst]||x.inst}</td><td>${x.fecha}</td>
+      h += `<tr><td><strong>${x.nom}</strong></td><td><span class="badge ${rc[x.rol]}">${ROLE_S[x.rol]||x.rol}</span></td><td>${INST_N[x.inst]||x.inst}</td><td>${x.fecha}</td>
       <td style="color:${scColor(x.avgTec)};font-weight:600">${(x.avgTec||0).toFixed(1)}/4</td>
       <td style="color:${scColor(x.avgLid)};font-weight:600">${(x.avgLid||0).toFixed(1)}/4</td>
       <td style="font-size:10px;color:${scColor(x.avgTec)}">${est}</td>
@@ -1758,6 +1885,9 @@ function renderDetalleCargado(rec){
     <button class="bp" style="padding:6px 14px;font-size:11px;margin-left:auto;" onclick="editarRegistro('${rec.fbKey}')"><i class="ti ti-pencil"></i> Editar esta evaluación</button>
   </div>`;
 
+  if(rec.legacy){
+    h += `<div class="al al-a" style="margin-bottom:10px;"><i class="ti ti-info-circle"></i> Esta evaluación se cargó con el <strong>catálogo anterior de procesos</strong>. Los puntajes de ${LEGACY_DROP.join(', ')} se ocultan porque esos procesos cambiaron de definición. Al volver a guardarla se actualiza al catálogo vigente.</div>`;
+  }
   h += '<div class="mx-wrap"><table class="mx-tbl"><thead><tr><th class="proc-h">Proceso técnico</th><th style="width:110px">Puntaje cargado</th></tr></thead><tbody>';
   if(propsRol.length){
     h += `<tr><td colspan="2" style="background:#f0faf6;text-align:left;font-size:10px;font-weight:700;color:var(--gd);padding:8px 10px;text-transform:uppercase;letter-spacing:.5px;">Procesos exclusivos del rol — ${ROLE_N[rec.rol]}</td></tr>`;
@@ -1938,7 +2068,7 @@ function renderDash(){
   if(!sorted.length) th+='<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--tm)">Sin evaluaciones aún</td></tr>';
   sorted.forEach(d=>{
     const cT=scColor(d.avgTec); const cL=scColor(d.avgLid);
-    th+=`<tr><td><strong>${d.nom}</strong></td><td><span class="badge ${rc2[d.rol]}">${d.rol}</span></td><td>${INST_N[d.inst]||d.inst}</td><td>${d.fecha}</td>
+    th+=`<tr><td><strong>${d.nom}</strong></td><td><span class="badge ${rc2[d.rol]}">${ROLE_S[d.rol]||d.rol}</span></td><td>${INST_N[d.inst]||d.inst}</td><td>${d.fecha}</td>
     <td style="color:${cT};font-weight:600">${(d.avgTec||0).toFixed(1)}/4</td>
     <td style="color:${cL};font-weight:600">${(d.avgLid||0).toFixed(1)}/4</td>
     <td style="font-size:10px;color:${cT}">${(d.estadoTec||'').replace('_',' ')}</td></tr>`;
@@ -1963,7 +2093,7 @@ function renderPersonas(tipo){
     [...DATA_IND].sort((a,b)=>(b.ts||0)-(a.ts||0)).forEach(d=>{
       const cT=scColor(d.avgTec); const cL=scColor(d.avgLid);
       const est=d.shyBad?'⛔ SHyMA':d.estadoTec==='avanzado'?'✅ Avanzado':d.estadoTec==='competente'?'✅ Competente':d.estadoTec==='basico'?'🔄 Básico':'⚠ Inicial';
-      h+=`<tr><td><strong>${d.nom}</strong></td><td><span class="badge ${rc[d.rol]}">${d.rol}</span></td><td>${INST_N[d.inst]||d.inst}</td><td>${d.eval||'—'}</td><td>${d.fecha}</td>
+      h+=`<tr><td><strong>${d.nom}</strong></td><td><span class="badge ${rc[d.rol]}">${ROLE_S[d.rol]||d.rol}</span></td><td>${INST_N[d.inst]||d.inst}</td><td>${d.eval||'—'}</td><td>${d.fecha}</td>
       <td style="color:${cT};font-weight:600">${(d.avgTec||0).toFixed(1)}/4</td>
       <td style="color:${cL};font-weight:600">${(d.avgLid||0).toFixed(1)}/4</td>
       <td style="font-size:10px;color:${cT}">${est}</td>
@@ -2092,7 +2222,7 @@ const planScores = {};
 // Agrupación de ids de la planilla (reutilizada también para guardar en Firebase)
 const PLAN_GRUPOS = {
   jcod:  ['jcod-01','jcod-02','jcod-03','jcod-04','jcod-05'],
-  scod:  ['scod-01','scod-02','scod-03'],
+  scod:  ['scod-01','scod-02','scod-03','scod-04','scod-05'],
   jtmt:  ['jtmt-01','jtmt-02','jtmt-03'],
   dup:   ['dup-01','dup-02','dup-03','dup-04','dup-05','dup-06','dup-07','dup-08','dup-09','dup-10','dup-11','dup-12','dup-13','dup-14','dup-15'],
   tec:   ['tec-01','tec-02'],
@@ -2155,7 +2285,7 @@ function showPlan(id, btn){
 
 const PLAN_IDS_ALL = [
   'jcod-01','jcod-02','jcod-03','jcod-04','jcod-05',
-  'scod-01','scod-02','scod-03',
+  'scod-01','scod-02','scod-03','scod-04','scod-05',
   'jtmt-01','jtmt-02','jtmt-03',
   'dup-01','dup-02','dup-03','dup-04','dup-05','dup-06','dup-07','dup-08',
   'dup-09','dup-10','dup-11','dup-12','dup-13','dup-14','dup-15',
@@ -2268,7 +2398,7 @@ function guardarPlanilla(){
     const shyBad = allProcsDefs.filter(p=>p.shyma).some(p=>mergedScoreTec[p.id]===1);
     refInd.child(existing.fbKey).update({
       scoreTec: mergedScoreTec, avgTec, estadoTec: estadoDeAvg(avgTec, shyBad), shyBad,
-      eval: eval_ || existing.eval, inst: inst || existing.inst, fecha: fecha || existing.fecha
+      eval: eval_ || existing.eval, inst: inst || existing.inst, fecha: fecha || existing.fecha, cat: CAT_VER
     }).then(()=>{
       msg.style.color='var(--g)';
       msg.textContent='✅ Planilla técnica de '+nom+' actualizada sobre el registro existente.';
@@ -2283,7 +2413,7 @@ function guardarPlanilla(){
       nom, rol: rolFB, eval: eval_, inst, fecha,
       scoreTec: scoreTecFB, avgTec,
       scoreLider: {}, avgLid: 0,
-      estadoTec: estadoDeAvg(avgTec, shyBad), estadoLid: 'no_observable', shyBad,
+      estadoTec: estadoDeAvg(avgTec, shyBad), estadoLid: 'no_observable', shyBad, cat: CAT_VER,
       ts: Date.now()
     };
     refInd.push(rec).then(()=>{
@@ -2296,72 +2426,269 @@ function guardarPlanilla(){
 }
 
 // ════════════════════════════════════════════════════════════
-//  NINE BOX
+//  NINE BOX — Conocimiento técnico (X) × Liderazgo (Y)
+//  Las dos medidas son promedios reales /4 ya cargados en la app.
+//  Cortes: menos de 2 = bajo · 2 a menos de 3 = medio · 3 o más = alto
 // ════════════════════════════════════════════════════════════
-const NB9_DEF = [
-  {r:2,c:0,l:'Dilema',              bg:'#fde8eb',tx:'#9b1c2e'},
-  {r:2,c:1,l:'Estrella en formación',bg:'#fef3c7',tx:'#92400e'},
-  {r:2,c:2,l:'Referente COD',       bg:'#218570', tx:'#ffffff'},
-  {r:1,c:0,l:'Bajo rendimiento',    bg:'#fee2e2', tx:'#991b1b'},
-  {r:1,c:1,l:'Núcleo operativo',    bg:'#fff7ed', tx:'#7c2d12'},
-  {r:1,c:2,l:'Alto potencial',      bg:'#dbeafe', tx:'#1e3a8a'},
-  {r:0,c:0,l:'Marginal',            bg:'#fde8eb', tx:'#9b1c2e'},
-  {r:0,c:1,l:'Sólido',              bg:'#e0f2fe', tx:'#0c4a6e'},
-  {r:0,c:2,l:'Pot. inconsistente',  bg:'#d1fae5', tx:'#065f46'},
+const NB_COLS = [{k:'Inicial',r:'menos de 2'},{k:'Básico',r:'2 a menos de 3'},{k:'Competente',r:'3 a 4'}];
+const NB_ROWS = [{k:'Bajo',r:'menos de 2'},{k:'Medio',r:'2 a menos de 3'},{k:'Alto',r:'3 a 4'}];
+// colores por "nivel" (suma de posiciones): 0 = prioridad máxima … 4 = referente
+const NB_NIVEL = [
+  {bg:'#fde8eb',tx:'#9b1c2e',bd:'#f0a9b3',n:'Prioridad alta'},
+  {bg:'#ffe9d6',tx:'#7c2d12',bd:'#f3bf93',n:'Atención'},
+  {bg:'#fef3c7',tx:'#78350f',bd:'#f0d27a',n:'En desarrollo'},
+  {bg:'#d1fae5',tx:'#065f46',bd:'#8fdcb8',n:'Bien encaminado'},
+  {bg:'#218570',tx:'#ffffff',bd:'#155748',n:'Referente'},
 ];
+// clave 'fila,columna' → fila = liderazgo (0 bajo … 2 alto), columna = técnica (0 inicial … 2 competente)
+const NB_CELLS = {
+  '2,0':{t:'Lidera, pero le falta base técnica', a:'Reforzar lo técnico con un plan por procesos (Planillas Técnicas) y un tutor.'},
+  '2,1':{t:'Lidera y su técnica va bien',        a:'Completar los procesos con menor puntaje para llegar a referente.'},
+  '2,2':{t:'Referente completo',                 a:'Puede tutorizar y transmitir su experiencia al resto del equipo.'},
+  '1,0':{t:'Necesita refuerzo técnico',          a:'Prioridad: plan técnico con tutor. El liderazgo está en desarrollo.'},
+  '1,1':{t:'En desarrollo',                      a:'Va avanzando en ambos ejes: sostener el Plan de Acción y volver a evaluar.'},
+  '1,2':{t:'Técnico sólido, liderazgo a desarrollar', a:'Trabajar feedback, comunicación y conducción de equipos.'},
+  '0,0':{t:'Prioridad de acompañamiento',        a:'Plan de acción inmediato en ambos ejes, con tutor asignado.'},
+  '0,1':{t:'Liderazgo por desarrollar',          a:'Foco en las competencias de liderazgo con menor puntaje.'},
+  '0,2':{t:'Experto técnico, sin liderazgo aún', a:'Valioso técnicamente: desarrollar conducción y comunicación antes de asignarle equipo.'},
+};
+function nbNivel(v){ return v<2?0:v<3?1:2; }
+function escH(t){ return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function normNom(t){ return (t||'').toString().normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/\s+/g,' ').trim(); }
 
-function buildNB9People(fil, avgKey){
-  const cells = NB9_DEF.map(c=>({...c, ppl:[]}));
-  // Agrupar por fbKey (identificador único de Firebase) — así dos Walter distintos no se confunden
-  const people = [...new Map(fil.map(d=>[d.fbKey, d])).values()];
-  people.forEach(p=>{
-    const cur = p[avgKey]||0;
-    // Tendencia: buscar evaluaciones anteriores de la misma persona por nombre+rol
-    const historial = fil.filter(d=>d.nom===p.nom&&d.rol===p.rol).sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
-    const trend = historial.length>=2?(historial[0][avgKey]||0)-(historial[historial.length-1][avgKey]||0):0;
-    const pot = Math.min(4, Math.max(0, cur+trend*0.4));
-    const col = cur<2?0:cur<3?1:2;
-    const row = pot<2?0:pot<3?1:2;
-    const cell = cells.find(c=>c.r===row&&c.c===col);
-    if(cell) cell.ppl.push({...p, cur, pot});
+// Una fila por persona (puesto + nombre normalizado): última medición técnica y última de liderazgo.
+function nbPersonas(data){
+  const grupos = new Map();
+  data.forEach(d=>{
+    const k = d.rol+'|'+normNom(d.nom);
+    if(!grupos.has(k)) grupos.set(k, []);
+    grupos.get(k).push(d);
   });
-  return cells;
-}
-
-function renderNBGrid(containerId, cells, colorKey){
-  let h='';
-  [2,1,0].forEach(row=>{
-    [0,1,2].forEach(col=>{
-      const cell = cells.find(c=>c.r===row&&c.c===col);
-      const dots = cell.ppl.map(p=>`<div class="nbdot" style="color:${ROLE_C[p.rol]||'#218570'};border-color:${ROLE_C[p.rol]||'#218570'};" title="${p.nom||'Equipo'} — ${(p.cur||0).toFixed(1)}/4">${(p.nom||'EQ').split(',')[0].slice(0,3)}</div>`).join('');
-      h+=`<div class="nbc" style="background:${cell.bg};color:${cell.tx};">
-        <div class="nbl">${cell.l}</div>
-        <div class="nbdots">${dots||'<span style="opacity:.3;font-size:8px;">vacío</span>'}</div>
-      </div>`;
+  const out = [];
+  grupos.forEach(regs=>{
+    regs.sort((a,b)=> (new Date(a.fecha)-new Date(b.fecha)) || ((a.ts||0)-(b.ts||0)));
+    const sT = regs.filter(r=>(r.avgTec||0)>0), sL = regs.filter(r=>(r.avgLid||0)>0);
+    const last = regs[regs.length-1];
+    out.push({
+      nom:last.nom, rol:last.rol,
+      tec: sT.length ? sT[sT.length-1].avgTec : 0,
+      lid: sL.length ? sL[sL.length-1].avgLid : 0,
+      tecPrev: sT.length>1 ? sT[sT.length-2].avgTec : null,
+      lidPrev: sL.length>1 ? sL[sL.length-2].avgLid : null,
+      fecha:last.fecha, shy:!!last.shyBad
     });
   });
-  document.getElementById(containerId).innerHTML=h;
+  return out.sort((a,b)=>a.nom.localeCompare(b.nom,'es'));
+}
+function nbCeldas(personas){
+  const celdas = {}, sinUbicar = [];
+  personas.forEach(p=>{
+    if(p.tec>0 && p.lid>0){ const k = nbNivel(p.lid)+','+nbNivel(p.tec); (celdas[k]=celdas[k]||[]).push(p); }
+    else sinUbicar.push(p);
+  });
+  return {celdas, sinUbicar};
+}
+function nbChip(p){
+  const tip = `${p.nom} — ${ROLE_N[p.rol]||p.rol} · Técnica ${p.tec.toFixed(1)}/4 · Liderazgo ${p.lid.toFixed(1)}/4 · última evaluación ${p.fecha||'—'}`;
+  return `<div class="nbx-chip" style="border-left-color:${ROLE_C[p.rol]||'#218570'};" title="${escH(tip)}">${escH(p.nom)}${p.shy?' ⛔':''}<small>${escH(ROLE_S[p.rol]||p.rol)} · T ${p.tec.toFixed(1)} · L ${p.lid.toFixed(1)}</small></div>`;
+}
+function nbGridHTML(celdas, compact){
+  let h = '<div class="nbx'+(compact?' nbx-compact':'')+'">';
+  h += '<div class="nbx-yt" style="grid-column:1;grid-row:1/4;">LIDERAZGO (promedio /4) ↑</div>';
+  NB_ROWS.forEach((r,ri)=>{ h += `<div class="nbx-rl" style="grid-column:2;grid-row:${3-ri};"><b>${r.k}</b><small>${r.r}</small></div>`; });
+  for(let r=2;r>=0;r--){
+    for(let c=0;c<3;c++){
+      const def = NB_CELLS[r+','+c], col = NB_NIVEL[r+c], ppl = celdas[r+','+c]||[];
+      h += `<div class="nbx-c" style="grid-column:${3+c};grid-row:${3-r};background:${col.bg};color:${col.tx};border-color:${col.bd};">
+        <div class="nbx-h"><span class="nbx-t">${def.t}</span><span class="nbx-n">${ppl.length}</span></div>
+        <div class="nbx-a">${def.a}</div>
+        <div class="nbx-p">${ppl.length?ppl.map(nbChip).join(''):'<span class="nbx-empty">Nadie por ahora</span>'}</div>
+      </div>`;
+    }
+  }
+  NB_COLS.forEach((c,ci)=>{ h += `<div class="nbx-cl" style="grid-column:${3+ci};grid-row:4;"><b>${c.k}</b><small>${c.r}</small></div>`; });
+  h += '<div class="nbx-xt" style="grid-column:3/6;grid-row:5;">CONOCIMIENTO TÉCNICO (promedio /4) →</div></div>';
+  return h;
+}
+function nbLeyendaRoles(){
+  return '<div class="nb-ley"><strong style="color:var(--gd)">Franja de color a la izquierda del nombre = puesto:</strong>'+
+    Object.keys(ROLE_C).map(r=>`<span><i style="background:${ROLE_C[r]}"></i>${ROLE_N[r]}</span>`).join('')+
+    '<span>⛔ = alerta SHyMA activa</span></div>';
+}
+function nbEvolucion(p){
+  const f = (cur,prev,l)=>{
+    if(prev==null) return null;
+    const d = +(cur-prev).toFixed(1);
+    if(d===0) return `${l} = sin cambio`;
+    return `<span style="color:${d>0?'#218570':'#c02133'}">${l} ${d>0?'▲ +':'▼ '}${d}</span>`;
+  };
+  const a = f(p.tec,p.tecPrev,'Técnica'), b = f(p.lid,p.lidPrev,'Liderazgo');
+  return (a||b) ? [a,b].filter(Boolean).join('<br>') : '<span style="color:var(--tm)">Primera evaluación</span>';
+}
+function renderNineBox(){
+  const board = document.getElementById('nbBoard');
+  if(!board) return;
+  const fil = document.getElementById('nbRol').value;
+  const data = fil==='all' ? DATA_IND : DATA_IND.filter(d=>d.rol===fil);
+  const personas = nbPersonas(data);
+  const {celdas, sinUbicar} = nbCeldas(personas);
+
+  if(!personas.length){
+    board.innerHTML = '<div class="al al-a"><i class="ti ti-info-circle"></i> Todavía no hay evaluaciones cargadas para este filtro. Cargá una en <strong>Planillas Técnicas</strong> y otra en <strong>Evaluación Individual</strong> para ver a la persona en el gráfico.</div>';
+    document.getElementById('nbSinUbicar').innerHTML = '';
+    document.getElementById('nbDetalle').innerHTML = '';
+    return;
+  }
+  board.innerHTML = nbGridHTML(celdas,false) + nbLeyendaRoles();
+
+  document.getElementById('nbSinUbicar').innerHTML = sinUbicar.length ? `<div class="nb-warn"><strong>${sinUbicar.length} persona${sinUbicar.length!==1?'s':''} todavía sin ubicar</strong> porque falta una de las dos mediciones:<br>`+
+    sinUbicar.map(p=>`• <strong>${escH(p.nom)}</strong> (${escH(ROLE_S[p.rol]||p.rol)}) — ${p.tec>0?'falta liderazgo → cargar en <em>Evaluación Individual</em>':p.lid>0?'falta técnica → cargar en <em>Planillas Técnicas</em>':'sin puntajes cargados'}`).join('<br>')+'</div>' : '';
+
+  const ubic = [];
+  Object.entries(celdas).forEach(([k,arr])=>arr.forEach(p=>ubic.push({p,k})));
+  ubic.sort((x,y)=>{ const nx=+x.k[0]+ +x.k[2], ny=+y.k[0]+ +y.k[2]; return nx-ny || x.p.nom.localeCompare(y.p.nom,'es'); });
+  let t = '<table class="pdf-table"><thead><tr><th>Persona</th><th>Puesto</th><th>Técnica</th><th>Liderazgo</th><th>Dónde está</th><th>Qué conviene hacer</th><th>Evolución</th><th>Última eval.</th></tr></thead><tbody>';
+  ubic.forEach(({p,k})=>{
+    const def = NB_CELLS[k], col = NB_NIVEL[+k[0]+ +k[2]];
+    t += `<tr><td><strong>${escH(p.nom)}</strong>${p.shy?' ⛔':''}</td><td>${escH(ROLE_S[p.rol]||p.rol)}</td>
+      <td style="color:${scColor(p.tec)};font-weight:600">${p.tec.toFixed(1)}/4</td><td style="color:${scColor(p.lid)};font-weight:600">${p.lid.toFixed(1)}/4</td>
+      <td><span style="background:${col.bg};color:${col.tx};border:1px solid ${col.bd};border-radius:20px;padding:2px 8px;font-size:10px;font-weight:600;white-space:nowrap;">${def.t}</span></td>
+      <td style="font-size:10px">${def.a}</td><td style="font-size:10px">${nbEvolucion(p)}</td><td>${escH(p.fecha||'—')}</td></tr>`;
+  });
+  sinUbicar.forEach(p=>{
+    t += `<tr><td><strong>${escH(p.nom)}</strong></td><td>${escH(ROLE_S[p.rol]||p.rol)}</td><td>${p.tec>0?p.tec.toFixed(1)+'/4':'—'}</td><td>${p.lid>0?p.lid.toFixed(1)+'/4':'—'}</td>
+      <td colspan="3" style="color:var(--tm);font-size:10px">Sin ubicar: falta ${p.tec>0?'liderazgo':p.lid>0?'técnica':'cargar puntajes'}</td><td>${escH(p.fecha||'—')}</td></tr>`;
+  });
+  document.getElementById('nbDetalle').innerHTML = t+'</tbody></table>';
 }
 
-function renderNineBox(){
-  const fil = document.getElementById('nbRol').value;
-  const data = fil==='all'?DATA_IND:DATA_IND.filter(d=>d.rol===fil);
+// ════════════════════════════════════════════════════════════
+//  GUÍA DE PUESTOS (Descripción de Puestos del CCOD v1.1 — 13/10/2026)
+// ════════════════════════════════════════════════════════════
+const REQ_PUESTO = 'Mínimo de diez años de trabajo en las guardias de EPEC y trayecto formativo del puesto aprobado (aplica a los cuatro puestos).';
+const PUESTOS = {
+  JCOD:{nombre:'Jefe CCOD', evaluable:true, color:'#1e40af',
+    contribucion:'Conducción del CCOD', procesos:'P-JCOD-01 a P-JCOD-05',
+    depende:'Jefe de Zona A',
+    conduce:'Subjefe CCOD. Emite instrucciones al Coordinador cuando corresponde.',
+    mision:'Conducir la gestión del CCOD: definir criterios operativos, evaluar los requisitos aplicables, gestionar necesidades de servicios y aprobar la información de rendimiento MT/BT, para que la operación tenga lineamientos consistentes y decisiones sustentadas en evidencia.',
+    decide:['Autoriza las licencias del personal del CCOD.','Emite instrucciones internas de adecuación normativa.','Aprueba o devuelve los informes de rendimiento MT/BT.','Define las contingencias operativas de los sistemas críticos.'],
+    limites:'No tiene atribución presupuestaria ni de adjudicación, ni modifica por sí solo diseños de red o estándares corporativos. Los asuntos hacia Gerencia se canalizan por la conducción de Zona A.',
+    escala:'Por el Subjefe de Zona A; si está ausente o por la envergadura del asunto, por el Jefe de Zona A.',
+    jornada:'Horario calendario de 07:00 a 14:00; puede ser convocado fuera de ese horario; una semana a cargo por mes.',
+    comps:[
+      ['Criterio de gestión','Relaciona requisitos, datos de red y consecuencias operativas antes de emitir criterios.','Documento de criterios y su justificación.'],
+      ['Decisión fundada','Distingue datos, causas y supuestos; devuelve información inconsistente y deja trazabilidad.','Informe observado o aprobado y fuentes contrastadas.'],
+      ['Comunicación de lineamientos','Explica alcance, responsables y condiciones de aplicación; verifica la difusión.','Instrucciones y evidencia de recepción.'],
+      ['Seguimiento de mejoras','Convierte desvíos recurrentes en acciones y revisa su cierre sin sustituir al ejecutor técnico.','Plan de acciones y verificaciones.'],
+    ]},
+  SCOD:{nombre:'Subjefe CCOD', evaluable:true, color:'#92400e',
+    contribucion:'Organización y evaluación del personal, autorización de maniobras programadas y soporte operativo', procesos:'P-SCOD-01 a P-SCOD-03 + funciones del relevamiento',
+    depende:'Jefe CCOD',
+    conduce:'Es superior inmediato del Coordinador de Turno MT. Administra, organiza y evalúa al personal.',
+    mision:'Organizar y administrar al personal del CCOD, autorizar las maniobras programadas y gestionar comunicaciones, documentación técnica y calidad de registros, para sostener la cobertura del servicio, el soporte de los turnos y la información operativa confiable.',
+    decide:['Firma y autoriza las maniobras programadas.','Confecciona la roseta, dispone cambios de turno y organiza la cobertura de ausencias.','Administra las licencias que autoriza el Jefe y evalúa al personal.','Define canales alternativos de comunicación y dispone correcciones de registros y publicación de documentación vigente.'],
+    limites:'No aprueba el cierre del turno (el Coordinador cierra y entrega sin su aprobación; sólo recibe las novedades). No comunica directo a Gerencia ni rediseña sistemas o redes.',
+    escala:'Al Subjefe de Zona A en primera instancia; si está ausente o por la envergadura, al Jefe de Zona A.',
+    jornada:'Mismo régimen que Jefatura: 07:00 a 14:00, convocatoria por necesidad del servicio y una semana a cargo por mes.',
+    comps:[
+      ['Organización del servicio','Confecciona la roseta y resuelve coberturas considerando licencias autorizadas y necesidades operativas.','Roseta y registros de cambios y coberturas.'],
+      ['Organización y trazabilidad','Mantiene versiones, tickets y pendientes identificados y con estado verificable.','Repositorio, registro de incidencias y listado de pendientes.'],
+      ['Control de calidad de información','Detecta datos incompletos o contradictorios y solicita correcciones concretas.','Registro observado y versión corregida.'],
+      ['Coordinación de soporte','Identifica el área que debe intervenir, sigue la solicitud y comunica el resultado al turno.','Ticket o pedido con seguimiento y aviso de cierre.'],
+      ['Análisis de recurrencia','Relaciona novedades repetidas y formula un reporte útil para su tratamiento.','Informe consolidado con fuentes y desvíos.'],
+      ['Evaluación del personal','Sustenta la evaluación en el trabajo y comunica necesidades de mejora y organización.','Registro de evaluación y seguimiento.'],
+    ]},
+  JTMT:{nombre:'Coordinador de Turno MT', evaluable:true, color:'#065f46',
+    contribucion:'Conducción operativa durante el turno', procesos:'P-JTMT-01 a P-JTMT-03',
+    depende:'Subjefe CCOD (puede recibir instrucciones directas del Jefe CCOD dentro del alcance del puesto). Antes llamado "Jefe de Turno MT".',
+    conduce:'Operador MT durante el turno. Registra ingresos y salidas de operadores MT y BT, sin ampliar su conducción al Operador BT.',
+    mision:'Conducir la operación MT durante el turno: autorizar y supervisar las actuaciones del Operador MT, coordinar la atención de eventos y comunicar las novedades al cierre, para sostener el control operativo desde el CCOD y una entrega de turno completa.',
+    decide:['Prioridades de eventos y reclamos, y asignación de tareas al Operador MT.','Autoriza y supervisa toda actuación del Operador MT (maniobras programadas y de servicio).','Cierra y entrega el turno al Coordinador entrante y comunica las novedades al Subjefe, sin requerir su aprobación.'],
+    limites:'No firma la programación de maniobras (lo hace el Subjefe). Actúa desde el CCOD: no realiza tareas ni asume responsabilidades de campo del SG-P200.',
+    escala:'',
+    jornada:'Turnos rotativos de seis horas.',
+    comps:[
+      ['Priorización con criterio de seguridad','Explicita por qué un evento requiere atención y ajusta la prioridad ante nueva información.','Registro del evento, prioridad y decisión.'],
+      ['Conducción del turno','Distribuye consignas claras, verifica su comprensión y sigue los eventos sin perder pendientes.','Instrucciones, seguimiento y traspaso.'],
+      ['Control de decisiones críticas','Contrasta condiciones de red, licencias y confirmaciones antes de validar una actuación.','Caso técnico revisado contra el procedimiento autorizado.'],
+      ['Escalamiento oportuno','Reconoce el límite del rol y transmite situación, riesgo y necesidad de decisión con evidencia.','Notificación y registro del escalamiento.'],
+      ['Entrega de turno','Comunica al Coordinador entrante estado de red, restricciones, novedades y pendientes, y al Subjefe las novedades del cierre.','Registro de entrega y comunicación de cierre.'],
+    ]},
+  OMT:{nombre:'Operador MT', evaluable:false, color:'#475569',
+    contribucion:'Operación bajo consigna y trazabilidad', procesos:'P-OMT-01 a P-OMT-03',
+    depende:'Coordinador de Turno MT durante el turno',
+    conduce:'No tiene conducción de personal.',
+    mision:'Actuar como Operador de OCOR desde el CCOD: monitorear la red MT y llevar las maniobras de inicio a fin (comunicaciones a campo, telemandos SCADA, registros y verificación del estado final), siempre con autorización y supervisión del Coordinador.',
+    decide:['Detecta y clasifica inicialmente eventos y novedades.','Realiza comunicaciones, telemandos SCADA y registros bajo autorización del Coordinador.','Consulta ante información insuficiente y escala desvíos antes del cierre.'],
+    limites:'Toda actuación operativa requiere autorización y supervisión del Coordinador. No ejecuta las tareas de campo del SG-P200.',
+    escala:'',
+    jornada:'Turnos rotativos de seis horas.',
+    comps:[
+      ['Atención y detección','Reconoce alarmas o datos relevantes y los comunica con ubicación, hora y condición.','Evento reconstruido desde alarma, aviso y registro.'],
+      ['Ejecución operativa autorizada','Realiza las actuaciones con autorización del Coordinador y conserva la trazabilidad hasta el estado final.','Consigna, registros SCADA, comunicaciones y estado final.'],
+      ['Precisión documental','Registra responsables, equipos, acciones y estados sin omisiones.','Muestra de registros y correspondencia con el evento.'],
+      ['Comunicación cerrada','Repite o solicita confirmación de datos críticos y registra la respuesta.','Registro de una comunicación autorizada.'],
+      ['Disciplina operacional','Consulta ante dudas, conserva restricciones visibles y escala antes de cerrar un desvío.','Caso revisado con el Coordinador y evidencia del aviso.'],
+    ]},
+};
+const LIMITES_PUESTOS = [
+  ['Criterios de operación','Define criterios y gestiona su validación.','Aporta soporte y difusión.','Aplica y valida dentro del turno.','Actúa bajo consigna y alerta desvíos.'],
+  ['Sistemas y documentación','Supervisa desempeño y mejoras.','Controla disponibilidad y vigencia.','Usa medios y comunica necesidades.','Monitorea y reporta anomalías.'],
+  ['Información operativa','Aprueba informes de rendimiento.','Controla calidad y consolida.','Conduce seguimiento y cierre del turno.','Registra y mantiene estados y comunicaciones.'],
+  ['Personal','Autoriza licencias.','Administra licencias, evalúa y organiza; confecciona roseta y coberturas.','Conduce al Operador MT; registra ingresos y salidas MT/BT.','Actúa bajo conducción del Coordinador.'],
+  ['Maniobras','Conduce el marco de gestión.','Firma y autoriza maniobras programadas.','Autoriza y supervisa toda actuación del Operador.','Lleva la maniobra de inicio a fin como OCOR desde el CCOD.'],
+  ['Entrega de turno','Recibe información de gestión.','Recibe las novedades del cierre.','Cierra y entrega al Coordinador entrante, sin aprobación del Subjefe.','Aporta registros, estados y pendientes.'],
+];
+function puestoComps(p){
+  return '<div class="tbl-scroll"><table class="pz-ctbl"><thead><tr><th>Competencia</th><th>Conducta observable</th><th>Cómo comprobarla</th></tr></thead><tbody>'+
+    p.comps.map(c=>`<tr><td><strong>${c[0]}</strong></td><td>${c[1]}</td><td>${c[2]}</td></tr>`).join('')+'</tbody></table></div>';
+}
+function puestoRefHTML(rol){
+  const p = PUESTOS[rol]; if(!p) return '';
+  return `<details class="pz-det"><summary><i class="ti ti-id-badge-2"></i> Ficha del puesto y conductas observables · ${p.nombre}</summary><div class="pz-body">
+    <p><strong>Depende de:</strong> ${p.depende}</p>
+    <p><strong>Conduce:</strong> ${p.conduce}</p>
+    <h4>Qué decide o autoriza</h4><ul>${p.decide.map(x=>`<li>${x}</li>`).join('')}</ul>
+    <p><strong>Límites:</strong> ${p.limites}</p>
+    <p><strong>Requisitos:</strong> ${REQ_PUESTO}</p>
+    <h4>Competencias observables (para evaluar con evidencia)</h4>${puestoComps(p)}
+  </div></details>`;
+}
+function renderPuestosRef(){
+  ['JCOD','SCOD','JTMT'].forEach(r=>{
+    const el = document.getElementById('plan-ref-'+r.toLowerCase());
+    if(el && !el.dataset.built){ el.innerHTML = puestoRefHTML(r); el.dataset.built='1'; }
+  });
+}
+function renderPuestos(){
+  const w = document.getElementById('puestosWrap'); if(!w) return;
+  let h = '<div class="card"><div class="ct"><i class="ti ti-hierarchy-3"></i>Cadena de dependencia</div>'+
+    '<div class="pz-chain"><span class="pz-node">Jefe de Zona A</span><span class="pz-arrow">→</span>'+
+    ['JCOD','SCOD','JTMT','OMT'].map(k=>`<span class="pz-node" style="border-color:${PUESTOS[k].color};color:${PUESTOS[k].color}">${PUESTOS[k].nombre}</span>`).join('<span class="pz-arrow">→</span>')+
+    '</div><div class="sub" style="margin-top:6px;">La flecha indica de quién depende cada puesto. Escalamiento: primero al Subjefe de Zona A; si no está o por la envergadura, al Jefe de Zona A. La comunicación con Gerencia se canaliza por Zona A.</div></div>';
 
-  // Nine Box Técnico
-  const cellsTec = buildNB9People(data, 'avgTec');
-  renderNBGrid('nb9g', cellsTec);
+  h += '<div class="card"><div class="ct"><i class="ti ti-table"></i>Quién hace qué — límites entre los cuatro puestos</div><div class="tbl-scroll"><table class="pdf-table"><thead><tr><th>Ámbito</th><th>Jefe CCOD</th><th>Subjefe CCOD</th><th>Coordinador de Turno MT</th><th>Operador MT</th></tr></thead><tbody>'+
+    LIMITES_PUESTOS.map(r=>`<tr><td><strong>${r[0]}</strong></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('')+'</tbody></table></div></div>';
 
-  // Nine Box Liderazgo
-  const cellsLid = buildNB9People(data, 'avgLid');
-  renderNBGrid('nb9lider', cellsLid);
+  h += '<div class="pz-grid">'+['JCOD','SCOD','JTMT','OMT'].map(k=>{
+    const p = PUESTOS[k];
+    return `<div class="pz-card" style="border-top-color:${p.color}">
+      <h3>${p.nombre}</h3>
+      <div class="pz-tag">${p.contribucion} · ${p.procesos}${p.evaluable?'':' · <em>Se muestra como referencia: no se evalúa en esta app</em>'}</div>
+      <p>${p.mision}</p>
+      <h4>Depende de</h4><p>${p.depende}</p>
+      <h4>Conducción</h4><p>${p.conduce}</p>
+      <h4>Qué decide o autoriza</h4><ul>${p.decide.map(x=>`<li>${x}</li>`).join('')}</ul>
+      <h4>Límites</h4><p>${p.limites}</p>
+      ${p.escala?`<h4>Escalamiento</h4><p>${p.escala}</p>`:''}
+      <h4>Requisitos y jornada</h4><p>${REQ_PUESTO}<br>${p.jornada}</p>
+      <h4>Competencias observables</h4>${puestoComps(p)}
+    </div>`;
+  }).join('')+'</div>';
 
-  // Leyenda roles
-  const leyHTML = Object.entries(ROLE_C).map(([r,c])=>
-    `<span style="display:flex;align-items:center;gap:5px;font-size:10px;">
-      <span style="width:10px;height:10px;border-radius:50%;background:${c};display:inline-block;"></span>${ROLE_N[r]}
-    </span>`).join('');
-  document.getElementById('nb9leyenda').innerHTML=leyHTML;
-  document.getElementById('nb9liderLey').innerHTML=leyHTML;
+  h += '<div class="card" style="margin-top:14px;"><div class="sub" style="margin:0;line-height:1.6;"><strong>OCOR</strong> es el Organismo que Coordina la Operación de la Red y tiene a cargo el control operativo de la red eléctrica. <strong>MT</strong> = Media Tensión · <strong>BT</strong> = Baja Tensión. Las tareas de campo están definidas en el procedimiento SG-P200 (responsable de maniobra y responsable de trabajo en campo). Fuente: <em>Descripción de los puestos del CCOD v1.1</em> (13/10/2026) y <em>Procesos de Trabajo — Roles COD</em>; donde difieren, prevalece la Descripción de Puestos, que incorpora el relevamiento confirmado.</div></div>';
+  w.innerHTML = h;
 }
 
 // ════════════════════════════════════════════════════════════
@@ -2429,8 +2756,7 @@ function buildPdfPreview(){
   },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:8},boxWidth:8}}},scales:{x:{stacked:true,ticks:{font:{size:8},maxRotation:30}},y:{stacked:true,min:0,max:4}}}});
 
   // Nine Box técnico PDF
-  const cellsTec = buildNB9People(fil, 'avgTec');
-  renderNBGrid('pdfNb9Tec', cellsTec);
+  document.getElementById('pdfNbBox').innerHTML = nbGridHTML(nbCeldas(nbPersonas(fil)).celdas, true) + nbLeyendaRoles();
 
   // Tabla detalle individuales
   const rc2={JCOD:'bj',SCOD:'bs',JTMT:'bt'};
@@ -2440,7 +2766,7 @@ function buildPdfPreview(){
     const cT=scColor(d.avgTec); const cL=scColor(d.avgLid);
     th+=`<tr>
       <td><strong>${d.nom}</strong></td>
-      <td><span class="badge ${rc2[d.rol]}">${d.rol}</span></td>
+      <td><span class="badge ${rc2[d.rol]}">${ROLE_S[d.rol]||d.rol}</span></td>
       <td>${INST_N[d.inst]||d.inst}</td>
       <td>${d.fecha}</td>
       <td style="color:${cT};font-weight:600">${(d.avgTec||0).toFixed(1)}/4</td>
@@ -2681,7 +3007,7 @@ function renderAcciones(){
       <td><strong style="font-size:11px;">${b.nombre}</strong>${b.shyma?' <span class="shyma-tag">⚡</span>':''}<div style="font-size:9px;color:var(--tm);text-transform:uppercase;margin-top:2px;">${b.tipo==='tecnico'?'Técnico':'Liderazgo'}</div></td>
       <td style="text-align:center;"><span style="display:inline-block;width:26px;height:26px;line-height:26px;border-radius:6px;background:${scColor(b.score)};color:#fff;font-weight:700;">${b.score}</span></td>
       <td><textarea id="${rid}-accion" rows="2" placeholder="Ej: práctica supervisada con el tutor, 2 sesiones por semana...">${acc?(acc.accion||'').replace(/</g,'&lt;'):''}</textarea></td>
-      <td><input type="text" id="${rid}-resp" placeholder="Tutor / SubJefe..." value="${acc?(acc.responsable||'').replace(/"/g,'&quot;'):''}"></td>
+      <td><input type="text" id="${rid}-resp" placeholder="Tutor / Subjefe..." value="${acc?(acc.responsable||'').replace(/"/g,'&quot;'):''}"></td>
       <td><input type="date" id="${rid}-fecha" value="${acc?(acc.fechaComp||''):''}"></td>
       <td><select id="${rid}-estado">
             <option value="pendiente" ${(!acc||acc.estado==='pendiente')?'selected':''}>Pendiente</option>
