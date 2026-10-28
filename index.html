@@ -220,6 +220,9 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
   .hdr-right{width:100%;justify-content:space-between;flex-wrap:wrap;gap:6px;}
   .cnt{padding:12px 8px;}
 }
+.evid{width:100%;margin-top:5px;border:1px solid var(--bd);border-radius:6px;padding:4px 7px;font-size:10px;font-family:inherit;background:var(--wh);color:var(--tx);}
+.evid:focus{outline:none;border-color:var(--g);}
+.plan-score+.evid{width:130px;}
 /* TEMA OSCURO (verde oscuro) / CLARO */
 html[data-theme="dark"]{--g:#2BA888;--gd:#5fd1b0;--gm:#3dbf9c;--gl:#143a32;--g2:#1f4a3f;--r:#ff7a8a;--rl:#3d1a20;--am:#f5a623;--aml:#3a3414;--bd:#24544a;--bg:#0b1f1a;--tx:#e6f4ef;--tm:#93b8ac;--wh:#12302a;--azul:#7fb8e0;--azul-lt:#1b3a52;color-scheme:dark;}
 html[data-theme="dark"] .hdr,html[data-theme="dark"] .pt th,html[data-theme="dark"] .mx-tbl th,html[data-theme="dark"] .notif,html[data-theme="dark"] .plan-tab.on,html[data-theme="dark"] .plan-header,html[data-theme="dark"] .plan-tbl th,html[data-theme="dark"] .pz-ctbl th,html[data-theme="dark"] .pdf-table th{background:#0f5d49;border-color:#0f5d49;color:#fff;}
@@ -340,6 +343,8 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
 .lg-field input:focus{outline:none;border-color:var(--g);}
 #lgBtn{width:100%;padding:12px;border:none;border-radius:8px;background:var(--g);color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;margin-top:4px;}
 #lgBtn:hover{background:var(--gd);}
+#lgMs{width:100%;padding:11px;border:1.5px solid var(--g);background:#fff;color:var(--gd);border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;margin-top:10px;}
+#lgMs:hover{background:var(--gl);}
 #lgBtn:disabled{opacity:.6;cursor:wait;}
 #lgError{display:none;background:var(--rl);color:var(--r);border:1px solid #f5c6cb;padding:10px 12px;border-radius:8px;font-size:12px;margin-bottom:14px;}
 .btn-salir{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);color:#fff;padding:4px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit;}
@@ -361,6 +366,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
     <div class="lg-field"><label>Email</label><input type="email" id="lgEmail" placeholder="nombre@epec.com.ar" autocomplete="username"></div>
     <div class="lg-field"><label>Contraseña</label><input type="password" id="lgPass" placeholder="••••••••" autocomplete="current-password"></div>
     <button id="lgBtn" onclick="entrar()">Ingresar</button>
+    <button id="lgMs" onclick="entrarMicrosoft()" style="display:none;">Ingresar con cuenta EPEC (Microsoft)</button>
   </div>
 </div>
 
@@ -386,6 +392,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
 <!-- NAV -->
 <div class="nav">
   <button class="nt on" onclick="go('dash')"><i class="ti ti-dashboard"></i>Dashboard</button>
+  <button class="nt" onclick="go('ficha')"><i class="ti ti-user-search"></i>Ficha por persona</button>
   <button class="nt" onclick="go('individual')"><i class="ti ti-user-check"></i>Evaluación Individual</button>
   <button class="nt" onclick="go('planillas')"><i class="ti ti-clipboard-list"></i>Planillas Técnicas</button>
   <button class="nt" onclick="go('equipo')"><i class="ti ti-users"></i>Evaluación de Equipo</button>
@@ -407,6 +414,11 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
 <div class="sec on" id="s-dash">
   <div class="rcards" id="rolCards"></div>
   <div class="g4" id="stats4" style="margin-bottom:14px;"></div>
+  <div class="card" id="segCard">
+    <div class="ct"><i class="ti ti-bell-ringing"></i>Pendientes de seguimiento</div>
+    <div class="sub">Lo que conviene atender hoy: alertas de seguridad, acciones vencidas, personas por debajo de lo esperado y evaluaciones atrasadas.</div>
+    <div id="segWrap"></div>
+  </div>
   <div class="g2">
     <div class="card">
       <div class="ct"><i class="ti ti-chart-bar"></i>Promedio Técnico por proceso — equipo COD</div>
@@ -426,6 +438,25 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
 <!-- ═══════════════════════════════════════════
      PLANILLAS TÉCNICAS POR ROL
 ═══════════════════════════════════════════ -->
+<div class="sec" id="s-ficha">
+  <div class="card">
+    <div class="ct"><i class="ti ti-user-search"></i>Ficha por persona</div>
+    <div class="sub">Todo lo que se sabe de una persona en una sola pantalla: dónde está hoy, cómo evolucionó, qué le falta, qué acciones tiene abiertas y quién cargó cada dato.</div>
+    <div class="g2">
+      <div class="fg"><label>Puesto</label>
+        <select id="ficha-rol" onchange="populateFichaPersonas();renderFicha()">
+          <option value="">Todos los puestos</option>
+          <option value="JCOD">Jefe CCOD</option>
+          <option value="SCOD">Subjefe CCOD</option>
+          <option value="JTMT">Coordinador de Turno MT</option>
+        </select></div>
+      <div class="fg"><label>Persona</label>
+        <select id="ficha-persona" onchange="renderFicha()"><option value="">Seleccionar persona...</option></select></div>
+    </div>
+  </div>
+  <div id="fichaWrap"></div>
+</div>
+
 <div class="sec" id="s-planillas">
 
   <div class="sec-header">
@@ -807,6 +838,12 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
 
     <div class="lider-grid" id="liderGrid"></div>
 
+    <div class="card" style="margin-top:14px;">
+      <div class="ct"><i class="ti ti-user-heart"></i>Autoevaluación de la persona (opcional)</div>
+      <div class="sub">Que la persona se califique en las mismas 7 competencias, antes de conocer la nota del tutor. La diferencia entre ambas miradas se ve en su Ficha y es un buen punto de partida para el feedback.</div>
+      <div class="g3" id="autoGrid"></div>
+    </div>
+
     <div class="res-box" id="resLider" style="margin-bottom:14px;">
       <div class="res-item"><div class="res-num" id="lNum">—</div><div class="res-lbl">Promedio liderazgo / 4</div></div>
       <div class="res-item"><div class="res-num" id="lPct">—</div><div class="res-lbl">% sobre nivel requerido</div></div>
@@ -1102,6 +1139,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
           <option value="general">Reporte general del equipo</option>
           <option value="rol">Reporte por rol</option>
           <option value="inst">Reporte por instancia</option>
+          <option value="ejecutivo">Informe ejecutivo (resumen para Gerencia)</option>
         </select>
       </div>
       <div class="fg">
@@ -1129,7 +1167,20 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
     </div>
   </div>
 
+  <div class="card">
+    <div class="ct"><i class="ti ti-database-export"></i>Respaldo y exportación de datos</div>
+    <div class="sub">Descargá los datos para guardarlos o trabajarlos en Excel (CSV con separador “;”). El respaldo completo en JSON conserva todo, incluida la autoría de cada carga.</div>
+    <div class="acts">
+      <button class="bsec" onclick="exportEvalCSV()"><i class="ti ti-table-export"></i>Evaluaciones (CSV)</button>
+      <button class="bsec" onclick="exportDetalleCSV()"><i class="ti ti-list-details"></i>Detalle con evidencia (CSV)</button>
+      <button class="bsec" onclick="exportAccionesCSV()"><i class="ti ti-checklist"></i>Acciones (CSV)</button>
+      <button class="bsec" onclick="exportEquipoCSV()"><i class="ti ti-users"></i>Equipo (CSV)</button>
+      <button class="bp" onclick="exportJSON()"><i class="ti ti-database-export"></i>Respaldo completo (JSON)</button>
+    </div>
+  </div>
+
   <div id="pdfPreviewWrap" style="display:none;">
+    <div class="pdf-preview" id="pdfExec" style="display:none;"></div>
     <div class="pdf-preview" id="pdfContent">
 
       <!-- Encabezado -->
@@ -1317,6 +1368,25 @@ const COMPS_LIDER = [
 const ROLE_N = {JCOD:'Jefe CCOD', SCOD:'Subjefe CCOD', JTMT:'Coordinador de Turno MT'};
 const ROLE_S = {JCOD:'Jefe CCOD', SCOD:'Subjefe CCOD', JTMT:'Coord. Turno MT'};
 const ROLE_C = {JCOD:'#1e40af', SCOD:'#92400e', JTMT:'#065f46'};
+
+// ── PARÁMETROS EDITABLES ─────────────────────────────────────
+// Nivel esperado (escala 1–4) por puesto e instancia. Son valores de REFERENCIA a validar por la
+// conducción del programa: se editan acá y se aplican a toda la app (fichas, alertas, informe).
+const ESPERADO = {
+  JCOD:{diagnostico:2, seguimiento:2.5, certificacion:3, cierre:3},
+  SCOD:{diagnostico:2, seguimiento:2.5, certificacion:3, cierre:3},
+  JTMT:{diagnostico:2, seguimiento:2.5, certificacion:3, cierre:3},
+};
+const REEVAL_DIAS = 21;          // días sin evaluar a una persona antes de avisar
+const ENABLE_MS_LOGIN = false;   // true cuando EPEC habilite el proveedor Microsoft en Firebase (ver README)
+const MS_TENANT = '';            // ID de directorio (tenant) de EPEC en Microsoft Entra ID; vacío = cualquier cuenta
+function esperadoDe(rol, inst){ return (ESPERADO[rol] && ESPERADO[rol][inst]) || 3; }
+function usuarioActual(){ const u = auth.currentUser; return (u && u.email) ? u.email : '(sin identificar)'; }
+function auditoria(esNuevo){
+  const o = {modificadoPor:usuarioActual(), modificadoTs:Date.now()};
+  if(esNuevo) o.creadoPor = o.modificadoPor;
+  return o;
+}
 const INST_N  = {diagnostico:'Diagnóstico', seguimiento:'Seguimiento', certificacion:'Certificación', cierre:'Cierre'};
 
 // ════════════════════════════════════════════════════════════
@@ -1327,6 +1397,8 @@ let DATA_EQ  = [];
 let DATA_ACC = [];
 let scoreTec = {};    // {procId: valor}
 let scoreLider = {};  // {compId: valor}
+let evid = {};        // {procId|compId: texto de evidencia}
+let autoLider = {};   // {compId: valor} autoevaluación de la persona
 let scoreEq = {};     // {compId: valor}
 let pfiltro = 'individual';
 let editKey = null;   // fbKey del registro que se está editando (null = evaluación nueva)
@@ -1358,6 +1430,11 @@ refInd.on('value', snap => {
         ts:         val.ts         || 0,
         cat:        val.cat        || '',
         legacy:     !val.cat,
+        evid:       val.evid       || {},
+        autoLider:  val.autoLider  || {},
+        creadoPor:  val.creadoPor  || '',
+        modificadoPor: val.modificadoPor || '',
+        modificadoTs:  val.modificadoTs  || 0,
         tipo:       'individual'
       });
     }
@@ -1367,6 +1444,7 @@ refInd.on('value', snap => {
   if(document.getElementById('s-personas').classList.contains('on')) renderPersonas(pfiltro);
   if(document.getElementById('s-radar').classList.contains('on')){renderRadarTec();renderRadarLider();renderBrecha();}
   if(document.getElementById('s-ninebox').classList.contains('on')) renderNineBox();
+  if(document.getElementById('s-ficha').classList.contains('on')){ populateFichaPersonas(); renderFicha(); }
   if(document.getElementById('s-tendencia').classList.contains('on')){renderTendTec();renderTendLider();renderAlertas();}
   if(document.getElementById('s-individual').classList.contains('on')){ populateQPersonas(); renderQResultado(); }
   if(document.getElementById('s-planillas').classList.contains('on')){ populatePlanDatalist(); }
@@ -1419,6 +1497,8 @@ refAcc.on('value', snap => {
   });
   console.log('DATA_ACC cargado:', DATA_ACC.length, 'registros');
   if(document.getElementById('s-acciones').classList.contains('on')){ renderAcciones(); }
+  if(document.getElementById('s-dash').classList.contains('on')) renderSeguimiento();
+  if(document.getElementById('s-ficha').classList.contains('on')) renderFicha();
 });
 }
 
@@ -1435,6 +1515,9 @@ function mensajeAuth(code){
     return 'Email o contraseña incorrectos.';
   if(code === 'auth/too-many-requests') return 'Demasiados intentos fallidos. Esperá unos minutos y probá de nuevo.';
   if(code === 'auth/network-request-failed') return 'Sin conexión. Verificá tu internet.';
+  if(code === 'auth/operation-not-allowed') return 'El acceso con Microsoft todavía no está habilitado en Firebase. Consultá al administrador.';
+  if(code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') return 'Se cerró la ventana de Microsoft antes de terminar. Probá de nuevo.';
+  if(code === 'auth/popup-blocked') return 'El navegador bloqueó la ventana de Microsoft. Permití las ventanas emergentes para este sitio.';
   if(code === 'auth/user-disabled') return 'Esta cuenta está deshabilitada. Consultá al administrador.';
   return 'No se pudo ingresar (' + (code || 'error') + ').';
 }
@@ -1449,6 +1532,15 @@ function entrar(){
     .catch(err => { lgError.textContent = mensajeAuth(err && err.code); lgError.style.display = 'block'; })
     .then(() => { btn.disabled = false; });
 }
+function entrarMicrosoft(){
+  lgError.style.display = 'none';
+  const prov = new firebase.auth.OAuthProvider('microsoft.com');
+  const params = {prompt:'select_account'};
+  if(MS_TENANT) params.tenant = MS_TENANT;
+  prov.setCustomParameters(params);
+  auth.signInWithPopup(prov).catch(err=>{ lgError.textContent = mensajeAuth(err && err.code); lgError.style.display = 'block'; });
+}
+if(ENABLE_MS_LOGIN){ document.getElementById('lgMs').style.display = 'block'; }
 function salir(){
   auth.signOut().then(() => location.reload());
 }
@@ -1481,6 +1573,7 @@ function go(id){
   if(id==='radar'){renderRadarTec();renderRadarLider();renderBrecha();}
   if(id==='ninebox'){renderNineBox();}
   if(id==='puestos'){renderPuestos();}
+  if(id==='ficha'){populateFichaPersonas();renderFicha();}
   if(id==='planillas'){initPlanillas(); renderPuestosRef();}
   if(id==='tendencia'){renderTendTec();renderTendLider();renderAlertas();}
   if(id==='personas') renderPersonas(pfiltro);
@@ -1512,7 +1605,7 @@ function onRolChange(){
   const rol = document.getElementById('i-rol').value;
   if(!rol){ document.getElementById('matricesWrap').style.display='none'; return; }
   document.getElementById('matricesWrap').style.display='block';
-  scoreTec={}; scoreLider={};
+  scoreTec={}; scoreLider={}; evid={}; autoLider={};
   buildMatrizTec(rol);
   buildMatrizLider();
 }
@@ -1545,6 +1638,7 @@ function fila(p, isDup){
   return `<tr>
     <td class="pn" style="${shymaStyle}">
       <span class="pc">${p.id}${p.shyma?' ⚡':''}</span>${p.n}
+      <input class="evid" type="text" placeholder="Evidencia (registro, caso, bitácora…)" value="${escH(evid[p.id]||'')}" oninput="setEvid('${p.id}',this.value)">
     </td>
     <td>
       <div class="score-sel">
@@ -1594,6 +1688,7 @@ function buildMatrizLider(){
     <div class="lider-comp" id="lc-${c.id}">
       <div class="lc-name">${c.nombre}</div>
       <div class="lc-desc">${c.desc}</div>
+      <input class="evid" type="text" placeholder="Evidencia (situación observada…)" value="${escH(evid[c.id]||'')}" oninput="setEvid('${c.id}',this.value)">
       <div class="lc-btns">
         ${[1,2,3,4].map(v=>`
           <button class="lb" id="lb-${c.id}-${v}" onclick="setLider('${c.id}',${v})">
@@ -1602,7 +1697,18 @@ function buildMatrizLider(){
           </button>`).join('')}
       </div>
     </div>`).join('');
+  buildAuto();
   calcLider();
+}
+
+function setEvid(id, txt){ if(txt && txt.trim()) evid[id]=txt.trim(); else delete evid[id]; }
+function setAuto(cid, val){ if(val) autoLider[cid]=+val; else delete autoLider[cid]; }
+function buildAuto(){
+  const g = document.getElementById('autoGrid'); if(!g) return;
+  g.innerHTML = COMPS_LIDER.map(c=>`<div class="fg"><label>${c.nombre}</label>
+    <select onchange="setAuto('${c.id}',this.value)"><option value="">—</option>
+    ${[1,2,3,4].map(v=>`<option value="${v}"${autoLider[c.id]===v?' selected':''}>${v} — ${['No observable','En desarrollo','Consolidado','Referente'][v-1]}</option>`).join('')}
+    </select></div>`).join('');
 }
 
 function setLider(cid, val){
@@ -1663,6 +1769,7 @@ function guardarIndividual(){
     scoreTec:{...scoreTec}, avgTec,
     scoreLider:{...scoreLider}, avgLid,
     estadoTec, estadoLid, shyBad, cat: CAT_VER,
+    evid:{...evid}, autoLider:{...autoLider}, ...auditoria(!editKey),
     ts: editKey ? (DATA_IND.find(x=>x.fbKey===editKey)?.ts || Date.now()) : Date.now()
   };
 
@@ -1695,7 +1802,7 @@ function limpiarIndividual(){
   document.getElementById('i-rol').value='';
   document.getElementById('i-eval').value='';
   document.getElementById('matricesWrap').style.display='none';
-  scoreTec={}; scoreLider={};
+  scoreTec={}; scoreLider={}; evid={}; autoLider={};
   editKey = null;
   document.getElementById('editBanner').style.display='none';
   document.getElementById('btnGuardarInd').innerHTML = '<i class="ti ti-device-floppy"></i>Guardar evaluación individual';
@@ -1741,6 +1848,7 @@ function editarRegistro(fbKey){
   document.getElementById('matricesWrap').style.display='block';
   scoreTec   = {...(rec.scoreTec   || {})};
   scoreLider = {...(rec.scoreLider || {})};
+  evid = {...(rec.evid || {})}; autoLider = {...(rec.autoLider || {})};
   buildMatrizTec(rec.rol);
   buildMatrizLider();
   pintarScoresGuardados(rec.rol);
@@ -1864,11 +1972,17 @@ function verRegistroQ(fbKey){
   document.getElementById('consultaCard').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-function filaDetalleQ(p, scoreTecRec){
+function auditoriaTxt(rec){
+  if(!rec.creadoPor && !rec.modificadoPor) return 'Sin registro de autoría (evaluación cargada antes de esta versión).';
+  const f = t=>t?new Date(t).toLocaleString('es-AR'):'';
+  return `Cargada por <strong>${escH(rec.creadoPor||rec.modificadoPor)}</strong> · Última modificación: <strong>${escH(rec.modificadoPor||'—')}</strong> ${f(rec.modificadoTs)}`;
+}
+function filaDetalleQ(p, scoreTecRec, evidRec){
   const v = scoreTecRec ? scoreTecRec[p.id] : null;
   const shymaStyle = p.shyma ? 'border-left:3px solid #c02133;' : '';
+  const ev = evidRec && evidRec[p.id] ? escH(evidRec[p.id]) : '';
   return `<tr><td class="pn" style="${shymaStyle}"><span class="pc">${p.id}${p.shyma?' ⚡':''}</span>${p.n}</td>
-  <td class="avg-cell" style="color:${scColor(v)}">${v||'—'}</td></tr>`;
+  <td class="avg-cell" style="color:${scColor(v)}">${v||'—'}</td><td style="font-size:10px;color:var(--tm);text-align:left;">${ev||'—'}</td></tr>`;
 }
 
 function renderDetalleCargado(rec){
@@ -1888,14 +2002,14 @@ function renderDetalleCargado(rec){
   if(rec.legacy){
     h += `<div class="al al-a" style="margin-bottom:10px;"><i class="ti ti-info-circle"></i> Esta evaluación se cargó con el <strong>catálogo anterior de procesos</strong>. Los puntajes de ${LEGACY_DROP.join(', ')} se ocultan porque esos procesos cambiaron de definición. Al volver a guardarla se actualiza al catálogo vigente.</div>`;
   }
-  h += '<div class="mx-wrap"><table class="mx-tbl"><thead><tr><th class="proc-h">Proceso técnico</th><th style="width:110px">Puntaje cargado</th></tr></thead><tbody>';
+  h += '<div class="mx-wrap"><table class="mx-tbl"><thead><tr><th class="proc-h">Proceso técnico</th><th style="width:110px">Puntaje cargado</th><th style="text-align:left">Evidencia</th></tr></thead><tbody>';
   if(propsRol.length){
-    h += `<tr><td colspan="2" style="background:#f0faf6;text-align:left;font-size:10px;font-weight:700;color:var(--gd);padding:8px 10px;text-transform:uppercase;letter-spacing:.5px;">Procesos exclusivos del rol — ${ROLE_N[rec.rol]}</td></tr>`;
-    propsRol.forEach(p=>{ h += filaDetalleQ(p, rec.scoreTec); });
+    h += `<tr><td colspan="3" style="background:#f0faf6;text-align:left;font-size:10px;font-weight:700;color:var(--gd);padding:8px 10px;text-transform:uppercase;letter-spacing:.5px;">Procesos exclusivos del rol — ${ROLE_N[rec.rol]}</td></tr>`;
+    propsRol.forEach(p=>{ h += filaDetalleQ(p, rec.scoreTec, rec.evid); });
   }
-  h += `<tr><td colspan="2" style="background:#f0faf6;text-align:left;font-size:10px;font-weight:700;color:#1a5276;padding:8px 10px;text-transform:uppercase;letter-spacing:.5px;">Procesos compartidos (P-DUP) + Expertiz Técnica y Seguridad</td></tr>`;
-  PROCS_DUP.forEach(p=>{ h += filaDetalleQ(p, rec.scoreTec); });
-  h += `<tr style="background:var(--bg)"><td class="pn" style="font-weight:700;color:var(--gd)">PROMEDIO TÉCNICO TOTAL</td><td class="avg-cell" style="color:${scColor(rec.avgTec)}">${(rec.avgTec||0).toFixed(1)}</td></tr>`;
+  h += `<tr><td colspan="3" style="background:#f0faf6;text-align:left;font-size:10px;font-weight:700;color:#1a5276;padding:8px 10px;text-transform:uppercase;letter-spacing:.5px;">Procesos compartidos (P-DUP) + Expertiz Técnica y Seguridad</td></tr>`;
+  PROCS_DUP.forEach(p=>{ h += filaDetalleQ(p, rec.scoreTec, rec.evid); });
+  h += `<tr style="background:var(--bg)"><td class="pn" style="font-weight:700;color:var(--gd)">PROMEDIO TÉCNICO TOTAL</td><td class="avg-cell" style="color:${scColor(rec.avgTec)}">${(rec.avgTec||0).toFixed(1)}</td><td></td></tr>`;
   h += '</tbody></table></div>';
 
   if(rec.shyBad){
@@ -1912,8 +2026,10 @@ function renderDetalleCargado(rec){
   h += '<div class="lider-grid">';
   COMPS_LIDER.forEach(c=>{
     const v = rec.scoreLider ? rec.scoreLider[c.id] : null;
+    const au = rec.autoLider ? rec.autoLider[c.id] : null;
     h += `<div class="lider-comp"><div class="lc-name">${c.nombre}</div>
-      <div style="margin-top:6px;font-size:20px;font-weight:800;color:${scColor(v)}">${v||'—'}<span style="font-size:10px;font-weight:500;color:var(--tm)"> / 4</span></div></div>`;
+      <div style="margin-top:6px;font-size:20px;font-weight:800;color:${scColor(v)}">${v||'—'}<span style="font-size:10px;font-weight:500;color:var(--tm)"> / 4</span>${au?`<span style="font-size:10px;font-weight:600;color:var(--tm);margin-left:8px;">autoevaluación: ${au}</span>`:''}</div>
+      ${rec.evid&&rec.evid[c.id]?`<div style="font-size:10px;color:var(--tm);margin-top:4px;">Evidencia: ${escH(rec.evid[c.id])}</div>`:''}</div>`;
   });
   h += '</div>';
 
@@ -1922,6 +2038,7 @@ function renderDetalleCargado(rec){
     <div class="res-item"><div class="res-num">${rec.avgLid?Math.round((rec.avgLid/4)*100)+'%':'—'}</div><div class="res-lbl">% sobre nivel requerido</div></div>
     <div class="res-item"><div class="res-num" style="font-size:12px;">${(INST_N[rec.inst]||rec.inst)}</div><div class="res-lbl">Instancia evaluada</div></div>
   </div>`;
+  h += `<div style="font-size:10px;color:var(--tm);margin-top:8px;">${auditoriaTxt(rec)}</div>`;
 
   wrap.innerHTML = h;
 }
@@ -1985,7 +2102,7 @@ function guardarEquipo(){
   else if(avgEq>=2) estadoEq='en_desarrollo';
   else estadoEq='no_observable';
 
-  const rec = {eval:eval_, inst, fecha, obs, scoreEq:{...scoreEq}, avgEq, estadoEq, ts:Date.now()};
+  const rec = {eval:eval_, inst, fecha, obs, scoreEq:{...scoreEq}, avgEq, estadoEq, ts:Date.now(), ...auditoria(true)};
   refEq.push(rec)
     .then(()=>{
       msg.style.color='var(--g)'; msg.textContent='✅ Evaluación de equipo guardada.';
@@ -2007,6 +2124,7 @@ function limpiarEquipo(){
 //  DASHBOARD
 // ════════════════════════════════════════════════════════════
 function renderDash(){
+  renderSeguimiento();
   // Role cards — usa todos los registros sin agrupar por nombre
   let rh='';
   ['JCOD','SCOD','JTMT'].forEach(r=>{
@@ -2218,6 +2336,7 @@ function renderAlertas(){
 //  PLANILLAS TÉCNICAS
 // ════════════════════════════════════════════════════════════
 const planScores = {};
+const planEvid = {};   // {planId: texto}
 
 // Agrupación de ids de la planilla (reutilizada también para guardar en Firebase)
 const PLAN_GRUPOS = {
@@ -2299,6 +2418,10 @@ function initPlanillas(){
     if(cont && !cont.dataset.built){
       cont.innerHTML = [1,2,3,4].map(v=>`<button class="ps${planScores[id]===v?' sel-'+v:''}" id="ps-btn-${id}-${v}" onclick="setPlan('${id}',${v})">${v}</button>`).join('');
       cont.dataset.built='1';
+      const inp = document.createElement('input');
+      inp.className='evid'; inp.type='text'; inp.id='ev-'+id; inp.placeholder='Evidencia…';
+      inp.oninput = ()=>{ if(inp.value.trim()) planEvid[id]=inp.value.trim(); else delete planEvid[id]; };
+      cont.parentNode.appendChild(inp);
     }
   });
   calcPlanTotal();
@@ -2327,6 +2450,8 @@ function pintarPlanBtns(){
       const b = document.getElementById(`ps-btn-${id}-${n}`);
       if(b) b.className = 'ps'+(n===v?' sel-'+n:'');
     });
+    const ei = document.getElementById('ev-'+id);
+    if(ei) ei.value = planEvid[id] || '';
   });
   calcPlanTotal();
 }
@@ -2349,12 +2474,15 @@ function tryLoadExistingPlanilla(){
   const rolFB = ROL_TAB_TO_FB[currentRolTab];
   if(!nom){
     Object.keys(planScores).forEach(k=>delete planScores[k]);
+    Object.keys(planEvid).forEach(k=>delete planEvid[k]);
     pintarPlanBtns();
     status.textContent = 'Escribí un nombre para empezar a cargar la planilla de '+ROLE_N[rolFB]+'.';
     return;
   }
   const existing = DATA_IND.filter(x=>x.nom===nom && x.rol===rolFB).sort((a,b)=>(b.ts||0)-(a.ts||0))[0];
   Object.keys(planScores).forEach(k=>delete planScores[k]);
+  Object.keys(planEvid).forEach(k=>delete planEvid[k]);
+  if(existing && existing.evid){ Object.entries(existing.evid).forEach(([fid,t])=>{ planEvid[firebaseIdToPlanId(fid)] = t; }); }
   if(existing && existing.scoreTec){
     Object.entries(existing.scoreTec).forEach(([fid,val])=>{
       planScores[firebaseIdToPlanId(fid)] = val;
@@ -2379,6 +2507,8 @@ function guardarPlanilla(){
   const relevantIds = [...(PLAN_GRUPOS[currentRolTab]||[]), ...PLAN_GRUPOS.dup, ...PLAN_GRUPOS.tec];
   const scoreTecFB = {};
   relevantIds.forEach(pid=>{ if(planScores[pid]) scoreTecFB[planIdToFirebaseId(pid)] = planScores[pid]; });
+  const evidFB = {};
+  relevantIds.forEach(pid=>{ if(planEvid[pid]) evidFB[planIdToFirebaseId(pid)] = planEvid[pid]; });
 
   const allProcsDefs = [...(PROCS_TEC[rolFB]||[]), ...PROCS_DUP];
   const existing = DATA_IND.filter(x=>x.nom===nom && x.rol===rolFB).sort((a,b)=>(b.ts||0)-(a.ts||0))[0];
@@ -2398,6 +2528,7 @@ function guardarPlanilla(){
     const shyBad = allProcsDefs.filter(p=>p.shyma).some(p=>mergedScoreTec[p.id]===1);
     refInd.child(existing.fbKey).update({
       scoreTec: mergedScoreTec, avgTec, estadoTec: estadoDeAvg(avgTec, shyBad), shyBad,
+      evid: {...(existing.evid||{}), ...evidFB}, ...auditoria(false),
       eval: eval_ || existing.eval, inst: inst || existing.inst, fecha: fecha || existing.fecha, cat: CAT_VER
     }).then(()=>{
       msg.style.color='var(--g)';
@@ -2411,8 +2542,8 @@ function guardarPlanilla(){
     const shyBad = allProcsDefs.filter(p=>p.shyma).some(p=>scoreTecFB[p.id]===1);
     const rec = {
       nom, rol: rolFB, eval: eval_, inst, fecha,
-      scoreTec: scoreTecFB, avgTec,
-      scoreLider: {}, avgLid: 0,
+      scoreTec: scoreTecFB, avgTec, evid: evidFB,
+      scoreLider: {}, avgLid: 0, ...auditoria(true),
       estadoTec: estadoDeAvg(avgTec, shyBad), estadoLid: 'no_observable', shyBad, cat: CAT_VER,
       ts: Date.now()
     };
@@ -2692,11 +2823,364 @@ function renderPuestos(){
 }
 
 // ════════════════════════════════════════════════════════════
+//  HELPERS DE PERSONA, SEGUIMIENTO Y FICHA
+// ════════════════════════════════════════════════════════════
+function hoyISO(){ return new Date().toISOString().split('T')[0]; }
+function diasDesde(f){ if(!f) return null; const d = new Date(f+'T00:00:00'); return Math.floor((Date.now()-d.getTime())/86400000); }
+function registrosDe(nom, rol){
+  const k = normNom(nom);
+  return DATA_IND.filter(d=>d.rol===rol && normNom(d.nom)===k)
+    .sort((a,b)=> (new Date(a.fecha)-new Date(b.fecha)) || ((a.ts||0)-(b.ts||0)));
+}
+// Puntajes vigentes de una persona: lo último cargado de cada tipo (técnico, liderazgo, autoevaluación, evidencia)
+function puntajesActuales(regs){
+  const out = {scoreTec:{}, scoreLider:{}, autoLider:{}, evid:{}, inst:'', fecha:'', last:null};
+  regs.forEach(r=>{
+    if(r.scoreTec && Object.keys(r.scoreTec).length) out.scoreTec = r.scoreTec;
+    if(r.scoreLider && Object.keys(r.scoreLider).length) out.scoreLider = r.scoreLider;
+    if(r.autoLider && Object.keys(r.autoLider).length) out.autoLider = r.autoLider;
+    if(r.evid) Object.assign(out.evid, r.evid);
+    out.inst = r.inst || out.inst; out.fecha = r.fecha || out.fecha; out.last = r;
+  });
+  return out;
+}
+function nombreProceso(id){
+  for(const r of Object.keys(PROCS_TEC)){ const f = PROCS_TEC[r].find(p=>p.id===id); if(f) return f.n; }
+  const d = PROCS_DUP.find(p=>p.id===id); return d ? d.n : id;
+}
+
+function calcSeguimiento(){
+  const out = [], hoy = hoyISO();
+  nbPersonas(DATA_IND).forEach(p=>{
+    const pa = puntajesActuales(registrosDe(p.nom,p.rol));
+    const esp = esperadoDe(p.rol, pa.inst);
+    if(p.shy) out.push({sev:0, ic:'⛔', nom:p.nom, rol:p.rol, txt:'Alerta SHyMA activa: no habilitado hasta resolverla.'});
+    const partes = [];
+    if(p.tec>0 && p.tec<esp) partes.push('técnica '+p.tec.toFixed(1));
+    if(p.lid>0 && p.lid<esp) partes.push('liderazgo '+p.lid.toFixed(1));
+    if(partes.length) out.push({sev:2, ic:'📉', nom:p.nom, rol:p.rol, txt:`Por debajo de lo esperado (${esp}) para ${INST_N[pa.inst]||'su instancia'}: ${partes.join(' y ')}.`});
+    const d = diasDesde(pa.fecha);
+    if(d!=null && d>REEVAL_DIAS) out.push({sev:3, ic:'🕒', nom:p.nom, rol:p.rol, txt:`Sin evaluación hace ${d} días (última: ${pa.fecha}).`});
+    if(!(p.tec>0 && p.lid>0)) out.push({sev:4, ic:'🧩', nom:p.nom, rol:p.rol, txt:`Falta ${p.tec>0?'la evaluación de liderazgo':p.lid>0?'la planilla técnica':'cargar puntajes'}: todavía no se puede ubicar en el Nine Box.`});
+  });
+  DATA_ACC.forEach(a=>{
+    if(a.estado!=='cumplida' && a.fechaComp && a.fechaComp<hoy) out.push({sev:1, ic:'⏰', nom:a.nom, rol:a.rol, txt:`Acción vencida (${a.fechaComp}): ${a.procNombre}.`});
+  });
+  return out.sort((a,b)=>a.sev-b.sev || a.nom.localeCompare(b.nom,'es'));
+}
+let SEG_ITEMS = [];
+function renderSeguimiento(){
+  const w = document.getElementById('segWrap'); if(!w) return;
+  SEG_ITEMS = calcSeguimiento();
+  if(!DATA_IND.length){ w.innerHTML = '<div style="color:var(--tm);font-size:12px;padding:8px 0;">Todavía no hay evaluaciones cargadas.</div>'; return; }
+  if(!SEG_ITEMS.length){ w.innerHTML = '<div class="al al-g">✅ Todo al día: no hay alertas ni acciones vencidas.</div>'; return; }
+  const MAX = 8;
+  w.innerHTML = SEG_ITEMS.slice(0,MAX).map((it,i)=>`<div style="display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd);">
+      <div style="font-size:18px;flex:none;">${it.ic}</div>
+      <div style="flex:1;font-size:12px;line-height:1.45;"><strong>${escH(it.nom)}</strong> <span class="badge ${ {JCOD:'bj',SCOD:'bs',JTMT:'bt'}[it.rol] }">${ROLE_S[it.rol]||it.rol}</span><br><span style="color:var(--tm)">${escH(it.txt)}</span></div>
+      <button class="bsec" style="padding:5px 10px;font-size:10px;flex:none;" onclick="verFichaIdx(${i})">Ver ficha</button></div>`).join('')
+    + (SEG_ITEMS.length>MAX ? `<div style="font-size:11px;color:var(--tm);padding-top:8px;">y ${SEG_ITEMS.length-MAX} aviso${SEG_ITEMS.length-MAX!==1?'s':''} más (se ven en cada ficha).</div>` : '');
+}
+function verFichaIdx(i){ const it = SEG_ITEMS[i]; if(it) verFicha(it.nom, it.rol); }
+function verFicha(nom, rol){
+  go('ficha');
+  document.getElementById('ficha-rol').value = '';
+  populateFichaPersonas();
+  const sel = document.getElementById('ficha-persona');
+  const k = normNom(nom);
+  const op = [...sel.options].find(o=>o.value && normNom(o.value.split('|')[0])===k && o.value.split('|')[1]===rol);
+  if(op) sel.value = op.value;
+  renderFicha();
+}
+
+function populateFichaPersonas(){
+  const rol = document.getElementById('ficha-rol').value;
+  const sel = document.getElementById('ficha-persona'); const cur = sel.value;
+  const pers = nbPersonas(rol ? DATA_IND.filter(d=>d.rol===rol) : DATA_IND);
+  sel.innerHTML = '<option value="">Seleccionar persona...</option>' + pers.map(p=>`<option value="${escH(p.nom)}|${p.rol}">${escH(p.nom)} — ${ROLE_N[p.rol]}</option>`).join('');
+  if([...sel.options].some(o=>o.value===cur)) sel.value = cur;
+}
+
+let cFicha;
+function editarDesdeFicha(key){ go('individual'); editarRegistro(key); }
+function renderFicha(){
+  const wrap = document.getElementById('fichaWrap'); if(!wrap) return;
+  const val = document.getElementById('ficha-persona').value;
+  if(cFicha){ cFicha.destroy(); cFicha = null; }
+  if(!val){ wrap.innerHTML = '<div class="card"><p style="font-size:12px;color:var(--tm);text-align:center;padding:20px;">Elegí una persona para ver su ficha.</p></div>'; return; }
+  const idx = val.lastIndexOf('|'); const nom = val.slice(0,idx), rol = val.slice(idx+1);
+  const regs = registrosDe(nom, rol);
+  if(!regs.length){ wrap.innerHTML = '<div class="card"><p style="font-size:12px;color:var(--tm);text-align:center;padding:20px;">No hay evaluaciones para esta persona.</p></div>'; return; }
+  const pe = nbPersonas(regs)[0];
+  const pa = puntajesActuales(regs);
+  const esp = esperadoDe(rol, pa.inst);
+  const dias = diasDesde(pa.fecha);
+  const rc = {JCOD:'bj',SCOD:'bs',JTMT:'bt'}[rol];
+  const ubic = (pe.tec>0 && pe.lid>0) ? NB_CELLS[nbNivel(pe.lid)+','+nbNivel(pe.tec)] : null;
+  const accs = DATA_ACC.filter(a=>a.rol===rol && normNom(a.nom)===normNom(nom));
+  const hoy = hoyISO();
+  const abiertas = accs.filter(a=>a.estado!=='cumplida');
+  const vencidas = abiertas.filter(a=>a.fechaComp && a.fechaComp<hoy);
+  const kpi = (n,lbl,v)=>{
+    const ok = v>0 && v>=esp;
+    return `<div class="sc"><div class="sn" style="color:${scColor(v)}">${v>0?v.toFixed(1):'—'}</div><div class="sl">${lbl}</div>
+      <div style="font-size:10px;margin-top:4px;color:${v>0?(ok?'#218570':'#c02133'):'var(--tm)'};">${v>0?(ok?'✔ cumple lo esperado ('+esp+')':'▼ esperado '+esp+' · brecha '+(esp-v).toFixed(1)):'sin medir'}</div></div>`;
+  };
+
+  let h = `<div class="card">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px;">
+      <span style="font-size:16px;font-weight:700;color:var(--gd);">${escH(pe.nom)}</span>
+      <span class="badge ${rc}">${ROLE_N[rol]}</span>
+      <span style="font-size:11px;color:var(--tm);">${INST_N[pa.inst]||pa.inst} · última evaluación ${pa.fecha}${dias!=null?' (hace '+dias+' día'+(dias!==1?'s':'')+')':''}</span>
+      ${dias!=null && dias>REEVAL_DIAS ? '<span class="shyma-tag" style="background:var(--aml);color:#92400e;">🕒 Reevaluación pendiente</span>':''}
+      ${pe.shy?'<span class="shyma-tag">⛔ SHyMA</span>':''}
+    </div>
+    <div class="g4">
+      ${kpi(0,'Conocimiento técnico /4',pe.tec)}
+      ${kpi(0,'Liderazgo /4',pe.lid)}
+      <div class="sc"><div class="sn" style="font-size:13px;line-height:1.3;">${ubic?ubic.t:'Sin ubicar'}</div><div class="sl">Lugar en el Nine Box</div><div style="font-size:10px;margin-top:4px;color:var(--tm);">${ubic?ubic.a:'Falta una de las dos mediciones'}</div></div>
+      <div class="sc"><div class="sn" style="color:${vencidas.length?'#c02133':abiertas.length?'#f39c12':'#218570'}">${abiertas.length}</div><div class="sl">Acciones abiertas</div><div style="font-size:10px;margin-top:4px;color:${vencidas.length?'#c02133':'var(--tm)'};">${vencidas.length?vencidas.length+' vencida'+(vencidas.length!==1?'s':''):'ninguna vencida'}</div></div>
+    </div>
+    <div class="acts" style="margin-top:14px;">
+      <button class="bp" onclick="editarDesdeFicha('${pa.last.fbKey}')"><i class="ti ti-pencil"></i>Editar última evaluación</button>
+      <button class="bsec" onclick="irAAccionesDesdeFeedback('${escH(nom).replace(/'/g,"\\'")}','${rol}')"><i class="ti ti-list-check"></i>Plan de acción</button>
+      <button class="bsec" onclick="go('feedback')"><i class="ti ti-message-report"></i>Feedback</button>
+    </div>
+  </div>`;
+
+  // evolución
+  const pts = regs.filter(r=>(r.avgTec||0)>0 || (r.avgLid||0)>0);
+  h += `<div class="card"><div class="ct"><i class="ti ti-trending-up"></i>Evolución</div>
+    <div style="position:relative;height:220px;"><canvas id="cFicha"></canvas></div>
+    <div class="tbl-scroll" style="margin-top:10px;"><table class="pdf-table"><thead><tr><th>Instancia</th><th>Fecha</th><th>Técnica</th><th>Liderazgo</th><th>Esperado</th><th>Evaluador</th></tr></thead><tbody>`+
+    pts.slice().reverse().map(r=>`<tr><td>${INST_N[r.inst]||r.inst}</td><td>${r.fecha}</td><td style="color:${scColor(r.avgTec)};font-weight:600">${r.avgTec>0?r.avgTec.toFixed(1):'—'}</td><td style="color:${scColor(r.avgLid)};font-weight:600">${r.avgLid>0?r.avgLid.toFixed(1):'—'}</td><td>${esperadoDe(rol,r.inst)}</td><td>${escH(r.eval||'—')}</td></tr>`).join('')+
+    `</tbody></table></div></div>`;
+
+  // brechas
+  const items = [];
+  [...(PROCS_TEC[rol]||[]), ...PROCS_DUP].forEach(p=>{ const v = pa.scoreTec[p.id]; if(v && v<3) items.push({t:'Técnico', id:p.id, n:p.n, v, ev:pa.evid[p.id]}); });
+  COMPS_LIDER.forEach(c=>{ const v = pa.scoreLider[c.id]; if(v && v<3) items.push({t:'Liderazgo', id:c.id, n:c.nombre, v, ev:pa.evid[c.id]}); });
+  items.sort((a,b)=>a.v-b.v);
+  h += `<div class="card"><div class="ct"><i class="ti ti-target-arrow"></i>Qué le falta (por debajo de 3 / 4)</div>`;
+  h += items.length ? `<div class="tbl-scroll"><table class="pdf-table"><thead><tr><th>Tipo</th><th>Proceso o competencia</th><th>Nivel</th><th>Situación</th><th>Evidencia</th></tr></thead><tbody>`+
+    items.slice(0,15).map(i=>`<tr><td>${i.t}</td><td><strong>${escH(i.n)}</strong><div style="font-size:9px;color:var(--tm)">${i.id}</div></td><td style="color:${scColor(i.v)};font-weight:700">${i.v}/4</td>
+      <td style="font-size:10px;color:${i.v<esp?'#c02133':'#92400e'}">${i.v<esp?'⬇ Por debajo de lo esperado':'Falta para llegar a 3'}</td><td style="font-size:10px">${escH(i.ev||'—')}</td></tr>`).join('')+
+    `</tbody></table></div>${items.length>15?`<div style="font-size:11px;color:var(--tm);margin-top:6px;">y ${items.length-15} más.</div>`:''}` : '<div class="al al-g">✅ Sin procesos ni competencias por debajo de 3.</div>';
+  h += '</div>';
+
+  // autoevaluación
+  if(Object.keys(pa.autoLider).length){
+    h += `<div class="card"><div class="ct"><i class="ti ti-user-heart"></i>Autoevaluación vs. mirada del tutor</div><div class="tbl-scroll"><table class="pdf-table"><thead><tr><th>Competencia</th><th>Tutor</th><th>Autoevaluación</th><th>Diferencia</th></tr></thead><tbody>`+
+      COMPS_LIDER.map(c=>{ const t = pa.scoreLider[c.id], a = pa.autoLider[c.id]; if(!a) return '';
+        const d = t ? +(a-t).toFixed(1) : null;
+        const lbl = d==null ? '—' : d===0 ? 'Coinciden' : Math.abs(d)>=1 ? (d>0?'▲ Se ve mejor que el tutor (+'+d+')':'▼ Se ve más exigente ('+d+')') : (d>0?'+':'')+d;
+        return `<tr><td>${c.nombre}</td><td>${t||'—'}</td><td>${a}</td><td style="font-size:10px;font-weight:${d!=null&&Math.abs(d)>=1?'700':'400'};color:${d!=null&&Math.abs(d)>=1?'#c02133':'var(--tm)'}">${lbl}</td></tr>`; }).join('')+
+      `</tbody></table></div><div class="sub" style="margin-top:8px;">Diferencias de 1 punto o más son un buen punto de partida para la conversación de feedback.</div></div>`;
+  }
+
+  // acciones
+  h += `<div class="card"><div class="ct"><i class="ti ti-checklist"></i>Acciones del plan</div>`;
+  h += accs.length ? `<div class="tbl-scroll"><table class="pdf-table"><thead><tr><th>Brecha</th><th>Acción</th><th>Responsable</th><th>Compromiso</th><th>Estado</th></tr></thead><tbody>`+
+    accs.slice().sort((a,b)=>(a.fechaComp||'9').localeCompare(b.fechaComp||'9')).map(a=>{
+      const venc = a.estado!=='cumplida' && a.fechaComp && a.fechaComp<hoy;
+      return `<tr><td><strong>${escH(a.procNombre)}</strong></td><td style="font-size:10px">${escH(a.accion||'—')}</td><td>${escH(a.responsable||'—')}</td><td style="color:${venc?'#c02133':'inherit'};font-weight:${venc?700:400}">${a.fechaComp||'—'}${venc?' ⏰':''}</td><td>${a.estado==='cumplida'?'✅ Cumplida':a.estado==='en_curso'?'🔄 En curso':'⚠ Pendiente'}</td></tr>`; }).join('')+
+    `</tbody></table></div>` : '<div style="font-size:12px;color:var(--tm);">Todavía no hay acciones cargadas para esta persona.</div>';
+  h += '</div>';
+
+  h += `<div class="card"><div class="ct"><i class="ti ti-history"></i>Trazabilidad</div><div style="font-size:11px;color:var(--tm);line-height:1.7;">`+
+    regs.slice().reverse().map(r=>`${INST_N[r.inst]||r.inst} · ${r.fecha}: ${auditoriaTxt(r)}`).join('<br>')+`</div></div>`;
+  wrap.innerHTML = h;
+
+  const cv = document.getElementById('cFicha');
+  if(cv && window.Chart){
+    cFicha = new Chart(cv.getContext('2d'), {type:'line', data:{
+      labels: pts.map(r=>(INST_N[r.inst]||r.inst)+' '+r.fecha),
+      datasets:[
+        {label:'Técnica', data:pts.map(r=>r.avgTec>0?r.avgTec:null), borderColor:'#218570', backgroundColor:'#21857022', borderWidth:2.5, pointRadius:5, tension:.3, spanGaps:true},
+        {label:'Liderazgo', data:pts.map(r=>r.avgLid>0?r.avgLid:null), borderColor:'#1a5276', backgroundColor:'#1a527622', borderWidth:2.5, pointRadius:5, tension:.3, spanGaps:true},
+        {label:'Esperado', data:pts.map(r=>esperadoDe(rol,r.inst)), borderColor:'#c02133', borderDash:[6,4], borderWidth:1.5, pointRadius:0, fill:false}
+      ]}, options:{responsive:true, maintainAspectRatio:false, scales:{y:{min:0,max:4,ticks:{stepSize:1}}}, plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:10}}}}});
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+//  PLAN DE ACCIÓN SUGERIDO
+// ════════════════════════════════════════════════════════════
+function plantillaAccion(b){
+  if(b.tipo==='tecnico'){
+    return b.score<=1
+      ? `Acompañamiento directo del tutor en «${b.nombre}»: observación y práctica supervisada en cada turno hasta poder ejecutarlo con validación puntual. Dejar registrada la evidencia en la planilla.`
+      : `Práctica con validación del tutor en «${b.nombre}»: resolver casos reales del turno con autonomía creciente y dejar evidencia de cada uno. Reevaluar en la próxima instancia (meta: 3/4).`;
+  }
+  return b.score<=1
+    ? `Entrenar «${b.nombre}» con situaciones reales del turno: el tutor modela la conducta, la persona la practica y recibe feedback inmediato. Revisar avances en cada seguimiento.`
+    : `Consolidar «${b.nombre}» aplicándola en situaciones concretas del turno, con feedback específico del tutor. Meta: comportamiento consistente (3/4).`;
+}
+function sugerirAcciones(nom, rol){
+  const rec = ultimaEvalDe(nom, rol); if(!rec) return;
+  const esp = esperadoDe(rol, rec.inst);
+  let n = 0;
+  calcularBrechas(rec).forEach((b,i)=>{
+    const rid = 'acc-row-'+i;
+    const ta = document.getElementById(rid+'-accion');
+    if(!ta || ta.value.trim()) return;                       // no pisa lo que ya escribió el tutor
+    ta.value = plantillaAccion(b); n++;
+    const r = document.getElementById(rid+'-resp'); if(r && !r.value) r.value = rec.eval || '';
+    const f = document.getElementById(rid+'-fecha');
+    if(f && !f.value){ const d = new Date(); d.setDate(d.getDate() + (b.score<esp?4:8)*7); f.value = d.toISOString().split('T')[0]; }
+  });
+  notif(n ? `✨ ${n} acción${n!==1?'es':''} sugerida${n!==1?'s':''}: revisalas, ajustalas y guardalas.` : 'No hay filas vacías para sugerir.');
+}
+function guardarTodasAcciones(nom, rol){
+  const rec = ultimaEvalDe(nom, rol); if(!rec) return;
+  let n = 0;
+  calcularBrechas(rec).forEach((b,i)=>{ const ta = document.getElementById('acc-row-'+i+'-accion'); if(ta && ta.value.trim()){ guardarAccionRow(i, nom, rol); n++; } });
+  if(!n) notif('⚠ No hay acciones escritas para guardar.');
+}
+
+// ════════════════════════════════════════════════════════════
+//  INFORME EJECUTIVO
+// ════════════════════════════════════════════════════════════
+function buildExecPreview(){
+  const rolFil = document.getElementById('pdfRol').value;
+  const data = rolFil==='all' ? DATA_IND : DATA_IND.filter(d=>d.rol===rolFil);
+  const pers = nbPersonas(data);
+  const {celdas, sinUbicar} = nbCeldas(pers);
+  const hoy = hoyISO();
+  const mean = a=>a.length ? +(a.reduce((x,y)=>x+y,0)/a.length).toFixed(1) : 0;
+  const avgT = mean(pers.filter(p=>p.tec>0).map(p=>p.tec)), avgL = mean(pers.filter(p=>p.lid>0).map(p=>p.lid));
+
+  // por debajo de lo esperado y brechas más frecuentes
+  const bajo = [], accT = {}, accL = {};
+  pers.forEach(p=>{
+    const pa = puntajesActuales(registrosDe(p.nom,p.rol)); const esp = esperadoDe(p.rol, pa.inst);
+    if((p.tec>0 && p.tec<esp) || (p.lid>0 && p.lid<esp)) bajo.push(p);
+    Object.entries(pa.scoreTec).forEach(([id,v])=>{ (accT[id]=accT[id]||[]).push(v); });
+    Object.entries(pa.scoreLider).forEach(([id,v])=>{ (accL[id]=accL[id]||[]).push(v); });
+  });
+  const topB = (acc,nameFn)=>Object.entries(acc).map(([id,a])=>({id,n:nameFn(id),v:mean(a),k:a.length})).filter(x=>x.v<3).sort((a,b)=>a.v-b.v).slice(0,5);
+  const bT = topB(accT, nombreProceso), bL = topB(accL, id=>(COMPS_LIDER.find(c=>c.id===id)||{nombre:id}).nombre);
+
+  const acc = rolFil==='all' ? DATA_ACC : DATA_ACC.filter(a=>a.rol===rolFil);
+  const cumpl = acc.filter(a=>a.estado==='cumplida').length, curso = acc.filter(a=>a.estado==='en_curso').length;
+  const venc = acc.filter(a=>a.estado!=='cumplida' && a.fechaComp && a.fechaComp<hoy).length;
+  const reeval = pers.filter(p=>{ const d = diasDesde(puntajesActuales(registrosDe(p.nom,p.rol)).fecha); return d!=null && d>REEVAL_DIAS; });
+
+  const msgs = [];
+  msgs.push(`<strong>${pers.length}</strong> persona${pers.length!==1?'s':''} evaluada${pers.length!==1?'s':''}. Promedio técnico <strong>${avgT||'—'}/4</strong> y de liderazgo <strong>${avgL||'—'}/4</strong>.`);
+  msgs.push(bajo.length ? `<strong>${bajo.length}</strong> persona${bajo.length!==1?'s están':' está'} por debajo del nivel esperado para su instancia.` : 'Nadie está por debajo del nivel esperado para su instancia.');
+  if(bT.length) msgs.push(`La mayor brecha técnica del grupo está en «${escH(bT[0].n)}» (promedio ${bT[0].v}/4).`);
+  if(bL.length) msgs.push(`La mayor brecha de liderazgo está en «${escH(bL[0].n)}» (promedio ${bL[0].v}/4).`);
+  msgs.push(acc.length ? `Plan de acción: ${cumpl} cumplida${cumpl!==1?'s':''}, ${curso} en curso, ${acc.length-cumpl-curso} pendiente${acc.length-cumpl-curso!==1?'s':''}${venc?` — <strong style="color:#c02133">${venc} vencida${venc!==1?'s':''}</strong>`:''}.` : 'Todavía no hay acciones cargadas en el plan.');
+  if(reeval.length || sinUbicar.length) msgs.push(`Próximos pasos: ${reeval.length} reevaluación${reeval.length!==1?'es':''} pendiente${reeval.length!==1?'s':''} y ${sinUbicar.length} persona${sinUbicar.length!==1?'s':''} con una medición incompleta.`);
+
+  const prior = [];
+  Object.entries(celdas).forEach(([k,arr])=>arr.forEach(p=>{ const lvl = +k[0]+ +k[2]; if(lvl<=1) prior.push({p,k,lvl}); }));
+  prior.sort((a,b)=>a.lvl-b.lvl || a.p.nom.localeCompare(b.p.nom,'es'));
+
+  const tblB = (arr)=>arr.length ? '<table class="pdf-table"><thead><tr><th>Proceso / competencia</th><th>Promedio</th><th>Personas</th></tr></thead><tbody>'+arr.map(x=>`<tr><td>${escH(x.n)}</td><td style="color:${scColor(x.v)};font-weight:600">${x.v}/4</td><td>${x.k}</td></tr>`).join('')+'</tbody></table>' : '<div style="font-size:11px;color:var(--tm);">Sin brechas por debajo de 3.</div>';
+
+  const rolLbl = rolFil==='all' ? 'Todos los puestos' : ROLE_N[rolFil];
+  document.getElementById('pdfExec').innerHTML = `
+    <div class="pdf-header"><div class="pdf-logo">EPEC<br>CCOD</div><div>
+      <div class="pdf-title">Informe ejecutivo — Programa de formación del CCOD</div>
+      <div class="pdf-sub">EPEC S.A.U. · ${rolLbl} · Emitido: ${new Date().toLocaleDateString('es-AR')}</div></div></div>
+    <div class="g4" style="margin-bottom:14px;">
+      <div class="sc"><div class="sn">${pers.length}</div><div class="sl">Personas evaluadas</div></div>
+      <div class="sc"><div class="sn" style="color:var(--g)">${avgT||'—'}</div><div class="sl">Prom. técnico</div></div>
+      <div class="sc"><div class="sn" style="color:#1a5276">${avgL||'—'}</div><div class="sl">Prom. liderazgo</div></div>
+      <div class="sc"><div class="sn" style="color:${bajo.length?'#c02133':'var(--g)'}">${bajo.length}</div><div class="sl">Bajo lo esperado</div></div>
+    </div>
+    <div class="pdf-section">Mensajes clave</div>
+    <ul style="padding-left:18px;font-size:12px;line-height:1.8;">${msgs.map(m=>`<li>${m}</li>`).join('')}</ul>
+    <div class="pdf-section">Dónde está cada persona (Nine Box)</div>
+    ${pers.length ? nbGridHTML(celdas,true)+nbLeyendaRoles() : '<div style="font-size:11px;color:var(--tm);">Sin datos.</div>'}
+    <div class="pdf-charts" style="margin-top:14px;">
+      <div><div class="pdf-section" style="margin-top:0;">Brechas técnicas principales</div>${tblB(bT)}</div>
+      <div><div class="pdf-section" style="margin-top:0;">Brechas de liderazgo principales</div>${tblB(bL)}</div>
+    </div>
+    <div class="pdf-section">Personas que requieren acompañamiento prioritario</div>
+    ${prior.length ? '<table class="pdf-table"><thead><tr><th>Persona</th><th>Puesto</th><th>Técnica</th><th>Liderazgo</th><th>Qué conviene hacer</th></tr></thead><tbody>'+prior.map(({p,k})=>`<tr><td><strong>${escH(p.nom)}</strong></td><td>${ROLE_S[p.rol]}</td><td>${p.tec.toFixed(1)}/4</td><td>${p.lid.toFixed(1)}/4</td><td style="font-size:10px">${NB_CELLS[k].a}</td></tr>`).join('')+'</tbody></table>' : '<div style="font-size:11px;color:var(--tm);">Nadie en prioridad de acompañamiento.</div>'}
+    <div class="pdf-footer">EPEC S.A.U. · Centro de Control de Operación de Distribución · Generado por ${escH(usuarioActual())} el ${new Date().toLocaleString('es-AR')}</div>`;
+  document.getElementById('pdfPreviewWrap').style.display = 'block';
+  document.getElementById('pdfContent').style.display = 'none';
+  document.getElementById('pdfExec').style.display = 'block';
+  document.getElementById('pdfPreviewWrap').scrollIntoView({behavior:'smooth'});
+  notif('✅ Vista previa del informe ejecutivo — hacé clic en "Exportar PDF" para descargarlo');
+}
+
+// ════════════════════════════════════════════════════════════
+//  RESPALDO Y EXPORTACIÓN
+// ════════════════════════════════════════════════════════════
+function csvCell(v){
+  if(v==null) return '';
+  let t = typeof v==='number' ? String(v).replace('.',',') : String(v);
+  if(/[";\n\r]/.test(t)) t = '"'+t.replace(/"/g,'""')+'"';
+  return t;
+}
+function csvTexto(filas){ return filas.map(f=>f.map(csvCell).join(';')).join('\r\n'); }
+function descargarArchivo(nombre, texto, mime, bom){
+  try{
+    const blob = new Blob([(bom?'﻿':'')+texto], {type:mime});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = nombre;
+    document.body.appendChild(a); a.click();
+    setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 600);
+    notif('✅ Descargado: '+nombre);
+  }catch(e){ alert('No se pudo generar el archivo: '+e.message); }
+}
+function sufijoFecha(){ return new Date().toISOString().split('T')[0]; }
+function todosLosIds(){
+  const ids = []; Object.values(PROCS_TEC).forEach(a=>a.forEach(p=>{ if(!ids.includes(p.id)) ids.push(p.id); }));
+  PROCS_DUP.forEach(p=>{ if(!ids.includes(p.id)) ids.push(p.id); });
+  return ids;
+}
+function exportEvalCSV(){
+  if(!DATA_IND.length){ notif('⚠ No hay evaluaciones para exportar.'); return; }
+  const ids = todosLosIds();
+  const cab = ['Persona','Puesto','Instancia','Fecha','Evaluador','Prom. técnico','Prom. liderazgo','Estado técnico','Estado liderazgo','SHyMA','Catálogo','Cargado por','Última modificación por','Fecha modificación',
+    ...ids.map(i=>i+' '+nombreProceso(i)), ...COMPS_LIDER.map(c=>c.id+' '+c.nombre), ...COMPS_LIDER.map(c=>'Auto '+c.id+' '+c.nombre)];
+  const filas = [cab];
+  [...DATA_IND].sort((a,b)=>a.nom.localeCompare(b.nom,'es')||new Date(a.fecha)-new Date(b.fecha)).forEach(d=>{
+    filas.push([d.nom, ROLE_N[d.rol]||d.rol, INST_N[d.inst]||d.inst, d.fecha, d.eval, d.avgTec, d.avgLid, d.estadoTec, d.estadoLid, d.shyBad?'SI':'', d.cat||'anterior', d.creadoPor, d.modificadoPor, d.modificadoTs?new Date(d.modificadoTs).toLocaleString('es-AR'):'',
+      ...ids.map(i=>d.scoreTec[i]||''), ...COMPS_LIDER.map(c=>d.scoreLider[c.id]||''), ...COMPS_LIDER.map(c=>d.autoLider[c.id]||'')]);
+  });
+  descargarArchivo('EPEC_CCOD_evaluaciones_'+sufijoFecha()+'.csv', csvTexto(filas), 'text/csv;charset=utf-8', true);
+}
+function exportDetalleCSV(){
+  if(!DATA_IND.length){ notif('⚠ No hay evaluaciones para exportar.'); return; }
+  const filas = [['Persona','Puesto','Instancia','Fecha','Tipo','Código','Proceso / competencia','Puntaje','Autoevaluación','Evidencia']];
+  DATA_IND.forEach(d=>{
+    Object.entries(d.scoreTec).forEach(([id,v])=>filas.push([d.nom,ROLE_N[d.rol]||d.rol,INST_N[d.inst]||d.inst,d.fecha,'Técnico',id,nombreProceso(id),v,'',d.evid[id]||'']));
+    COMPS_LIDER.forEach(c=>{ if(d.scoreLider[c.id]||d.autoLider[c.id]) filas.push([d.nom,ROLE_N[d.rol]||d.rol,INST_N[d.inst]||d.inst,d.fecha,'Liderazgo',c.id,c.nombre,d.scoreLider[c.id]||'',d.autoLider[c.id]||'',d.evid[c.id]||'']); });
+  });
+  descargarArchivo('EPEC_CCOD_detalle_evidencia_'+sufijoFecha()+'.csv', csvTexto(filas), 'text/csv;charset=utf-8', true);
+}
+function exportAccionesCSV(){
+  if(!DATA_ACC.length){ notif('⚠ No hay acciones para exportar.'); return; }
+  const filas = [['Persona','Puesto','Tipo','Código','Brecha','Nivel','Acción','Responsable','Fecha compromiso','Estado']];
+  DATA_ACC.forEach(a=>filas.push([a.nom,ROLE_N[a.rol]||a.rol,a.tipo,a.procId,a.procNombre,a.score,a.accion,a.responsable,a.fechaComp,a.estado]));
+  descargarArchivo('EPEC_CCOD_acciones_'+sufijoFecha()+'.csv', csvTexto(filas), 'text/csv;charset=utf-8', true);
+}
+function exportEquipoCSV(){
+  if(!DATA_EQ.length){ notif('⚠ No hay evaluaciones de equipo para exportar.'); return; }
+  const filas = [['Evaluador','Instancia','Fecha','Promedio','Estado','Observaciones',...COMPS_LIDER.map(c=>c.id+' '+c.nombre)]];
+  DATA_EQ.forEach(e=>filas.push([e.eval,INST_N[e.inst]||e.inst,e.fecha,e.avgEq,e.estadoEq,e.obs,...COMPS_LIDER.map(c=>e.scoreEq[c.id]||'')]));
+  descargarArchivo('EPEC_CCOD_equipo_'+sufijoFecha()+'.csv', csvTexto(filas), 'text/csv;charset=utf-8', true);
+}
+function exportJSON(){
+  const obj = {exportado:new Date().toISOString(), exportadoPor:usuarioActual(), catalogo:CAT_VER, individual:DATA_IND, equipo:DATA_EQ, acciones:DATA_ACC};
+  descargarArchivo('EPEC_CCOD_respaldo_'+sufijoFecha()+'.json', JSON.stringify(obj,null,2), 'application/json', false);
+}
+
+// ════════════════════════════════════════════════════════════
 //  REPORTES PDF
 // ════════════════════════════════════════════════════════════
 let cPdfRadarTec, cPdfRadarLider, cPdfBar;
 
 function buildPdfPreview(){
+  if(document.getElementById('pdfTipo').value==='ejecutivo'){ buildExecPreview(); return; }
+  document.getElementById('pdfExec').style.display = 'none';
+  document.getElementById('pdfContent').style.display = '';
   const rolFil  = document.getElementById('pdfRol').value;
   const instFil = document.getElementById('pdfInst').value;
   let fil = DATA_IND;
@@ -2797,7 +3281,8 @@ function buildPdfPreview(){
 }
 
 async function exportPDF(){
-  const el = document.getElementById('pdfContent');
+  const esExec = document.getElementById('pdfExec').style.display==='block';
+  const el = document.getElementById(esExec?'pdfExec':'pdfContent');
   if(!el||document.getElementById('pdfPreviewWrap').style.display==='none'){
     alert('Primero generá la vista previa');return;
   }
@@ -2817,7 +3302,7 @@ async function exportPDF(){
       y+=pageH;
     }
     const fecha=new Date().toISOString().split('T')[0];
-    pdf.save('EPEC_COD_Competencias_'+fecha+'.pdf');
+    pdf.save((esExec?'EPEC_CCOD_Informe_ejecutivo_':'EPEC_COD_Competencias_')+fecha+'.pdf');
     notif('✅ PDF descargado correctamente');
   }catch(e){ alert('Error al generar PDF: '+e.message); }
 }
@@ -2998,13 +3483,18 @@ function renderAcciones(){
     return;
   }
 
-  h += `<div class="sub">Definí la acción a implementar para cada brecha. Al guardar una fila, queda registrada en Firebase y disponible para el reporte final.</div>`;
+  h += `<div class="sub">Definí la acción a implementar para cada brecha. Al guardar una fila, queda registrada en Firebase y disponible para el reporte final.</div>
+  <div class="acts" style="margin:0 0 10px;">
+    <button class="bsec" onclick="sugerirAcciones('${nom.replace(/'/g,"\\'")}','${rol}')"><i class="ti ti-sparkles"></i>Sugerir acciones según las brechas</button>
+    <button class="bp" onclick="guardarTodasAcciones('${nom.replace(/'/g,"\\'")}','${rol}')"><i class="ti ti-device-floppy"></i>Guardar todas las filas completas</button>
+  </div>
+  <div class="sub" style="margin-top:0;">Las sugerencias son un borrador: no pisan lo que ya escribiste y se ajustan antes de guardar. Plazo sugerido: 4 semanas si está por debajo de lo esperado para la instancia, 8 semanas en el resto.</div>`;
   h += `<table class="plan-tbl"><thead><tr><th style="width:200px">Brecha detectada</th><th style="width:70px;text-align:center">Nivel</th><th>Acción a implementar</th><th style="width:130px">Responsable</th><th style="width:130px">Fecha compromiso</th><th style="width:120px">Estado</th><th style="width:70px"></th></tr></thead><tbody>`;
   brechas.forEach((b,i)=>{
     const acc = misAcciones.find(a=>a.tipo===b.tipo && a.procId===b.id);
     const rid = 'acc-row-'+i;
     h += `<tr>
-      <td><strong style="font-size:11px;">${b.nombre}</strong>${b.shyma?' <span class="shyma-tag">⚡</span>':''}<div style="font-size:9px;color:var(--tm);text-transform:uppercase;margin-top:2px;">${b.tipo==='tecnico'?'Técnico':'Liderazgo'}</div></td>
+      <td><strong style="font-size:11px;">${b.nombre}</strong>${b.shyma?' <span class="shyma-tag">⚡</span>':''}${b.score<esperadoDe(rol,rec.inst)?' <span class="shyma-tag">⬇ bajo lo esperado</span>':''}<div style="font-size:9px;color:var(--tm);text-transform:uppercase;margin-top:2px;">${b.tipo==='tecnico'?'Técnico':'Liderazgo'}</div></td>
       <td style="text-align:center;"><span style="display:inline-block;width:26px;height:26px;line-height:26px;border-radius:6px;background:${scColor(b.score)};color:#fff;font-weight:700;">${b.score}</span></td>
       <td><textarea id="${rid}-accion" rows="2" placeholder="Ej: práctica supervisada con el tutor, 2 sesiones por semana...">${acc?(acc.accion||'').replace(/</g,'&lt;'):''}</textarea></td>
       <td><input type="text" id="${rid}-resp" placeholder="Tutor / Subjefe..." value="${acc?(acc.responsable||'').replace(/"/g,'&quot;'):''}"></td>
@@ -3062,7 +3552,7 @@ function guardarAccionRow(i, nom, rol){
   if(!accion){ notif('⚠ Escribí la acción a implementar antes de guardar.'); return; }
 
   const existing = DATA_ACC.find(a=>a.nom===nom && a.rol===rol && a.tipo===b.tipo && a.procId===b.id);
-  const rec2 = { nom, rol, tipo:b.tipo, procId:b.id, procNombre:b.nombre, score:b.score, accion, responsable, fechaComp, estado, ts: Date.now() };
+  const rec2 = { nom, rol, tipo:b.tipo, procId:b.id, procNombre:b.nombre, score:b.score, accion, responsable, fechaComp, estado, ts: Date.now(), ...auditoria(!existing) };
   const p = existing ? refAcc.child(existing.fbKey).update(rec2) : refAcc.push(rec2);
   p.then(()=>{ notif('✅ Acción guardada para '+nom); })
    .catch(e=>notif('⚠ Error: '+e.message));

@@ -1,0 +1,24 @@
+{
+  "_LEEME": "NO reemplazar las reglas completas del proyecto: el proyecto Firebase 'epec---capacitaciones' lo usan también otras apps. Copiar SOLO estos 4 nodos dentro de 'rules' y conservar el resto.",
+  "rules": {
+    "cod_individual": {
+      ".read": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous'",
+      ".write": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous'",
+      "$id": {
+        ".validate": "newData.hasChildren(['nom','rol']) && newData.child('rol').val().matches(/^(JCOD|SCOD|JTMT)$/) && (!newData.child('avgTec').exists() || (newData.child('avgTec').isNumber() && newData.child('avgTec').val() >= 0 && newData.child('avgTec').val() <= 4)) && (!newData.child('avgLid').exists() || (newData.child('avgLid').isNumber() && newData.child('avgLid').val() >= 0 && newData.child('avgLid').val() <= 4))"
+      }
+    },
+    "cod_equipo": {
+      ".read": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous'",
+      ".write": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous'"
+    },
+    "cod_acciones": {
+      ".read": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous'",
+      ".write": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous'"
+    },
+    "cod_connected": {
+      ".read": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous'",
+      ".write": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous'"
+    }
+  }
+}
