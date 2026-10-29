@@ -2,6 +2,12 @@
 
 **Qué hace:** evaluación técnica (planillas por puesto + procesos compartidos) y de liderazgo, autoevaluación, evaluación de equipo, feedback, plan de acción (con sugerencias), historial, radar, tendencia, Nine Box, ficha por persona, guía de puestos, informe ejecutivo y respaldo de datos. Tema claro/oscuro (sol/luna).
 
+## Estructura de pestañas (v. 29/10/2026)
+- **Dashboard** · **Evaluar persona** (Resumen y evolución / Técnica / Liderazgo y autoevaluación, un solo guardado) · **Evaluación de Equipo** · **Feedback y Plan** (un solo selector de persona) · **Análisis** (Radar / Tendencia / Historial) · **Nine Box** · **Guía de puestos** · **Reportes PDF**.
+- **Un solo registro por persona + puesto + instancia**: la técnica, el liderazgo, la autoevaluación y las evidencias se guardan juntos. Si una persona tenía datos repartidos en varios registros de la misma instancia, se muestran unidos y se ofrece el botón **Unificar en un solo registro** (pide confirmación antes de eliminar los duplicados).
+- **Limpiar** en cada pestaña con datos o filtros: deja la pantalla lista para una nueva evaluación.
+- Instancias: Diagnóstico, Seguimiento, Certificación.
+
 ## Guardar la pantalla en la computadora
 Botón **Guardar pantalla** (encabezado, junto al sol/luna): guarda lo que se ve en la pantalla actual como **PDF** (A4, con cortes de página que no parten tarjetas ni filas), **imagen PNG** o **página HTML**. Siempre en tema claro, aunque se esté usando el oscuro. En Reportes y en el reporte de Plan de Acción guarda la vista previa generada. En celular guarda con el diseño de computadora. Requiere internet (usa las librerías html2canvas y jsPDF).
 

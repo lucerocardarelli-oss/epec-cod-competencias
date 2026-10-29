@@ -242,6 +242,13 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
 .capturando .gp-wrap{visibility:hidden;}
 .capturando .sec.on{padding:14px;background:#f5f9f7;}
 @media(max-width:700px){.gp-btn span{display:none;}.gp-btn{padding:7px 10px;}.gp-menu{position:fixed;right:8px;left:8px;width:auto;top:60px;}}
+.subv{display:none;}.subv.on{display:block;}
+.subtabs{display:flex;gap:6px;margin:4px 0 14px;flex-wrap:wrap;align-items:center;}
+.stab{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--bd);background:var(--wh);color:var(--tm);font-family:inherit;display:inline-flex;align-items:center;gap:6px;}
+.stab.on{background:var(--gd);border-color:var(--gd);color:#fff;}
+.ev-kpi{background:var(--gl);border:1px solid var(--g2);border-radius:10px;padding:6px 12px;font-size:11px;}
+.ev-kpi b{font-size:15px;}
+html[data-theme="dark"] .stab.on{background:#0f5d49;border-color:#0f5d49;}
 /* TEMA OSCURO (verde oscuro) / CLARO */
 html[data-theme="dark"]{--g:#2BA888;--gd:#5fd1b0;--gm:#3dbf9c;--gl:#143a32;--g2:#1f4a3f;--r:#ff7a8a;--rl:#3d1a20;--am:#f5a623;--aml:#3a3414;--bd:#24544a;--bg:#0b1f1a;--tx:#e6f4ef;--tm:#93b8ac;--wh:#12302a;--azul:#7fb8e0;--azul-lt:#1b3a52;color-scheme:dark;}
 html[data-theme="dark"] .hdr,html[data-theme="dark"] .pt th,html[data-theme="dark"] .mx-tbl th,html[data-theme="dark"] .notif,html[data-theme="dark"] .plan-tab.on,html[data-theme="dark"] .plan-header,html[data-theme="dark"] .plan-tbl th,html[data-theme="dark"] .pz-ctbl th,html[data-theme="dark"] .pdf-table th{background:#0f5d49;border-color:#0f5d49;color:#fff;}
@@ -420,15 +427,10 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
 <!-- NAV -->
 <div class="nav">
   <button class="nt on" onclick="go('dash')"><i class="ti ti-dashboard"></i>Dashboard</button>
-  <button class="nt" onclick="go('ficha')"><i class="ti ti-user-search"></i>Ficha por persona</button>
-  <button class="nt" onclick="go('individual')"><i class="ti ti-user-check"></i>Evaluación Individual</button>
-  <button class="nt" onclick="go('planillas')"><i class="ti ti-clipboard-list"></i>Planillas Técnicas</button>
+  <button class="nt" onclick="go('evaluar')"><i class="ti ti-user-check"></i>Evaluar persona</button>
   <button class="nt" onclick="go('equipo')"><i class="ti ti-users"></i>Evaluación de Equipo</button>
-  <button class="nt" onclick="go('feedback')"><i class="ti ti-message-report"></i>Feedback</button>
-  <button class="nt" onclick="go('acciones')"><i class="ti ti-list-check"></i>Plan de Acción</button>
-  <button class="nt" onclick="go('personas')"><i class="ti ti-address-book"></i>Historial</button>
-  <button class="nt" onclick="go('radar')"><i class="ti ti-chart-radar"></i>Radar</button>
-  <button class="nt" onclick="go('tendencia')"><i class="ti ti-trending-up"></i>Tendencia</button>
+  <button class="nt" onclick="go('seguimiento')"><i class="ti ti-message-report"></i>Feedback y Plan</button>
+  <button class="nt" onclick="go('analisis')"><i class="ti ti-chart-radar"></i>Análisis</button>
   <button class="nt" onclick="go('ninebox')"><i class="ti ti-layout-grid"></i>Nine Box</button>
   <button class="nt" onclick="go('puestos')"><i class="ti ti-sitemap"></i>Guía de puestos</button>
   <button class="nt" onclick="go('reportes')"><i class="ti ti-file-type-pdf"></i>Reportes PDF</button>
@@ -464,37 +466,52 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
 </div>
 
 <!-- ═══════════════════════════════════════════
-     PLANILLAS TÉCNICAS POR ROL
+     EVALUAR PERSONA — resumen + técnica + liderazgo en un solo lugar
 ═══════════════════════════════════════════ -->
-<div class="sec" id="s-ficha">
+<div class="sec" id="s-evaluar">
   <div class="card">
-    <div class="ct"><i class="ti ti-user-search"></i>Ficha por persona</div>
-    <div class="sub">Todo lo que se sabe de una persona en una sola pantalla: dónde está hoy, cómo evolucionó, qué le falta, qué acciones tiene abiertas y quién cargó cada dato.</div>
-    <div class="g2">
-      <div class="fg"><label>Puesto</label>
-        <select id="ficha-rol" onchange="populateFichaPersonas();renderFicha()">
-          <option value="">Todos los puestos</option>
+    <div class="ct"><i class="ti ti-user-check"></i>Evaluar persona</div>
+    <div class="sub">Elegí el puesto, la persona y la instancia. Todo lo de esa persona (técnica, liderazgo, autoevaluación y resumen) se ve y se guarda desde acá, en <strong>un solo registro por instancia</strong>.</div>
+    <div class="g4">
+      <div class="fg"><label>Puesto *</label>
+        <select id="ev-rol" onchange="evCambio()">
+          <option value="">Seleccionar puesto...</option>
           <option value="JCOD">Jefe CCOD</option>
           <option value="SCOD">Subjefe CCOD</option>
           <option value="JTMT">Coordinador de Turno MT</option>
         </select></div>
-      <div class="fg"><label>Persona</label>
-        <select id="ficha-persona" onchange="renderFicha()"><option value="">Seleccionar persona...</option></select></div>
+      <div class="fg"><label>Persona *</label>
+        <input type="text" id="ev-nom" list="ev-nom-list" placeholder="Apellido, Nombre" onchange="evCambio()">
+        <datalist id="ev-nom-list"></datalist></div>
+      <div class="fg"><label>Instancia *</label>
+        <select id="ev-inst" onchange="evCambio()">
+          <option value="diagnostico">Diagnóstico</option>
+          <option value="seguimiento">Seguimiento</option>
+          <option value="certificacion">Certificación</option>
+        </select></div>
+      <div class="fg"><label>Fecha</label><input type="date" id="ev-fecha" oninput="marcarDirty()"></div>
     </div>
-  </div>
-  <div id="fichaWrap"></div>
-</div>
-
-<div class="sec" id="s-planillas">
-
-  <div class="sec-header">
-    <i class="ti ti-clipboard-list"></i>
-    <div>
-      <h2>Planillas de Evaluación Técnica por Rol</h2>
-      <p>Instrumento de referencia para el evaluador · Puntuar cada proceso del 1 al 4</p>
+    <div class="fg" style="max-width:420px;"><label>Evaluador / Tutor</label><input type="text" id="ev-eval" placeholder="Nombre del tutor" oninput="marcarDirty()"></div>
+    <div id="ev-status" style="font-size:11px;color:var(--tm);line-height:1.6;margin-bottom:8px;"></div>
+    <div id="ev-kpis" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;"></div>
+    <div class="acts" style="margin-top:4px;">
+      <button class="bp btn-guardar-ev" onclick="guardarEvaluacion()"><i class="ti ti-device-floppy"></i>Guardar evaluación</button>
+      <button class="bsec" onclick="limpiarEvaluacion()"><i class="ti ti-eraser"></i>Limpiar para una nueva evaluación</button>
+      <span id="ev-dirty" class="shyma-tag" style="display:none;background:var(--aml);color:#92400e;align-self:center;">● cambios sin guardar</span>
     </div>
+    <div id="ev-msg" style="margin-top:8px;font-size:13px;font-weight:500;min-height:18px;"></div>
   </div>
 
+  <div class="subtabs">
+    <button class="stab" data-sub="ficha" onclick="go('ficha')"><i class="ti ti-id"></i> Resumen y evolución</button>
+    <button class="stab on" data-sub="planillas" onclick="go('planillas')"><i class="ti ti-clipboard-list"></i> Técnica</button>
+    <button class="stab" data-sub="individual" onclick="go('individual')"><i class="ti ti-award"></i> Liderazgo y autoevaluación</button>
+  </div>
+
+  <div class="subv" id="s-ficha"><div id="fichaWrap"></div></div>
+
+  <div class="subv on" id="s-planillas">
+    <div id="plan-vacio" class="al al-a"><i class="ti ti-info-circle"></i> Elegí el <strong>puesto</strong> y la <strong>persona</strong> (arriba) para ver y cargar su planilla técnica.</div>
   <div class="escala-box">
     <div class="et">Escala de dominio técnico</div>
     <div class="escala-items">
@@ -505,39 +522,17 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
     </div>
   </div>
 
-  <div class="card">
-    <div class="ct"><i class="ti ti-user-check"></i>Persona a evaluar en esta planilla</div>
-    <div class="sub">Elegí o escribí el nombre de la persona: las puntuaciones que cargues abajo (incluyendo P-DUP y Expertiz+SHyMA) se guardan asociadas a ella y a su rol, no solo al rol en general.</div>
-    <div class="g4">
-      <div class="fg">
-        <label>Persona (puesto: <span id="plan-rol-lbl">Jefe CCOD</span>)</label>
-        <input type="text" id="plan-persona" list="plan-persona-list" placeholder="Apellido, Nombre" oninput="onPlanPersonaChange()">
-        <datalist id="plan-persona-list"></datalist>
-      </div>
-      <div class="fg"><label>Evaluador / Tutor</label><input type="text" id="plan-eval" placeholder="Nombre del tutor"></div>
-      <div class="fg"><label>Instancia</label>
-        <select id="plan-inst">
-          <option value="diagnostico">Diagnóstico — Semana 1</option>
-          <option value="seguimiento">Seguimiento — Sem. 2–3</option>
-          <option value="certificacion">Certificación — Semana 4</option>
-        </select>
-      </div>
-      <div class="fg"><label>Fecha</label><input type="date" id="plan-fecha"></div>
-    </div>
-    <div id="plan-persona-status" style="font-size:11px;color:var(--tm);margin:-4px 0 10px;"></div>
-    <div class="acts" style="margin-top:0;margin-bottom:14px;">
-      <button class="bp" onclick="guardarPlanilla()"><i class="ti ti-device-floppy"></i>Guardar esta planilla en Firebase</button>
-    </div>
-    <div id="plan-msg" style="margin:-6px 0 14px;font-size:13px;font-weight:500;min-height:18px;"></div>
 
-    <div class="plan-tabs">
-      <button class="plan-tab on" onclick="showPlan('jcod',this)"><i class="ti ti-user"></i> Jefe CCOD</button>
-      <button class="plan-tab" onclick="showPlan('scod',this)"><i class="ti ti-user"></i> Subjefe CCOD</button>
-      <button class="plan-tab" onclick="showPlan('jtmt',this)"><i class="ti ti-user"></i> Coord. de Turno MT</button>
-      <button class="plan-tab" onclick="showPlan('dup',this)"><i class="ti ti-users"></i> Procesos Compartidos (P-DUP)</button>
-      <button class="plan-tab" onclick="showPlan('tec',this)"><i class="ti ti-tool"></i> Expertiz + SHyMA</button>
-    </div>
-
+    <div class="card">
+      <div class="plan-tabs" id="plan-tabs-wrap">
+        <button class="plan-tab on" id="ptab-rol" onclick="showPlan('rol')"><i class="ti ti-user"></i> <span id="ptab-rol-lbl">Procesos del puesto</span></button>
+        <button class="plan-tab" id="ptab-dup" onclick="showPlan('dup')"><i class="ti ti-users"></i> Procesos compartidos (P-DUP)</button>
+        <button class="plan-tab" id="ptab-tec" onclick="showPlan('tec')"><i class="ti ti-tool"></i> Expertiz + SHyMA</button>
+      </div>
+      <div class="shyma-alert" id="shyAlerta">
+        ⛔ ALERTA SHyMA — un proceso de seguridad quedó calificado como 1 (Inicial).<br>
+        Criterio de override: la persona NO puede ser habilitada independientemente del puntaje total.
+      </div>
     <!-- PANELES POR PUESTO (generados desde Descripción de Puestos v1.1 y Procesos de Trabajo Roles) -->
     <div class="plan-panel on" id="plan-jcod">
       <div class="plan-header">
@@ -740,111 +735,10 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
       </div>
     </div>
 
-  </div><!-- /card -->
-</div>
-
-<!-- ═══════════════════════════════════════════
-     EVALUACIÓN INDIVIDUAL
-═══════════════════════════════════════════ -->
-<div class="sec" id="s-individual">
-
-  <!-- Datos del evaluado -->
-  <div class="card">
-    <div class="ct"><i class="ti ti-user-plus"></i>Datos del evaluado</div>
-    <div class="al al-a" id="editBanner" style="display:none;">
-      <i class="ti ti-pencil"></i> Editando la evaluación ya guardada de <strong id="editBannerNom"></strong>. Al guardar, se <strong>actualiza este mismo registro</strong> en Firebase (no se crea uno nuevo).
-      <button class="bsec" style="padding:4px 10px;font-size:10px;margin-left:10px;" onclick="cancelarEdicion()"><i class="ti ti-x"></i> Cancelar edición</button>
-    </div>
-    <div class="g2">
-      <div class="fg"><label>Nombre completo *</label><input type="text" id="i-nom" placeholder="Apellido, Nombre"></div>
-      <div class="fg"><label>Rol *</label>
-        <select id="i-rol" onchange="onRolChange()">
-          <option value="">Seleccionar rol...</option>
-          <option value="JCOD">Jefe CCOD</option>
-          <option value="SCOD">Subjefe CCOD</option>
-          <option value="JTMT">Coordinador de Turno MT</option>
-        </select>
-      </div>
-    </div>
-    <div class="g3">
-      <div class="fg"><label>Evaluador / Tutor</label><input type="text" id="i-eval" placeholder="Nombre del tutor"></div>
-      <div class="fg"><label>Instancia</label>
-        <select id="i-inst">
-          <option value="diagnostico">Diagnóstico — Semana 1</option>
-          <option value="seguimiento">Seguimiento — Sem. 2–3</option>
-          <option value="certificacion">Certificación — Semana 4</option>
-        </select>
-      </div>
-      <div class="fg"><label>Fecha</label><input type="date" id="i-fecha"></div>
     </div>
   </div>
 
-  <!-- Consultar evaluaciones cargadas en la Planilla Técnica -->
-  <div class="card" id="consultaCard">
-    <div class="ct"><i class="ti ti-search"></i>Consultar lo cargado en la Planilla Técnica</div>
-    <div class="sub">Buscá el histórico de evaluaciones ya guardadas en Firebase, filtrando por rol y/o por persona, y mirá el detalle proceso por proceso.</div>
-    <div class="g3">
-      <div class="fg"><label>Rol</label>
-        <select id="q-rol" onchange="onQRolChange()">
-          <option value="">Todos los roles</option>
-          <option value="JCOD">Jefe CCOD</option>
-          <option value="SCOD">Subjefe CCOD</option>
-          <option value="JTMT">Coordinador de Turno MT</option>
-        </select>
-      </div>
-      <div class="fg"><label>Persona</label>
-        <select id="q-persona" onchange="onQPersonaChange()">
-          <option value="">Todas las personas</option>
-        </select>
-      </div>
-      <div class="fg"><label>Evaluación cargada</label>
-        <select id="q-registro" onchange="renderQResultado()" disabled>
-          <option value="">—</option>
-        </select>
-      </div>
-    </div>
-    <div id="qResumenWrap"></div>
-    <div id="qDetalleWrap"></div>
-  </div>
-
-  <!-- Contenedor de las dos matrices -->
-  <div id="matricesWrap" style="display:none;">
-
-    <!-- ── MATRIZ TÉCNICA ── -->
-    <div class="sec-header">
-      <i class="ti ti-tool"></i>
-      <div>
-        <h2>Matriz de Expertiz Técnica</h2>
-        <p>Evaluación por proceso · Escala 1–4 de dominio técnico</p>
-      </div>
-    </div>
-
-    <div class="escala-box">
-      <div class="et">Escala de dominio técnico</div>
-      <div class="escala-items">
-        <div class="ei"><div class="ei-dot" style="background:#c02133;">1</div><span><strong>Inicial</strong> — requiere guía directa y supervisión permanente</span></div>
-        <div class="ei"><div class="ei-dot" style="background:#f39c12;">2</div><span><strong>Básico Supervisado</strong> — conoce la tarea pero requiere validación frecuente</span></div>
-        <div class="ei"><div class="ei-dot" style="background:#2BA888;">3</div><span><strong>Competente Autónomo</strong> — ejecuta correctamente de forma independiente</span></div>
-        <div class="ei"><div class="ei-dot" style="background:#218570;">4</div><span><strong>Avanzado Referente</strong> — domina, resuelve casos complejos y puede enseñar</span></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="ct"><i class="ti ti-clipboard-check"></i>Procesos del rol + Procesos compartidos (P-DUP)</div>
-      <div class="mx-wrap">
-        <table class="mx-tbl" id="matrizTecTbl"></table>
-      </div>
-      <div class="shyma-alert" id="shyAlerta">
-        ⛔ ALERTA SHyMA — "Gestión de la seguridad operacional" calificada como 1 (Inicial).<br>
-        Criterio de override: la persona NO puede ser habilitada independientemente del puntaje total.
-      </div>
-      <div class="res-box" id="resTec">
-        <div class="res-item"><div class="res-num" id="tNum">—</div><div class="res-lbl">Promedio técnico / 4</div></div>
-        <div class="res-item"><div class="res-num" id="tPct">—</div><div class="res-lbl">% sobre nivel requerido</div></div>
-        <div class="res-item"><div class="res-num" id="tEst" style="font-size:13px;margin-top:6px;">—</div><div class="res-lbl">Estado técnico</div></div>
-      </div>
-    </div>
-
+  <div class="subv" id="s-individual">
     <!-- ── MATRIZ DE LIDERAZGO ── -->
     <div class="sec-header" style="background:linear-gradient(135deg,#1a5276,#2471a3);margin-top:8px;">
       <i class="ti ti-award"></i>
@@ -878,11 +772,11 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
       <div class="res-item"><div class="res-num" id="lEst" style="font-size:13px;margin-top:6px;">—</div><div class="res-lbl">Nivel de liderazgo</div></div>
     </div>
 
-    <div class="acts">
-      <button class="bp" id="btnGuardarInd" onclick="guardarIndividual()"><i class="ti ti-device-floppy"></i>Guardar evaluación individual</button>
-      <button class="bsec" onclick="limpiarIndividual()"><i class="ti ti-refresh"></i>Limpiar</button>
-    </div>
-    <div id="form-msg" style="margin-top:10px;font-size:13px;font-weight:500;min-height:18px;"></div>
+  </div>
+
+  <div class="acts" style="margin-top:6px;">
+    <button class="bp btn-guardar-ev" onclick="guardarEvaluacion()"><i class="ti ti-device-floppy"></i>Guardar evaluación</button>
+    <button class="bsec" onclick="limpiarEvaluacion()"><i class="ti ti-eraser"></i>Limpiar para una nueva evaluación</button>
   </div>
 </div>
 
@@ -942,10 +836,30 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
   <div id="eq-msg" style="margin-top:10px;font-size:13px;font-weight:500;min-height:18px;"></div>
 </div>
 
+<div class="sec" id="s-seguimiento">
+  <div class="card">
+    <div class="ct"><i class="ti ti-user-search"></i>Elegir persona</div>
+    <div class="g3">
+      <div class="fg"><label>Puesto</label>
+        <select id="seg-rol" onchange="segCambio()">
+          <option value="">Todos los puestos</option>
+          <option value="JCOD">Jefe CCOD</option>
+          <option value="SCOD">Subjefe CCOD</option>
+          <option value="JTMT">Coordinador de Turno MT</option>
+        </select></div>
+      <div class="fg"><label>Persona</label>
+        <select id="seg-persona" onchange="segCambio()"><option value="">Seleccionar persona...</option></select></div>
+      <div class="fg"><label>&nbsp;</label><button class="bsec" onclick="limpiarSeguimiento()"><i class="ti ti-eraser"></i>Limpiar</button></div>
+    </div>
+  </div>
+  <div class="subtabs">
+    <button class="stab on" data-sub="feedback" onclick="go('feedback')"><i class="ti ti-message-report"></i> Feedback de brechas</button>
+    <button class="stab" data-sub="acciones" onclick="go('acciones')"><i class="ti ti-list-check"></i> Plan de acción</button>
+  </div>
 <!-- ═══════════════════════════════════════════
      FEEDBACK — brechas de competencias post-evaluación
 ═══════════════════════════════════════════ -->
-<div class="sec" id="s-feedback">
+<div class="subv" id="s-feedback">
 
   <div class="sec-header" style="background:linear-gradient(135deg,#7a5000,#a9720a);">
     <i class="ti ti-message-report"></i>
@@ -955,7 +869,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
     </div>
   </div>
 
-  <div class="card">
+  <div class="card" style="display:none;">
     <div class="ct"><i class="ti ti-user-search"></i>Elegir persona</div>
     <div class="g2">
       <div class="fg"><label>Rol</label>
@@ -980,7 +894,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
 <!-- ═══════════════════════════════════════════
      PLAN DE ACCIÓN — acciones para cerrar brechas + reporte
 ═══════════════════════════════════════════ -->
-<div class="sec" id="s-acciones">
+<div class="subv" id="s-acciones">
 
   <div class="sec-header" style="background:linear-gradient(135deg,#4a3580,#6b4fa8);">
     <i class="ti ti-list-check"></i>
@@ -990,7 +904,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
     </div>
   </div>
 
-  <div class="card">
+  <div class="card" style="display:none;">
     <div class="ct"><i class="ti ti-user-search"></i>Elegir persona</div>
     <div class="g2">
       <div class="fg"><label>Rol</label>
@@ -1026,10 +940,19 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
   </div>
 </div>
 
+</div>
+
+<div class="sec" id="s-analisis">
+  <div class="subtabs">
+    <button class="stab on" data-sub="radar" onclick="go('radar')"><i class="ti ti-chart-radar"></i> Radar</button>
+    <button class="stab" data-sub="tendencia" onclick="go('tendencia')"><i class="ti ti-trending-up"></i> Tendencia</button>
+    <button class="stab" data-sub="personas" onclick="go('personas')"><i class="ti ti-address-book"></i> Historial</button>
+    <button class="bsec" style="margin-left:auto;" onclick="limpiarAnalisis()"><i class="ti ti-eraser"></i>Limpiar filtros</button>
+  </div>
 <!-- ═══════════════════════════════════════════
      HISTORIAL
 ═══════════════════════════════════════════ -->
-<div class="sec" id="s-personas">
+<div class="subv" id="s-personas">
   <div class="card">
     <div class="ct"><i class="ti ti-address-book"></i>Historial de evaluaciones</div>
     <div class="rtabs">
@@ -1043,7 +966,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
 <!-- ═══════════════════════════════════════════
      RADAR
 ═══════════════════════════════════════════ -->
-<div class="sec" id="s-radar">
+<div class="subv" id="s-radar">
   <div class="g2">
     <div class="card">
       <div class="ct"><i class="ti ti-chart-radar"></i>Radar — Expertiz Técnica</div>
@@ -1078,7 +1001,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
 <!-- ═══════════════════════════════════════════
      TENDENCIA
 ═══════════════════════════════════════════ -->
-<div class="sec" id="s-tendencia">
+<div class="subv" id="s-tendencia">
   <div class="g2">
     <div class="card">
       <div class="ct"><i class="ti ti-trending-up"></i>Tendencia Técnica por instancia</div>
@@ -1102,6 +1025,8 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
     <div class="ct"><i class="ti ti-bell-ringing"></i>Alertas automáticas</div>
     <div id="alertas"></div>
   </div>
+</div>
+
 </div>
 
 <!-- ═══════════════════════════════════════════
@@ -1128,6 +1053,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
       </select>
     </div>
 
+    <div class="acts" style="margin:0 0 14px;"><button class="bsec" onclick="limpiarNineBox()"><i class="ti ti-eraser"></i>Limpiar filtro</button></div>
     <div id="nbBoard"></div>
     <div id="nbSinUbicar"></div>
   </div>
@@ -1192,6 +1118,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
     <div class="acts">
       <button class="bp" onclick="buildPdfPreview()"><i class="ti ti-eye"></i>Vista previa</button>
       <button class="bpdf" onclick="exportPDF()"><i class="ti ti-download"></i>Exportar PDF</button>
+      <button class="bsec" onclick="limpiarReportes()"><i class="ti ti-eraser"></i>Limpiar</button>
     </div>
   </div>
 
@@ -1473,10 +1400,8 @@ refInd.on('value', snap => {
   if(document.getElementById('s-personas').classList.contains('on')) renderPersonas(pfiltro);
   if(document.getElementById('s-radar').classList.contains('on')){renderRadarTec();renderRadarLider();renderBrecha();}
   if(document.getElementById('s-ninebox').classList.contains('on')) renderNineBox();
-  if(document.getElementById('s-ficha').classList.contains('on')){ populateFichaPersonas(); renderFicha(); }
   if(document.getElementById('s-tendencia').classList.contains('on')){renderTendTec();renderTendLider();renderAlertas();}
-  if(document.getElementById('s-individual').classList.contains('on')){ populateQPersonas(); renderQResultado(); }
-  if(document.getElementById('s-planillas').classList.contains('on')){ populatePlanDatalist(); }
+  if(visible('s-evaluar')) evDatosCambiaron();
   if(document.getElementById('s-feedback').classList.contains('on')){ populateFeedbackPersonas(); renderFeedback(); }
   if(document.getElementById('s-acciones').classList.contains('on')){ populateAccionesPersonas(); renderAcciones(); }
 });
@@ -1527,7 +1452,6 @@ refAcc.on('value', snap => {
   console.log('DATA_ACC cargado:', DATA_ACC.length, 'registros');
   if(document.getElementById('s-acciones').classList.contains('on')){ renderAcciones(); }
   if(document.getElementById('s-dash').classList.contains('on')) renderSeguimiento();
-  if(document.getElementById('s-ficha').classList.contains('on')) renderFicha();
 });
 }
 
@@ -1591,25 +1515,7 @@ auth.onAuthStateChanged(user => {
 // ════════════════════════════════════════════════════════════
 //  NAVEGACIÓN
 // ════════════════════════════════════════════════════════════
-function go(id){
-  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
-  document.querySelectorAll('.nt').forEach(b=>b.classList.remove('on'));
-  document.getElementById('s-'+id).classList.add('on');
-  document.querySelectorAll('.nt').forEach(b=>{
-    if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'"+id+"'")) b.classList.add('on');
-  });
-  if(id==='dash') renderDash();
-  if(id==='radar'){renderRadarTec();renderRadarLider();renderBrecha();}
-  if(id==='ninebox'){renderNineBox();}
-  if(id==='puestos'){renderPuestos();}
-  if(id==='ficha'){populateFichaPersonas();renderFicha();}
-  if(id==='planillas'){initPlanillas(); renderPuestosRef();}
-  if(id==='tendencia'){renderTendTec();renderTendLider();renderAlertas();}
-  if(id==='personas') renderPersonas(pfiltro);
-  if(id==='individual'){ populateQPersonas(); renderQResultado(); }
-  if(id==='feedback'){ populateFeedbackPersonas(); renderFeedback(); }
-  if(id==='acciones'){ populateAccionesPersonas(); renderAcciones(); }
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
 // ════════════════════════════════════════════════════════════
 //  HELPERS
@@ -1630,86 +1536,15 @@ function refresh(){
 // ════════════════════════════════════════════════════════════
 //  BUILD MATRICES INDIVIDUALES
 // ════════════════════════════════════════════════════════════
-function onRolChange(){
-  const rol = document.getElementById('i-rol').value;
-  if(!rol){ document.getElementById('matricesWrap').style.display='none'; return; }
-  document.getElementById('matricesWrap').style.display='block';
-  scoreTec={}; scoreLider={}; evid={}; autoLider={};
-  buildMatrizTec(rol);
-  buildMatrizLider();
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function buildMatrizTec(rol){
-  const propsRol = PROCS_TEC[rol] || [];
-  const todos = [...propsRol, ...PROCS_DUP];
-  let h = '<thead><tr><th class="proc-h">Proceso</th><th style="width:140px;text-align:center">Nivel de dominio</th><th style="width:70px">Prom.</th></tr></thead><tbody>';
-  // Procesos del rol
-  if(propsRol.length){
-    h += `<tr><td colspan="3" style="background:#f0faf6;font-size:10px;font-weight:700;color:var(--gd);padding:8px 10px;text-transform:uppercase;letter-spacing:.5px;">Procesos exclusivos del rol — ${ROLE_N[rol]}</td></tr>`;
-    propsRol.forEach(p=>{
-      h += fila(p, false);
-    });
-  }
-  // Procesos compartidos
-  h += `<tr><td colspan="3" style="background:#f0faf6;font-size:10px;font-weight:700;color:#1a5276;padding:8px 10px;text-transform:uppercase;letter-spacing:.5px;">Procesos compartidos (P-DUP) + Expertiz Técnica y Seguridad</td></tr>`;
-  PROCS_DUP.forEach(p=>{
-    h += fila(p, true);
-  });
-  // Fila de promedio total
-  h += `<tr style="background:var(--bg)"><td class="pn" style="font-weight:700;color:var(--gd)">PROMEDIO TÉCNICO TOTAL</td><td></td><td class="avg-cell" id="tec-avg-total">—</td></tr>`;
-  h += '</tbody>';
-  document.getElementById('matrizTecTbl').innerHTML = h;
-  calcTec();
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function fila(p, isDup){
-  const shymaStyle = p.shyma ? 'border-left:3px solid #c02133;' : (isDup?'border-left:3px solid #2BA888;':'');
-  return `<tr>
-    <td class="pn" style="${shymaStyle}">
-      <span class="pc">${p.id}${p.shyma?' ⚡':''}</span>${p.n}
-      <input class="evid" type="text" placeholder="Evidencia (registro, caso, bitácora…)" value="${escH(evid[p.id]||'')}" oninput="setEvid('${p.id}',this.value)">
-    </td>
-    <td>
-      <div class="score-sel">
-        ${[1,2,3,4].map(v=>`<button class="ss" id="tec-${p.id}-${v}" onclick="setTec('${p.id}',${v})">${v}</button>`).join('')}
-      </div>
-    </td>
-    <td class="avg-cell" id="tec-avg-${p.id}">—</td>
-  </tr>`;
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function setTec(pid, val){
-  scoreTec[pid] = val;
-  [1,2,3,4].forEach(v=>{
-    const b = document.getElementById(`tec-${pid}-${v}`);
-    if(b) b.className = 'ss'+(v===val?' s'+v:'');
-  });
-  calcTec();
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function calcTec(){
-  const rol = document.getElementById('i-rol').value;
-  const todos = [...(PROCS_TEC[rol]||[]), ...PROCS_DUP];
-  todos.forEach(p=>{
-    const el = document.getElementById('tec-avg-'+p.id);
-    const v = scoreTec[p.id];
-    if(el){ el.textContent = v||'—'; el.style.color = scColor(v); }
-  });
-  const vals = Object.values(scoreTec).filter(v=>v);
-  const tot = vals.length ? +(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(1) : null;
-  const el = document.getElementById('tec-avg-total');
-  if(el){ el.textContent = tot||'—'; el.style.color = scColor(tot); }
-
-  // SHyMA check
-  const shyBad = todos.filter(p=>p.shyma).some(p=>scoreTec[p.id]===1);
-  document.getElementById('shyAlerta').style.display = shyBad?'block':'none';
-
-  document.getElementById('tNum').textContent = tot||'—';
-  document.getElementById('tPct').textContent = tot ? Math.round((tot/4)*100)+'%' : '—';
-  const est = estTec(tot, shyBad);
-  const re = document.getElementById('tEst');
-  re.textContent = est.t; re.style.color = est.c;
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
 function buildMatrizLider(){
   const grid = document.getElementById('liderGrid');
@@ -1730,8 +1565,8 @@ function buildMatrizLider(){
   calcLider();
 }
 
-function setEvid(id, txt){ if(txt && txt.trim()) evid[id]=txt.trim(); else delete evid[id]; }
-function setAuto(cid, val){ if(val) autoLider[cid]=+val; else delete autoLider[cid]; }
+function setEvid(id, txt){ marcarDirty(); if(txt && txt.trim()) evid[id]=txt.trim(); else delete evid[id]; }
+function setAuto(cid, val){ marcarDirty(); if(val) autoLider[cid]=+val; else delete autoLider[cid]; }
 function buildAuto(){
   const g = document.getElementById('autoGrid'); if(!g) return;
   g.innerHTML = COMPS_LIDER.map(c=>`<div class="fg"><label>${c.nombre}</label>
@@ -1741,6 +1576,7 @@ function buildAuto(){
 }
 
 function setLider(cid, val){
+  marcarDirty();
   scoreLider[cid] = val;
   [1,2,3,4].forEach(v=>{
     const b = document.getElementById(`lb-${cid}-${v}`);
@@ -1762,315 +1598,44 @@ function calcLider(){
 // ════════════════════════════════════════════════════════════
 //  GUARDAR INDIVIDUAL
 // ════════════════════════════════════════════════════════════
-function guardarIndividual(){
-  const nom   = document.getElementById('i-nom').value.trim();
-  const rol   = document.getElementById('i-rol').value;
-  const eval_ = document.getElementById('i-eval').value.trim();
-  const inst  = document.getElementById('i-inst').value;
-  const fecha = document.getElementById('i-fecha').value || new Date().toISOString().split('T')[0];
-  const msg   = document.getElementById('form-msg');
+/* (reemplazada por el módulo "Evaluar persona") */
 
-  if(!nom||!rol){ msg.style.color='var(--r)'; msg.textContent='⚠ Completá nombre y rol.'; return; }
-
-  const vTec = Object.values(scoreTec).filter(v=>v);
-  const avgTec = vTec.length ? +(vTec.reduce((a,b)=>a+b,0)/vTec.length).toFixed(2) : 0;
-  const vLid = Object.values(scoreLider).filter(v=>v);
-  const avgLid = vLid.length ? +(vLid.reduce((a,b)=>a+b,0)/vLid.length).toFixed(2) : 0;
-
-  const todos = [...(PROCS_TEC[rol]||[]), ...PROCS_DUP];
-  const shyBad = todos.filter(p=>p.shyma).some(p=>scoreTec[p.id]===1);
-
-  let estadoTec;
-  if(shyBad) estadoTec='shyma';
-  else if(avgTec>=3.5) estadoTec='avanzado';
-  else if(avgTec>=3)   estadoTec='competente';
-  else if(avgTec>=2)   estadoTec='basico';
-  else estadoTec='inicial';
-
-  let estadoLid;
-  if(avgLid>=3.5) estadoLid='referente';
-  else if(avgLid>=3) estadoLid='consolidado';
-  else if(avgLid>=2) estadoLid='en_desarrollo';
-  else estadoLid='no_observable';
-
-  const rec = {
-    nom, rol, eval:eval_, inst, fecha,
-    scoreTec:{...scoreTec}, avgTec,
-    scoreLider:{...scoreLider}, avgLid,
-    estadoTec, estadoLid, shyBad, cat: CAT_VER,
-    evid:{...evid}, autoLider:{...autoLider}, ...auditoria(!editKey),
-    ts: editKey ? (DATA_IND.find(x=>x.fbKey===editKey)?.ts || Date.now()) : Date.now()
-  };
-
-  if(editKey){
-    const key = editKey;
-    refInd.child(key).update(rec)
-      .then(()=>{
-        msg.style.color='var(--g)';
-        msg.textContent='✅ Evaluación de '+nom+' actualizada correctamente.';
-        notif('✅ Evaluación de '+nom+' actualizada en Firebase');
-        limpiarIndividual();
-        setTimeout(()=>msg.textContent='',4000);
-      })
-      .catch(e=>{ msg.style.color='var(--r)'; msg.textContent='⚠ Error: '+e.message; });
-  } else {
-    refInd.push(rec)
-      .then(()=>{
-        msg.style.color='var(--g)';
-        msg.textContent='✅ Evaluación de '+nom+' guardada correctamente.';
-        notif('✅ Evaluación de '+nom+' guardada en Firebase');
-        limpiarIndividual();
-        setTimeout(()=>msg.textContent='',4000);
-      })
-      .catch(e=>{ msg.style.color='var(--r)'; msg.textContent='⚠ Error: '+e.message; });
-  }
-}
-
-function limpiarIndividual(){
-  document.getElementById('i-nom').value='';
-  document.getElementById('i-rol').value='';
-  document.getElementById('i-eval').value='';
-  document.getElementById('matricesWrap').style.display='none';
-  scoreTec={}; scoreLider={}; evid={}; autoLider={};
-  editKey = null;
-  document.getElementById('editBanner').style.display='none';
-  document.getElementById('btnGuardarInd').innerHTML = '<i class="ti ti-device-floppy"></i>Guardar evaluación individual';
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
 // ════════════════════════════════════════════════════════════
 //  VER Y EDITAR UNA EVALUACIÓN YA GUARDADA (aunque esté en Firebase)
 // ════════════════════════════════════════════════════════════
-function pintarScoresGuardados(rol){
-  // Repinta visualmente los botones 1-2-3-4 de la matriz técnica y de liderazgo
-  // según los valores ya cargados en scoreTec / scoreLider (usado al editar).
-  const todos = [...(PROCS_TEC[rol]||[]), ...PROCS_DUP];
-  todos.forEach(p=>{
-    const v = scoreTec[p.id];
-    [1,2,3,4].forEach(n=>{
-      const b = document.getElementById(`tec-${p.id}-${n}`);
-      if(b) b.className = 'ss'+(n===v?' s'+n:'');
-    });
-  });
-  COMPS_LIDER.forEach(c=>{
-    const v = scoreLider[c.id];
-    [1,2,3,4].forEach(n=>{
-      const b = document.getElementById(`lb-${c.id}-${n}`);
-      if(b) b.className = 'lb'+(n===v?' sel-'+n:'');
-    });
-  });
-  calcTec();
-  calcLider();
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function editarRegistro(fbKey){
-  const rec = DATA_IND.find(x=>x.fbKey===fbKey);
-  if(!rec) return;
+/* (reemplazada por el módulo "Evaluar persona") */
 
-  editKey = fbKey;
-
-  document.getElementById('i-nom').value   = rec.nom;
-  document.getElementById('i-rol').value   = rec.rol;
-  document.getElementById('i-eval').value  = rec.eval  || '';
-  document.getElementById('i-inst').value  = rec.inst  || 'diagnostico';
-  document.getElementById('i-fecha').value = rec.fecha || new Date().toISOString().split('T')[0];
-
-  document.getElementById('matricesWrap').style.display='block';
-  scoreTec   = {...(rec.scoreTec   || {})};
-  scoreLider = {...(rec.scoreLider || {})};
-  evid = {...(rec.evid || {})}; autoLider = {...(rec.autoLider || {})};
-  buildMatrizTec(rec.rol);
-  buildMatrizLider();
-  pintarScoresGuardados(rec.rol);
-
-  document.getElementById('editBannerNom').textContent = rec.nom + ' (' + (INST_N[rec.inst]||rec.inst) + ' · ' + rec.fecha + ')';
-  document.getElementById('editBanner').style.display='flex';
-  document.getElementById('editBanner').style.alignItems='center';
-  document.getElementById('editBanner').style.flexWrap='wrap';
-  document.getElementById('editBanner').style.gap='8px';
-  document.getElementById('btnGuardarInd').innerHTML = '<i class="ti ti-device-floppy"></i>Actualizar evaluación guardada';
-
-  document.querySelector('#s-individual .card').scrollIntoView({behavior:'smooth', block:'start'});
-  notif('✏️ Editando la evaluación de '+rec.nom+' — los cambios se guardarán sobre el registro existente.');
-}
-
-function cancelarEdicion(){
-  limpiarIndividual();
-  notif('Edición cancelada.');
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
 // ════════════════════════════════════════════════════════════
 //  CONSULTAR EVALUACIONES CARGADAS (Planilla Técnica) — por rol e individualmente
 // ════════════════════════════════════════════════════════════
-function onQRolChange(){
-  populateQPersonas();
-  document.getElementById('q-registro').innerHTML = '<option value="">—</option>';
-  document.getElementById('q-registro').disabled = true;
-  renderQResultado();
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function populateQPersonas(){
-  const rol = document.getElementById('q-rol').value;
-  const sel = document.getElementById('q-persona');
-  const cur = sel.value;
-  const base = rol ? DATA_IND.filter(x=>x.rol===rol) : DATA_IND;
-  const nombres = [...new Set(base.map(x=>x.nom))].sort((a,b)=>a.localeCompare(b,'es'));
-  sel.innerHTML = '<option value="">Todas las personas'+(rol?' — '+ROLE_N[rol]:'')+'</option>' +
-    nombres.map(n=>`<option value="${n.replace(/"/g,'&quot;')}">${n}</option>`).join('');
-  if(nombres.includes(cur)) sel.value = cur; else sel.value = '';
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function onQPersonaChange(){
-  populateQRegistros();
-  renderQResultado();
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function populateQRegistros(){
-  const persona = document.getElementById('q-persona').value;
-  const rol = document.getElementById('q-rol').value;
-  const sel = document.getElementById('q-registro');
-  if(!persona){ sel.innerHTML = '<option value="">—</option>'; sel.disabled = true; return; }
-  const regs = DATA_IND.filter(x=>x.nom===persona && (!rol||x.rol===rol)).sort((a,b)=>(b.ts||0)-(a.ts||0));
-  sel.disabled = false;
-  sel.innerHTML = '<option value="">Evaluación más reciente</option>' +
-    regs.map(r=>`<option value="${r.fbKey}">${INST_N[r.inst]||r.inst} — ${r.fecha} · ${ROLE_N[r.rol]}</option>`).join('');
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function qFiltrados(){
-  const rol = document.getElementById('q-rol').value;
-  const persona = document.getElementById('q-persona').value;
-  let d = [...DATA_IND];
-  if(rol) d = d.filter(x=>x.rol===rol);
-  if(persona) d = d.filter(x=>x.nom===persona);
-  return d.sort((a,b)=>(b.ts||0)-(a.ts||0));
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function renderQResultado(){
-  const persona = document.getElementById('q-persona').value;
-  const regKey  = document.getElementById('q-registro').value;
-  const resumenWrap = document.getElementById('qResumenWrap');
-  const detalleWrap = document.getElementById('qDetalleWrap');
+/* (reemplazada por el módulo "Evaluar persona") */
 
-  if(!persona){
-    // Sin persona seleccionada: listado resumen filtrado por rol (o todos)
-    detalleWrap.innerHTML = '';
-    if(!DATA_IND.length){
-      resumenWrap.innerHTML = '<p style="font-size:11px;color:var(--tm);padding:10px 0;">Todavía no hay evaluaciones cargadas en Firebase.</p>';
-      return;
-    }
-    const d = qFiltrados();
-    const rc = {JCOD:'bj',SCOD:'bs',JTMT:'bt'};
-    let h = '<div class="mx-wrap" style="margin-top:8px;"><table class="pt"><thead><tr><th>Nombre</th><th>Rol</th><th>Instancia</th><th>Fecha</th><th>Técnico</th><th>Liderazgo</th><th>Estado</th><th></th></tr></thead><tbody>';
-    if(!d.length) h += '<tr><td colspan="8" style="text-align:center;padding:16px;color:var(--tm)">Sin coincidencias para el filtro seleccionado</td></tr>';
-    d.forEach(x=>{
-      const est = x.shyBad?'⛔ SHyMA':x.estadoTec==='avanzado'?'✅ Avanzado':x.estadoTec==='competente'?'✅ Competente':x.estadoTec==='basico'?'🔄 Básico':'⚠ Inicial';
-      h += `<tr><td><strong>${x.nom}</strong></td><td><span class="badge ${rc[x.rol]}">${ROLE_S[x.rol]||x.rol}</span></td><td>${INST_N[x.inst]||x.inst}</td><td>${x.fecha}</td>
-      <td style="color:${scColor(x.avgTec)};font-weight:600">${(x.avgTec||0).toFixed(1)}/4</td>
-      <td style="color:${scColor(x.avgLid)};font-weight:600">${(x.avgLid||0).toFixed(1)}/4</td>
-      <td style="font-size:10px;color:${scColor(x.avgTec)}">${est}</td>
-      <td><button class="bsec" style="padding:5px 10px;font-size:10px;" onclick="verRegistroQ('${x.fbKey}')"><i class="ti ti-eye"></i> Ver detalle</button></td></tr>`;
-    });
-    h += '</tbody></table></div>';
-    resumenWrap.innerHTML = h;
-    return;
-  }
-
-  // Persona seleccionada: mostrar el detalle cargado (registro elegido o el más reciente)
-  const rol = document.getElementById('q-rol').value;
-  const regs = DATA_IND.filter(x=>x.nom===persona && (!rol||x.rol===rol)).sort((a,b)=>(b.ts||0)-(a.ts||0));
-  if(!regs.length){
-    resumenWrap.innerHTML = '<p style="font-size:11px;color:var(--tm);padding:10px 0;">No hay evaluaciones cargadas para esta persona.</p>';
-    detalleWrap.innerHTML = '';
-    return;
-  }
-  const rec = (regKey && DATA_IND.find(x=>x.fbKey===regKey)) || regs[0];
-  resumenWrap.innerHTML = regs.length>1
-    ? `<p style="font-size:10px;color:var(--tm);padding:8px 0 0;">${regs.length} evaluaciones cargadas para ${persona}. Elegí una instancia en "Evaluación cargada" para ver otra.</p>`
-    : '';
-  renderDetalleCargado(rec);
-}
-
-function verRegistroQ(fbKey){
-  const rec = DATA_IND.find(x=>x.fbKey===fbKey);
-  if(!rec) return;
-  document.getElementById('q-rol').value = rec.rol;
-  populateQPersonas();
-  document.getElementById('q-persona').value = rec.nom;
-  populateQRegistros();
-  document.getElementById('q-registro').value = rec.fbKey;
-  renderQResultado();
-  document.getElementById('consultaCard').scrollIntoView({behavior:'smooth', block:'start'});
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
 function auditoriaTxt(rec){
   if(!rec.creadoPor && !rec.modificadoPor) return 'Sin registro de autoría (evaluación cargada antes de esta versión).';
   const f = t=>t?new Date(t).toLocaleString('es-AR'):'';
   return `Cargada por <strong>${escH(rec.creadoPor||rec.modificadoPor)}</strong> · Última modificación: <strong>${escH(rec.modificadoPor||'—')}</strong> ${f(rec.modificadoTs)}`;
 }
-function filaDetalleQ(p, scoreTecRec, evidRec){
-  const v = scoreTecRec ? scoreTecRec[p.id] : null;
-  const shymaStyle = p.shyma ? 'border-left:3px solid #c02133;' : '';
-  const ev = evidRec && evidRec[p.id] ? escH(evidRec[p.id]) : '';
-  return `<tr><td class="pn" style="${shymaStyle}"><span class="pc">${p.id}${p.shyma?' ⚡':''}</span>${p.n}</td>
-  <td class="avg-cell" style="color:${scColor(v)}">${v||'—'}</td><td style="font-size:10px;color:var(--tm);text-align:left;">${ev||'—'}</td></tr>`;
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function renderDetalleCargado(rec){
-  const wrap = document.getElementById('qDetalleWrap');
-  if(!rec){ wrap.innerHTML=''; return; }
-  const propsRol = PROCS_TEC[rec.rol] || [];
-  const rc = {JCOD:'bj',SCOD:'bs',JTMT:'bt'};
-  const est = rec.shyBad?'⛔ No habilitado (SHyMA)':rec.estadoTec==='avanzado'?'✅ Avanzado Referente':rec.estadoTec==='competente'?'✅ Competente Autónomo':rec.estadoTec==='basico'?'🔄 Básico Supervisado':'⚠ Inicial — Requiere plan';
-
-  let h = `<div class="sec-divider"><span>Detalle cargado — ${rec.nom}</span></div>
-  <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;">
-    <span class="badge ${rc[rec.rol]}">${ROLE_N[rec.rol]}</span>
-    <span style="font-size:11px;color:var(--tm);">${INST_N[rec.inst]||rec.inst} · ${rec.fecha}${rec.eval?' · Evaluador: '+rec.eval:''}</span>
-    <button class="bp" style="padding:6px 14px;font-size:11px;margin-left:auto;" onclick="editarRegistro('${rec.fbKey}')"><i class="ti ti-pencil"></i> Editar esta evaluación</button>
-  </div>`;
-
-  if(rec.legacy){
-    h += `<div class="al al-a" style="margin-bottom:10px;"><i class="ti ti-info-circle"></i> Esta evaluación se cargó con el <strong>catálogo anterior de procesos</strong>. Los puntajes de ${LEGACY_DROP.join(', ')} se ocultan porque esos procesos cambiaron de definición. Al volver a guardarla se actualiza al catálogo vigente.</div>`;
-  }
-  h += '<div class="mx-wrap"><table class="mx-tbl"><thead><tr><th class="proc-h">Proceso técnico</th><th style="width:110px">Puntaje cargado</th><th style="text-align:left">Evidencia</th></tr></thead><tbody>';
-  if(propsRol.length){
-    h += `<tr><td colspan="3" style="background:#f0faf6;text-align:left;font-size:10px;font-weight:700;color:var(--gd);padding:8px 10px;text-transform:uppercase;letter-spacing:.5px;">Procesos exclusivos del rol — ${ROLE_N[rec.rol]}</td></tr>`;
-    propsRol.forEach(p=>{ h += filaDetalleQ(p, rec.scoreTec, rec.evid); });
-  }
-  h += `<tr><td colspan="3" style="background:#f0faf6;text-align:left;font-size:10px;font-weight:700;color:#1a5276;padding:8px 10px;text-transform:uppercase;letter-spacing:.5px;">Procesos compartidos (P-DUP) + Expertiz Técnica y Seguridad</td></tr>`;
-  PROCS_DUP.forEach(p=>{ h += filaDetalleQ(p, rec.scoreTec, rec.evid); });
-  h += `<tr style="background:var(--bg)"><td class="pn" style="font-weight:700;color:var(--gd)">PROMEDIO TÉCNICO TOTAL</td><td class="avg-cell" style="color:${scColor(rec.avgTec)}">${(rec.avgTec||0).toFixed(1)}</td><td></td></tr>`;
-  h += '</tbody></table></div>';
-
-  if(rec.shyBad){
-    h += `<div class="shyma-alert" style="display:block;margin-top:10px;">⛔ ALERTA SHyMA cargada en esta evaluación — la persona no puede ser habilitada independientemente del puntaje total.</div>`;
-  }
-
-  h += `<div class="res-box" style="margin-top:12px;">
-    <div class="res-item"><div class="res-num" style="color:${scColor(rec.avgTec)}">${(rec.avgTec||0).toFixed(1)}</div><div class="res-lbl">Promedio técnico / 4</div></div>
-    <div class="res-item"><div class="res-num">${rec.avgTec?Math.round((rec.avgTec/4)*100)+'%':'—'}</div><div class="res-lbl">% sobre nivel requerido</div></div>
-    <div class="res-item"><div class="res-num" style="font-size:12px;color:${scColor(rec.avgTec)}">${est}</div><div class="res-lbl">Estado técnico</div></div>
-  </div>`;
-
-  h += '<div class="sec-divider" style="margin-top:18px;"><span>Liderazgo operativo cargado</span></div>';
-  h += '<div class="lider-grid">';
-  COMPS_LIDER.forEach(c=>{
-    const v = rec.scoreLider ? rec.scoreLider[c.id] : null;
-    const au = rec.autoLider ? rec.autoLider[c.id] : null;
-    h += `<div class="lider-comp"><div class="lc-name">${c.nombre}</div>
-      <div style="margin-top:6px;font-size:20px;font-weight:800;color:${scColor(v)}">${v||'—'}<span style="font-size:10px;font-weight:500;color:var(--tm)"> / 4</span>${au?`<span style="font-size:10px;font-weight:600;color:var(--tm);margin-left:8px;">autoevaluación: ${au}</span>`:''}</div>
-      ${rec.evid&&rec.evid[c.id]?`<div style="font-size:10px;color:var(--tm);margin-top:4px;">Evidencia: ${escH(rec.evid[c.id])}</div>`:''}</div>`;
-  });
-  h += '</div>';
-
-  h += `<div class="res-box" style="margin-top:12px;margin-bottom:4px;">
-    <div class="res-item"><div class="res-num" style="color:${scColor(rec.avgLid)}">${(rec.avgLid||0).toFixed(1)}</div><div class="res-lbl">Promedio liderazgo / 4</div></div>
-    <div class="res-item"><div class="res-num">${rec.avgLid?Math.round((rec.avgLid/4)*100)+'%':'—'}</div><div class="res-lbl">% sobre nivel requerido</div></div>
-    <div class="res-item"><div class="res-num" style="font-size:12px;">${(INST_N[rec.inst]||rec.inst)}</div><div class="res-lbl">Instancia evaluada</div></div>
-  </div>`;
-  h += `<div style="font-size:10px;color:var(--tm);margin-top:8px;">${auditoriaTxt(rec)}</div>`;
-
-  wrap.innerHTML = h;
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
 // ════════════════════════════════════════════════════════════
 //  EVALUACIÓN DE EQUIPO
@@ -2244,7 +1809,7 @@ function renderPersonas(tipo){
       <td style="color:${cT};font-weight:600">${(d.avgTec||0).toFixed(1)}/4</td>
       <td style="color:${cL};font-weight:600">${(d.avgLid||0).toFixed(1)}/4</td>
       <td style="font-size:10px;color:${cT}">${est}</td>
-      <td><button class="bdel" onclick="delInd('${d.fbKey}')"><i class="ti ti-trash"></i></button></td></tr>`;
+      <td style="white-space:nowrap;"><button class="bsec" style="padding:4px 8px;font-size:10px;" onclick="editarRegistro('${d.fbKey}')" title="Abrir en Evaluar persona"><i class="ti ti-pencil"></i></button> <button class="bdel" onclick="delInd('${d.fbKey}')"><i class="ti ti-trash"></i></button></td></tr>`;
     });
   } else {
     h='<thead><tr><th>Evaluador</th><th>Instancia</th><th>Fecha</th><th>Promedio Equipo</th><th>Estado</th><th>Observaciones</th><th></th></tr></thead><tbody>';
@@ -2379,18 +1944,9 @@ const ROL_TAB_TO_FB = {jcod:'JCOD', scod:'SCOD', jtmt:'JTMT'};
 let currentRolTab = 'jcod'; // último tab de rol (jcod/scod/jtmt) visitado — dup y tec cuelgan de este rol
 
 // Helper que genera HTML de botones 1-2-3-4 para una planilla
-function planBtns(id){
-  return [1,2,3,4].map(v=>`<button class="ps" id="ps-btn-${id}-${v}" onclick="setPlan('${id}',${v})">${v}</button>`).join('');
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function setPlan(id, val){
-  planScores[id] = val;
-  [1,2,3,4].forEach(v=>{
-    const b = document.getElementById(`ps-btn-${id}-${v}`);
-    if(b) b.className = 'ps'+(v===val?' sel-'+v:'');
-  });
-  calcPlanTotal();
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
 function calcPlanTotal(){
   // Calcular por grupo y mostrar totales
@@ -2417,19 +1973,7 @@ function calcPlanTotal(){
   });
 }
 
-function showPlan(id, btn){
-  document.querySelectorAll('.plan-tab').forEach(b=>b.classList.remove('on'));
-  document.querySelectorAll('.plan-panel').forEach(p=>p.classList.remove('on'));
-  if(btn) btn.classList.add('on');
-  const el = document.getElementById('plan-'+id);
-  if(el) el.classList.add('on');
-  if(id==='jcod'||id==='scod'||id==='jtmt'){
-    currentRolTab = id;
-    document.getElementById('plan-rol-lbl').textContent = ROLE_N[ROL_TAB_TO_FB[id]];
-    populatePlanDatalist();
-    tryLoadExistingPlanilla();
-  }
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
 const PLAN_IDS_ALL = [
   'jcod-01','jcod-02','jcod-03','jcod-04','jcod-05',
@@ -2440,26 +1984,7 @@ const PLAN_IDS_ALL = [
   'tec-01','tec-02'
 ];
 
-function initPlanillas(){
-  // Insertar botones en todos los contenedores de planillas
-  PLAN_IDS_ALL.forEach(id=>{
-    const cont = document.getElementById('ps-'+id);
-    if(cont && !cont.dataset.built){
-      cont.innerHTML = [1,2,3,4].map(v=>`<button class="ps${planScores[id]===v?' sel-'+v:''}" id="ps-btn-${id}-${v}" onclick="setPlan('${id}',${v})">${v}</button>`).join('');
-      cont.dataset.built='1';
-      const inp = document.createElement('input');
-      inp.className='evid'; inp.type='text'; inp.id='ev-'+id; inp.placeholder='Evidencia…';
-      inp.oninput = ()=>{ if(inp.value.trim()) planEvid[id]=inp.value.trim(); else delete planEvid[id]; };
-      cont.parentNode.appendChild(inp);
-    }
-  });
-  calcPlanTotal();
-  if(!document.getElementById('plan-fecha').value){
-    document.getElementById('plan-fecha').value = new Date().toISOString().split('T')[0];
-  }
-  document.getElementById('plan-rol-lbl').textContent = ROLE_N[ROL_TAB_TO_FB[currentRolTab]];
-  populatePlanDatalist();
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
 // ── conversión de ids de planilla ('jcod-01') <-> ids de Firebase ('P-JCOD-01') ──
 function planIdToFirebaseId(pid){
@@ -2472,118 +1997,15 @@ function firebaseIdToPlanId(fid){
   return parts.slice(1,-1).join('-').toLowerCase()+'-'+parts[parts.length-1];
 }
 
-function pintarPlanBtns(){
-  PLAN_IDS_ALL.forEach(id=>{
-    const v = planScores[id];
-    [1,2,3,4].forEach(n=>{
-      const b = document.getElementById(`ps-btn-${id}-${n}`);
-      if(b) b.className = 'ps'+(n===v?' sel-'+n:'');
-    });
-    const ei = document.getElementById('ev-'+id);
-    if(ei) ei.value = planEvid[id] || '';
-  });
-  calcPlanTotal();
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function populatePlanDatalist(){
-  const dl = document.getElementById('plan-persona-list');
-  if(!dl) return;
-  const rolFB = ROL_TAB_TO_FB[currentRolTab];
-  const nombres = [...new Set(DATA_IND.filter(x=>x.rol===rolFB).map(x=>x.nom))].sort((a,b)=>a.localeCompare(b,'es'));
-  dl.innerHTML = nombres.map(n=>`<option value="${n.replace(/"/g,'&quot;')}">`).join('');
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function onPlanPersonaChange(){
-  tryLoadExistingPlanilla();
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function tryLoadExistingPlanilla(){
-  const nom = document.getElementById('plan-persona').value.trim();
-  const status = document.getElementById('plan-persona-status');
-  const rolFB = ROL_TAB_TO_FB[currentRolTab];
-  if(!nom){
-    Object.keys(planScores).forEach(k=>delete planScores[k]);
-    Object.keys(planEvid).forEach(k=>delete planEvid[k]);
-    pintarPlanBtns();
-    status.textContent = 'Escribí un nombre para empezar a cargar la planilla de '+ROLE_N[rolFB]+'.';
-    return;
-  }
-  const existing = DATA_IND.filter(x=>x.nom===nom && x.rol===rolFB).sort((a,b)=>(b.ts||0)-(a.ts||0))[0];
-  Object.keys(planScores).forEach(k=>delete planScores[k]);
-  Object.keys(planEvid).forEach(k=>delete planEvid[k]);
-  if(existing && existing.evid){ Object.entries(existing.evid).forEach(([fid,t])=>{ planEvid[firebaseIdToPlanId(fid)] = t; }); }
-  if(existing && existing.scoreTec){
-    Object.entries(existing.scoreTec).forEach(([fid,val])=>{
-      planScores[firebaseIdToPlanId(fid)] = val;
-    });
-    status.innerHTML = `📋 Ya existe una evaluación cargada para <strong>${nom}</strong> (${ROLE_N[rolFB]}) — se precargaron sus puntajes. Al guardar, se actualiza ese mismo registro.`;
-  } else {
-    status.textContent = `✨ ${nom} (${ROLE_N[rolFB]}) es una persona/evaluación nueva — al guardar se creará un registro.`;
-  }
-  pintarPlanBtns();
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function guardarPlanilla(){
-  const nom   = document.getElementById('plan-persona').value.trim();
-  const rolFB = ROL_TAB_TO_FB[currentRolTab];
-  const eval_ = document.getElementById('plan-eval').value.trim();
-  const inst  = document.getElementById('plan-inst').value;
-  const fecha = document.getElementById('plan-fecha').value || new Date().toISOString().split('T')[0];
-  const msg   = document.getElementById('plan-msg');
-
-  if(!nom){ msg.style.color='var(--r)'; msg.textContent='⚠ Escribí el nombre de la persona antes de guardar.'; return; }
-
-  const relevantIds = [...(PLAN_GRUPOS[currentRolTab]||[]), ...PLAN_GRUPOS.dup, ...PLAN_GRUPOS.tec];
-  const scoreTecFB = {};
-  relevantIds.forEach(pid=>{ if(planScores[pid]) scoreTecFB[planIdToFirebaseId(pid)] = planScores[pid]; });
-  const evidFB = {};
-  relevantIds.forEach(pid=>{ if(planEvid[pid]) evidFB[planIdToFirebaseId(pid)] = planEvid[pid]; });
-
-  const allProcsDefs = [...(PROCS_TEC[rolFB]||[]), ...PROCS_DUP];
-  const existing = DATA_IND.filter(x=>x.nom===nom && x.rol===rolFB).sort((a,b)=>(b.ts||0)-(a.ts||0))[0];
-
-  function estadoDeAvg(avg, shy){
-    if(shy) return 'shyma';
-    if(avg>=3.5) return 'avanzado';
-    if(avg>=3)   return 'competente';
-    if(avg>=2)   return 'basico';
-    return 'inicial';
-  }
-
-  if(existing){
-    const mergedScoreTec = {...existing.scoreTec, ...scoreTecFB};
-    const vals = Object.values(mergedScoreTec).filter(v=>v);
-    const avgTec = vals.length ? +(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2) : 0;
-    const shyBad = allProcsDefs.filter(p=>p.shyma).some(p=>mergedScoreTec[p.id]===1);
-    refInd.child(existing.fbKey).update({
-      scoreTec: mergedScoreTec, avgTec, estadoTec: estadoDeAvg(avgTec, shyBad), shyBad,
-      evid: {...(existing.evid||{}), ...evidFB}, ...auditoria(false),
-      eval: eval_ || existing.eval, inst: inst || existing.inst, fecha: fecha || existing.fecha, cat: CAT_VER
-    }).then(()=>{
-      msg.style.color='var(--g)';
-      msg.textContent='✅ Planilla técnica de '+nom+' actualizada sobre el registro existente.';
-      notif('✅ Planilla técnica de '+nom+' guardada en Firebase');
-      setTimeout(()=>msg.textContent='',4000);
-    }).catch(e=>{ msg.style.color='var(--r)'; msg.textContent='⚠ Error: '+e.message; });
-  } else {
-    const vals = Object.values(scoreTecFB).filter(v=>v);
-    const avgTec = vals.length ? +(vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2) : 0;
-    const shyBad = allProcsDefs.filter(p=>p.shyma).some(p=>scoreTecFB[p.id]===1);
-    const rec = {
-      nom, rol: rolFB, eval: eval_, inst, fecha,
-      scoreTec: scoreTecFB, avgTec, evid: evidFB,
-      scoreLider: {}, avgLid: 0, ...auditoria(true),
-      estadoTec: estadoDeAvg(avgTec, shyBad), estadoLid: 'no_observable', shyBad, cat: CAT_VER,
-      ts: Date.now()
-    };
-    refInd.push(rec).then(()=>{
-      msg.style.color='var(--g)';
-      msg.textContent='✅ Planilla técnica de '+nom+' guardada como nueva evaluación.';
-      notif('✅ Planilla técnica de '+nom+' guardada en Firebase');
-      setTimeout(()=>msg.textContent='',4000);
-    }).catch(e=>{ msg.style.color='var(--r)'; msg.textContent='⚠ Error: '+e.message; });
-  }
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
 // ════════════════════════════════════════════════════════════
 //  NINE BOX — Conocimiento técnico (X) × Liderazgo (Y)
@@ -2911,33 +2333,18 @@ function renderSeguimiento(){
     + (SEG_ITEMS.length>MAX ? `<div style="font-size:11px;color:var(--tm);padding-top:8px;">y ${SEG_ITEMS.length-MAX} aviso${SEG_ITEMS.length-MAX!==1?'s':''} más (se ven en cada ficha).</div>` : '');
 }
 function verFichaIdx(i){ const it = SEG_ITEMS[i]; if(it) verFicha(it.nom, it.rol); }
-function verFicha(nom, rol){
-  go('ficha');
-  document.getElementById('ficha-rol').value = '';
-  populateFichaPersonas();
-  const sel = document.getElementById('ficha-persona');
-  const k = normNom(nom);
-  const op = [...sel.options].find(o=>o.value && normNom(o.value.split('|')[0])===k && o.value.split('|')[1]===rol);
-  if(op) sel.value = op.value;
-  renderFicha();
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
-function populateFichaPersonas(){
-  const rol = document.getElementById('ficha-rol').value;
-  const sel = document.getElementById('ficha-persona'); const cur = sel.value;
-  const pers = nbPersonas(rol ? DATA_IND.filter(d=>d.rol===rol) : DATA_IND);
-  sel.innerHTML = '<option value="">Seleccionar persona...</option>' + pers.map(p=>`<option value="${escH(p.nom)}|${p.rol}">${escH(p.nom)} — ${ROLE_N[p.rol]}</option>`).join('');
-  if([...sel.options].some(o=>o.value===cur)) sel.value = cur;
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
 let cFicha;
-function editarDesdeFicha(key){ go('individual'); editarRegistro(key); }
+/* (reemplazada por el módulo "Evaluar persona") */
 function renderFicha(){
   const wrap = document.getElementById('fichaWrap'); if(!wrap) return;
-  const val = document.getElementById('ficha-persona').value;
+  const nom = document.getElementById('ev-nom').value.trim(), rol = document.getElementById('ev-rol').value;
+  const val = (nom && rol) ? 'x' : '';
   if(cFicha){ cFicha.destroy(); cFicha = null; }
-  if(!val){ wrap.innerHTML = '<div class="card"><p style="font-size:12px;color:var(--tm);text-align:center;padding:20px;">Elegí una persona para ver su ficha.</p></div>'; return; }
-  const idx = val.lastIndexOf('|'); const nom = val.slice(0,idx), rol = val.slice(idx+1);
+  if(!val){ wrap.innerHTML = '<div class="card"><p style="font-size:12px;color:var(--tm);text-align:center;padding:20px;">Elegí el puesto y la persona (arriba) para ver su resumen.</p></div>'; return; }
   const regs = registrosDe(nom, rol);
   if(!regs.length){ wrap.innerHTML = '<div class="card"><p style="font-size:12px;color:var(--tm);text-align:center;padding:20px;">No hay evaluaciones para esta persona.</p></div>'; return; }
   const pe = nbPersonas(regs)[0];
@@ -2971,9 +2378,10 @@ function renderFicha(){
       <div class="sc"><div class="sn" style="color:${vencidas.length?'#c02133':abiertas.length?'#f39c12':'#218570'}">${abiertas.length}</div><div class="sl">Acciones abiertas</div><div style="font-size:10px;margin-top:4px;color:${vencidas.length?'#c02133':'var(--tm)'};">${vencidas.length?vencidas.length+' vencida'+(vencidas.length!==1?'s':''):'ninguna vencida'}</div></div>
     </div>
     <div class="acts" style="margin-top:14px;">
-      <button class="bp" onclick="editarDesdeFicha('${pa.last.fbKey}')"><i class="ti ti-pencil"></i>Editar última evaluación</button>
-      <button class="bsec" onclick="irAAccionesDesdeFeedback('${escH(nom).replace(/'/g,"\\'")}','${rol}')"><i class="ti ti-list-check"></i>Plan de acción</button>
-      <button class="bsec" onclick="go('feedback')"><i class="ti ti-message-report"></i>Feedback</button>
+      <button class="bp" onclick="go('planillas')"><i class="ti ti-clipboard-list"></i>Cargar o editar técnica</button>
+      <button class="bsec" onclick="go('individual')"><i class="ti ti-award"></i>Liderazgo y autoevaluación</button>
+      <button class="bsec" onclick="irAAccionesDesdeFeedback('${escH(nom).replace(/'/g,"\\'")}','${rol}','acciones')"><i class="ti ti-list-check"></i>Plan de acción</button>
+      <button class="bsec" onclick="irAAccionesDesdeFeedback('${escH(nom).replace(/'/g,"\\'")}','${rol}','feedback')"><i class="ti ti-message-report"></i>Feedback</button>
     </div>
   </div>`;
 
@@ -3204,8 +2612,8 @@ function exportJSON(){
 // ════════════════════════════════════════════════════════════
 //  GUARDAR LA PANTALLA EN LA COMPUTADORA (PDF / PNG / HTML) — tal cual se ve, en tema claro
 // ════════════════════════════════════════════════════════════
-const SEC_TITULOS = {dash:'Dashboard', ficha:'Ficha por persona', individual:'Evaluación individual', planillas:'Planillas técnicas', equipo:'Evaluación de equipo', feedback:'Feedback', acciones:'Plan de acción', personas:'Historial', radar:'Radar', tendencia:'Tendencia', ninebox:'Nine Box', puestos:'Guía de puestos', reportes:'Reportes'};
-const SEL_PERSONA = {ficha:'ficha-persona', feedback:'fb-persona', acciones:'acc-persona'};
+const SEC_TITULOS = {dash:'Dashboard', evaluar:'Evaluar persona', equipo:'Evaluación de equipo', seguimiento:'Feedback y Plan de acción', analisis:'Análisis', ninebox:'Nine Box', puestos:'Guía de puestos', reportes:'Reportes'};
+const SEL_PERSONA = {seguimiento:'seg-persona'};
 function toggleMenuGuardar(ev){ if(ev) ev.stopPropagation(); document.getElementById('gpMenu').classList.toggle('on'); }
 function cerrarMenuGuardar(){ const m = document.getElementById('gpMenu'); if(m) m.classList.remove('on'); }
 document.addEventListener('click', e=>{ if(!e.target.closest || !e.target.closest('.gp-wrap')) cerrarMenuGuardar(); });
@@ -3216,7 +2624,7 @@ function capturaObjetivo(){
     const ex = document.getElementById('pdfExec');
     return {el: ex.style.display==='block' ? ex : document.getElementById('pdfContent'), id, preview:true};
   }
-  if(id==='acciones' && document.getElementById('accReportPreviewWrap').style.display!=='none'){
+  if(id==='seguimiento' && document.getElementById('accReportPreviewWrap').style.display!=='none' && document.getElementById('s-acciones').classList.contains('on')){
     return {el:document.getElementById('accReportContent'), id, preview:true};
   }
   return {el:sec, id, preview:false};
@@ -3224,15 +2632,15 @@ function capturaObjetivo(){
 function slugTxt(t){ return String(t||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,''); }
 function personaSeleccionada(id){
   const sel = SEL_PERSONA[id] && document.getElementById(SEL_PERSONA[id]);
+  if(id==='evaluar'){ const n = document.getElementById('ev-nom').value.trim(); return n; }
   return (sel && sel.value && sel.selectedIndex>=0) ? sel.options[sel.selectedIndex].text : '';
 }
 const pausa = ms=>new Promise(r=>setTimeout(r,ms));
 function redibujarGraficos(){
   const a = document.querySelector('.sec.on'); if(!a) return; const id = a.id.slice(2);
   if(id==='dash') renderDash();
-  else if(id==='radar'){ renderRadarTec(); renderRadarLider(); renderBrecha(); }
-  else if(id==='tendencia'){ renderTendTec(); renderTendLider(); }
-  else if(id==='ficha') renderFicha();
+  else if(id==='analisis'){ if(visible('s-radar')){ renderRadarTec(); renderRadarLider(); renderBrecha(); } else if(visible('s-tendencia')){ renderTendTec(); renderTendLider(); } }
+  else if(id==='evaluar' && visible('s-ficha')) renderFicha();
   else if(id==='reportes' && document.getElementById('pdfPreviewWrap').style.display!=='none' && document.getElementById('pdfExec').style.display!=='block') buildPdfPreview();
 }
 function descargarBlob(blob, nombre){
@@ -3345,6 +2753,277 @@ async function guardarPantalla(fmt){
     guardandoPantalla = false; btn.classList.remove('busy');
   }
 }
+
+// ════════════════════════════════════════════════════════════
+//  NAVEGACIÓN CON SUBPESTAÑAS
+// ════════════════════════════════════════════════════════════
+const SUBS = {evaluar:['ficha','planillas','individual'], seguimiento:['feedback','acciones'], analisis:['radar','tendencia','personas']};
+const SUB_DE = {ficha:'evaluar', planillas:'evaluar', individual:'evaluar', feedback:'seguimiento', acciones:'seguimiento', radar:'analisis', tendencia:'analisis', personas:'analisis'};
+const SUB_ULTIMA = {evaluar:'planillas', seguimiento:'feedback', analisis:'radar'};
+function visible(id){ const e = document.getElementById(id); return !!(e && e.offsetParent!==null); }
+function mostrarSub(sec, sub){
+  const cont = document.getElementById('s-'+sec);
+  SUBS[sec].forEach(k=>{ const v = document.getElementById('s-'+k); if(v) v.classList.toggle('on', k===sub); });
+  cont.querySelectorAll(':scope > .subtabs .stab').forEach(b=>b.classList.toggle('on', b.dataset.sub===sub));
+  SUB_ULTIMA[sec] = sub;
+}
+function go(id){
+  const sec = SUB_DE[id] || id, sub = SUB_DE[id] ? id : null;
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.nt').forEach(b=>b.classList.remove('on'));
+  document.getElementById('s-'+sec).classList.add('on');
+  document.querySelectorAll('.nt').forEach(b=>{ if(b.getAttribute('onclick') && b.getAttribute('onclick').includes("'"+sec+"'")) b.classList.add('on'); });
+  const act = SUBS[sec] ? (sub || SUB_ULTIMA[sec]) : sec;
+  if(SUBS[sec]) mostrarSub(sec, act);
+  switch(act){
+    case 'dash': renderDash(); break;
+    case 'ninebox': renderNineBox(); break;
+    case 'puestos': renderPuestos(); break;
+    case 'ficha': poblarPersonasEv(); renderFicha(); break;
+    case 'planillas': case 'individual': poblarPersonasEv(); break;
+    case 'radar': renderRadarTec(); renderRadarLider(); renderBrecha(); break;
+    case 'tendencia': renderTendTec(); renderTendLider(); renderAlertas(); break;
+    case 'personas': renderPersonas(pfiltro); break;
+    case 'feedback': segSync(); renderFeedback(); break;
+    case 'acciones': segSync(); renderAcciones(); break;
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+//  FEEDBACK + PLAN DE ACCIÓN: un solo selector de persona
+// ════════════════════════════════════════════════════════════
+function setSelV(id, v){ const e = document.getElementById(id); if(!e) return; e.value = v; if(e.value!==v) e.value = ''; }
+function segSync(){
+  const rol = document.getElementById('seg-rol').value;
+  document.getElementById('fb-rol').value = rol; document.getElementById('acc-rol').value = rol;
+  populateFeedbackPersonas(); populateAccionesPersonas();
+  const sp = document.getElementById('seg-persona'), cur = sp.value;
+  sp.innerHTML = document.getElementById('fb-persona').innerHTML;
+  sp.value = cur; if(sp.value!==cur) sp.value = '';
+  setSelV('fb-persona', sp.value); setSelV('acc-persona', sp.value);
+}
+function segCambio(){ segSync(); renderFeedback(); renderAcciones(); }
+function limpiarSeguimiento(){
+  document.getElementById('seg-rol').value = ''; document.getElementById('seg-persona').value = '';
+  segSync(); renderFeedback(); renderAcciones();
+  document.getElementById('accReportPreviewWrap').style.display = 'none';
+  notif('🧹 Listo: elegí otra persona para empezar de nuevo.');
+}
+function irAAccionesDesdeFeedback(nom, rol, sub){
+  document.getElementById('seg-rol').value = rol; segSync();
+  const sp = document.getElementById('seg-persona'), k = normNom(nom);
+  const op = [...sp.options].find(o=>{ if(!o.value) return false; const i = o.value.lastIndexOf('|'); return normNom(o.value.slice(0,i))===k && o.value.slice(i+1)===rol; });
+  if(op) sp.value = op.value;
+  segSync(); go(sub || 'acciones');
+}
+
+// ════════════════════════════════════════════════════════════
+//  LIMPIAR (una acción por pestaña, para empezar de nuevo)
+// ════════════════════════════════════════════════════════════
+function limpiarAnalisis(){
+  document.getElementById('rRolTec').value = 'JCOD'; document.getElementById('rModLider').value = 'grupo';
+  document.getElementById('tRolTec').value = 'all'; pfiltro = 'individual';
+  document.querySelectorAll('#s-personas .rtab').forEach((b,i)=>b.classList.toggle('on', i===0));
+  go(SUB_ULTIMA.analisis); notif('🧹 Filtros restablecidos.');
+}
+function limpiarNineBox(){ document.getElementById('nbRol').value = 'all'; renderNineBox(); notif('🧹 Filtro restablecido.'); }
+function limpiarReportes(){
+  document.getElementById('pdfTipo').value = 'general'; document.getElementById('pdfRol').value = 'all'; document.getElementById('pdfInst').value = 'all';
+  document.getElementById('pdfPreviewWrap').style.display = 'none';
+  notif('🧹 Reportes restablecidos.');
+}
+
+// ════════════════════════════════════════════════════════════
+//  EVALUAR PERSONA — un solo registro por persona + puesto + instancia
+// ════════════════════════════════════════════════════════════
+let evalKey = null, evDirty = false, evCtx = {rol:'', nom:'', inst:'diagnostico'};
+currentRolTab = '';
+function marcarDirty(){ evDirty = true; const b = document.getElementById('ev-dirty'); if(b) b.style.display = 'inline-flex'; }
+function limpiarDirty(){ evDirty = false; const b = document.getElementById('ev-dirty'); if(b) b.style.display = 'none'; }
+function evLeer(){ return {rol:document.getElementById('ev-rol').value, nom:document.getElementById('ev-nom').value.trim(), inst:document.getElementById('ev-inst').value}; }
+function relIdsRol(){ return [...(PLAN_GRUPOS[currentRolTab]||[]), ...PLAN_GRUPOS.dup, ...PLAN_GRUPOS.tec]; }
+function poblarPersonasEv(){
+  const dl = document.getElementById('ev-nom-list'); if(!dl) return;
+  const rol = document.getElementById('ev-rol').value;
+  dl.innerHTML = nbPersonas(rol ? DATA_IND.filter(d=>d.rol===rol) : DATA_IND).map(p=>`<option value="${escH(p.nom)}">`).join('');
+}
+function evCambio(){
+  const n = evLeer();
+  if(n.rol===evCtx.rol && normNom(n.nom)===normNom(evCtx.nom) && n.inst===evCtx.inst) return;   // sin cambios: no recargar ni perder lo tipeado
+  if(evDirty && (n.rol!==evCtx.rol || normNom(n.nom)!==normNom(evCtx.nom) || n.inst!==evCtx.inst)){
+    if(!confirm('Tenés cambios sin guardar en esta evaluación. ¿Descartarlos y continuar?')){
+      document.getElementById('ev-rol').value = evCtx.rol; document.getElementById('ev-nom').value = evCtx.nom; document.getElementById('ev-inst').value = evCtx.inst; return;
+    }
+  }
+  poblarPersonasEv(); cargarEvaluacion();
+}
+function aplicarRolEnPlanillas(rol){
+  currentRolTab = rol ? rol.toLowerCase() : '';
+  document.querySelectorAll('.plan-panel').forEach(p=>p.classList.remove('on'));
+  document.getElementById('plan-vacio').style.display = rol ? 'none' : 'block';
+  document.getElementById('plan-tabs-wrap').style.display = rol ? 'flex' : 'none';
+  document.getElementById('ptab-rol-lbl').textContent = rol ? ROLE_N[rol] : 'Procesos del puesto';
+  if(rol) showPlan(planTabActual); else document.getElementById('shyAlerta').style.display = 'none';
+}
+let planTabActual = 'rol';
+function showPlan(id){
+  planTabActual = id;
+  ['rol','dup','tec'].forEach(k=>document.getElementById('ptab-'+k).classList.toggle('on', k===id));
+  document.querySelectorAll('.plan-panel').forEach(p=>p.classList.remove('on'));
+  const panel = document.getElementById('plan-'+(id==='rol' ? currentRolTab : id));
+  if(panel) panel.classList.add('on');
+}
+function setPlan(id, val){
+  planScores[id] = val; marcarDirty();
+  [1,2,3,4].forEach(v=>{ const b = document.getElementById(`ps-btn-${id}-${v}`); if(b) b.className = 'ps'+(v===val?' sel-'+v:''); });
+  calcPlanTotal(); actualizarEv();
+}
+function pintarPlanBtns(){
+  PLAN_IDS_ALL.forEach(id=>{
+    const v = planScores[id];
+    [1,2,3,4].forEach(n=>{ const b = document.getElementById(`ps-btn-${id}-${n}`); if(b) b.className = 'ps'+(n===v?' sel-'+n:''); });
+    const ei = document.getElementById('ev-'+id); if(ei) ei.value = planEvid[id] || '';
+  });
+  calcPlanTotal();
+}
+function pintarLider(){
+  COMPS_LIDER.forEach(c=>{ const v = scoreLider[c.id]; [1,2,3,4].forEach(n=>{ const b = document.getElementById(`lb-${c.id}-${n}`); if(b) b.className = 'lb'+(n===v?' sel-'+n:''); }); });
+  calcLider();
+}
+function estadoDeAvg(avg, shy){ if(shy) return 'shyma'; if(avg>=3.5) return 'avanzado'; if(avg>=3) return 'competente'; if(avg>=2) return 'basico'; return 'inicial'; }
+function promedios(){
+  const rol = document.getElementById('ev-rol').value;
+  const vt = rol ? relIdsRol().map(i=>planScores[i]).filter(Boolean) : [];
+  const vl = Object.values(scoreLider).filter(Boolean);
+  const m = a=>a.length ? +(a.reduce((x,y)=>x+y,0)/a.length).toFixed(2) : 0;
+  const shy = !!rol && [...(PROCS_TEC[rol]||[]), ...PROCS_DUP].filter(p=>p.shyma).some(p=>planScores[firebaseIdToPlanId(p.id)]===1);
+  return {avgTec:m(vt), avgLid:m(vl), shyBad:shy, nTec:vt.length, nLid:vl.length};
+}
+function actualizarEv(){
+  const rol = document.getElementById('ev-rol').value, pr = promedios();
+  const st = pr.avgTec ? estTec(pr.avgTec, pr.shyBad) : null, sl = pr.avgLid ? estLider(pr.avgLid) : null;
+  const k = (t,v,n,s)=>`<div class="ev-kpi"><div style="color:var(--tm)">${t}</div><b style="color:${scColor(v)}">${v?v.toFixed(1):'—'}</b><span style="color:var(--tm)"> / 4 · ${n} cargado${n!==1?'s':''}</span>${s?`<div style="color:${s.c};font-weight:600">${s.t}</div>`:''}</div>`;
+  document.getElementById('ev-kpis').innerHTML = rol || pr.nLid ? k('Técnica',pr.avgTec,pr.nTec,st)+k('Liderazgo',pr.avgLid,pr.nLid,sl) : '';
+  document.getElementById('shyAlerta').style.display = pr.shyBad ? 'block' : 'none';
+}
+function renderEvStatus(){
+  const {rol,nom,inst} = evLeer(), el = document.getElementById('ev-status');
+  if(!rol || !nom){ el.innerHTML = 'Elegí el puesto y escribí o elegí la persona para empezar. Si ya fue evaluada en esa instancia, se carga lo que tiene.'; return; }
+  const todos = registrosDe(nom, rol), regs = todos.filter(r=>r.inst===inst);
+  const otras = [...new Set(todos.map(r=>r.inst))].filter(i=>i!==inst).map(i=>INST_N[i]||i);
+  let h = '';
+  if(!regs.length) h = `✨ <strong>${escH(nom)}</strong> (${ROLE_N[rol]}) no tiene evaluación de <strong>${INST_N[inst]}</strong>: al guardar se crea una nueva.${otras.length?` Ya tiene: ${otras.join(', ')}.`:''}`;
+  else {
+    const last = regs[regs.length-1];
+    h = `📋 Evaluación de <strong>${INST_N[inst]}</strong> de <strong>${escH(last.nom)}</strong> cargada (${last.fecha}). Al guardar se actualiza ese mismo registro.${otras.length?` También tiene: ${otras.join(', ')}.`:''}<br><span style="font-size:10px">${auditoriaTxt(last)}</span>`;
+    if(last.legacy) h += `<br><span style="color:#92400e">Se cargó con el catálogo anterior de procesos: se ocultan los puntajes de ${LEGACY_DROP.join(', ')}. Al guardar se actualiza al catálogo vigente.</span>`;
+    if(regs.length>1) h += `<br><span style="color:#92400e">⚠ Hay <strong>${regs.length} registros</strong> de esta persona en esta instancia (datos repartidos). Se muestran unidos. <button class="bsec" style="padding:3px 10px;font-size:10px;" onclick="unificarRegistros()">Unificar en un solo registro</button></span>`;
+  }
+  el.innerHTML = h;
+}
+function cargarEvaluacion(){
+  const {rol,nom,inst} = evLeer();
+  evCtx = {rol,nom,inst}; limpiarDirty(); evalKey = null;
+  document.getElementById('ev-msg').textContent = '';
+  aplicarRolEnPlanillas(rol);
+  Object.keys(planScores).forEach(k=>delete planScores[k]); Object.keys(planEvid).forEach(k=>delete planEvid[k]);
+  Object.keys(scoreLider).forEach(k=>delete scoreLider[k]); evid = {}; autoLider = {};
+  if(rol && nom){
+    const regs = registrosDe(nom, rol).filter(r=>r.inst===inst);
+    regs.forEach(r=>{
+      Object.entries(r.scoreTec||{}).forEach(([fid,v])=>{ if(v) planScores[firebaseIdToPlanId(fid)] = v; });
+      Object.entries(r.scoreLider||{}).forEach(([k,v])=>{ if(v) scoreLider[k] = v; });
+      Object.entries(r.evid||{}).forEach(([k,t])=>{ if(/^P-/.test(k)) planEvid[firebaseIdToPlanId(k)] = t; else evid[k] = t; });
+      Object.assign(autoLider, r.autoLider||{});
+    });
+    if(regs.length){
+      const last = regs[regs.length-1]; evalKey = last.fbKey;
+      document.getElementById('ev-eval').value = last.eval || ''; document.getElementById('ev-fecha').value = last.fecha || hoyISO();
+    } else if(!document.getElementById('ev-fecha').value){ document.getElementById('ev-fecha').value = hoyISO(); }
+  }
+  pintarPlanBtns(); buildMatrizLider(); pintarLider(); actualizarEv(); renderEvStatus();
+  if(visible('s-ficha')) renderFicha(); else document.getElementById('fichaWrap').innerHTML = '';
+}
+function evDatosCambiaron(){ poblarPersonasEv(); if(!evDirty && evCtx.rol && evCtx.nom) cargarEvaluacion(); else renderEvStatus(); }
+
+function guardarEvaluacion(onOk){
+  const {rol,nom,inst} = evLeer(), msg = document.getElementById('ev-msg');
+  const err = t=>{ msg.style.color = 'var(--r)'; msg.textContent = '⚠ '+t; msg.scrollIntoView({behavior:'smooth',block:'center'}); };
+  if(!rol) return err('Elegí el puesto de la persona.');
+  if(!nom) return err('Escribí o elegí el nombre de la persona.');
+  const fecha = document.getElementById('ev-fecha').value || hoyISO(), evaluador = document.getElementById('ev-eval').value.trim();
+  const scoreTecFB = {}, evidFB = {};
+  relIdsRol().forEach(pid=>{ if(planScores[pid]) scoreTecFB[planIdToFirebaseId(pid)] = planScores[pid]; if(planEvid[pid]) evidFB[planIdToFirebaseId(pid)] = planEvid[pid]; });
+  const sl = {}; Object.entries(scoreLider).forEach(([k,v])=>{ if(v) sl[k] = v; });
+  Object.entries(evid).forEach(([k,t])=>{ evidFB[k] = t; });
+  if(!Object.keys(scoreTecFB).length && !Object.keys(sl).length) return err('Cargá al menos un puntaje (técnico o de liderazgo) antes de guardar.');
+  const pr = promedios();
+  const estadoLid = pr.avgLid>=3.5 ? 'referente' : pr.avgLid>=3 ? 'consolidado' : pr.avgLid>=2 ? 'en_desarrollo' : 'no_observable';
+  const prev = evalKey ? DATA_IND.find(x=>x.fbKey===evalKey) : null;
+  const rec = {nom, rol, eval:evaluador, inst, fecha, scoreTec:scoreTecFB, avgTec:pr.avgTec, scoreLider:sl, avgLid:pr.avgLid,
+    estadoTec:estadoDeAvg(pr.avgTec, pr.shyBad), estadoLid, shyBad:pr.shyBad, cat:CAT_VER, evid:evidFB, autoLider:{...autoLider},
+    ...auditoria(!evalKey), ts: prev ? (prev.ts||Date.now()) : Date.now()};
+  const btns = document.querySelectorAll('.btn-guardar-ev'); btns.forEach(b=>b.disabled = true);
+  msg.style.color = 'var(--tm)'; msg.textContent = 'Guardando…';
+  let guardado;
+  if(evalKey){ const k = evalKey; guardado = refInd.child(k).update(rec).then(()=>k); }
+  else { const ref = refInd.push(rec); const k = ref && ref.key; guardado = Promise.resolve(ref).then(()=>k); }
+  guardado.then(k=>{
+    if(k) evalKey = k; limpiarDirty();
+    msg.style.color = 'var(--g)'; msg.textContent = '✅ Evaluación de '+nom+' ('+INST_N[inst]+') guardada correctamente.';
+    notif('✅ Evaluación de '+nom+' guardada'); renderEvStatus(); if(visible('s-ficha')) renderFicha();
+    if(typeof onOk==='function') onOk();
+  }).catch(e=>err('No se pudo guardar: '+(e && e.message ? e.message : e)+'. Revisá tu conexión e intentá de nuevo.'))
+    .then(()=>btns.forEach(b=>b.disabled = false));
+}
+function unificarRegistros(){
+  const {rol,nom,inst} = evLeer(), regs = registrosDe(nom, rol).filter(r=>r.inst===inst);
+  if(regs.length<2) return;
+  if(!confirm(`Hay ${regs.length} registros de ${nom} en ${INST_N[inst]}. Se van a unir en uno solo, con todo lo cargado, y se eliminarán los otros ${regs.length-1}. ¿Continuar?`)) return;
+  guardarEvaluacion(()=>{
+    const otros = regs.filter(r=>r.fbKey!==evalKey);
+    Promise.all(otros.map(r=>refInd.child(r.fbKey).remove()))
+      .then(()=>notif('✅ Registros unificados'))
+      .catch(e=>{ const m = document.getElementById('ev-msg'); m.style.color='var(--r)'; m.textContent = '⚠ Se guardó, pero no se pudieron eliminar los registros duplicados: '+e.message; });
+  });
+}
+function limpiarEvaluacion(){
+  if(evDirty && !confirm('Tenés cambios sin guardar. ¿Limpiar de todos modos?')) return;
+  document.getElementById('ev-rol').value = ''; document.getElementById('ev-nom').value = ''; document.getElementById('ev-inst').value = 'diagnostico';
+  document.getElementById('ev-fecha').value = hoyISO(); document.getElementById('ev-eval').value = '';
+  planTabActual = 'rol'; cargarEvaluacion(); poblarPersonasEv();
+  notif('🧹 Pantalla limpia: lista para una nueva evaluación.');
+}
+function abrirPersona(nom, rol, sub, inst){
+  const n = {rol, nom, inst};
+  if(evDirty && (rol!==evCtx.rol || normNom(nom)!==normNom(evCtx.nom)) && !confirm('Tenés cambios sin guardar en la evaluación abierta. ¿Descartarlos y abrir a '+nom+'?')) return;
+  limpiarDirty();
+  document.getElementById('ev-rol').value = rol; poblarPersonasEv();
+  document.getElementById('ev-nom').value = nom;
+  const regs = registrosDe(nom, rol);
+  document.getElementById('ev-inst').value = inst || (regs.length ? regs[regs.length-1].inst : 'diagnostico');
+  if(!['diagnostico','seguimiento','certificacion'].includes(document.getElementById('ev-inst').value)) document.getElementById('ev-inst').value = 'diagnostico';
+  go(sub || 'ficha'); cargarEvaluacion();
+}
+function verFicha(nom, rol){ abrirPersona(nom, rol, 'ficha'); }
+function editarRegistro(fbKey){ const r = DATA_IND.find(x=>x.fbKey===fbKey); if(r) abrirPersona(r.nom, r.rol, 'planillas', r.inst); }
+function initEvaluar(){
+  PLAN_IDS_ALL.forEach(id=>{
+    const cont = document.getElementById('ps-'+id);
+    if(cont && !cont.dataset.built){
+      cont.innerHTML = [1,2,3,4].map(v=>`<button class="ps" id="ps-btn-${id}-${v}" onclick="setPlan('${id}',${v})">${v}</button>`).join('');
+      cont.dataset.built = '1';
+      const inp = document.createElement('input');
+      inp.className = 'evid'; inp.type = 'text'; inp.id = 'ev-'+id; inp.placeholder = 'Evidencia…';
+      inp.oninput = ()=>{ marcarDirty(); if(inp.value.trim()) planEvid[id] = inp.value.trim(); else delete planEvid[id]; };
+      cont.parentNode.appendChild(inp);
+    }
+  });
+  renderPuestosRef(); buildMatrizLider();
+  document.getElementById('ev-fecha').value = hoyISO();
+  poblarPersonasEv(); aplicarRolEnPlanillas(''); renderEvStatus();
+}
+initEvaluar();
 
 // ════════════════════════════════════════════════════════════
 //  REPORTES PDF
@@ -3603,15 +3282,7 @@ function copiarFeedback(nom, rol){
     .catch(()=>notif('No se pudo copiar automáticamente — seleccioná el texto manualmente.'));
 }
 
-function irAAccionesDesdeFeedback(nom, rol){
-  go('acciones');
-  document.querySelectorAll('.nt').forEach(b=>b.classList.remove('on'));
-  document.querySelectorAll('.nt').forEach(b=>{ if(b.getAttribute('onclick')&&b.getAttribute('onclick').includes("'acciones'")) b.classList.add('on'); });
-  document.getElementById('acc-rol').value = rol;
-  populateAccionesPersonas();
-  document.getElementById('acc-persona').value = nom+'|'+rol;
-  renderAcciones();
-}
+/* (reemplazada por el módulo "Evaluar persona") */
 
 // ════════════════════════════════════════════════════════════
 //  PLAN DE ACCIÓN + REPORTE
@@ -3813,7 +3484,6 @@ async function exportAccionPDF(){
 // ════════════════════════════════════════════════════════════
 //  INIT
 // ════════════════════════════════════════════════════════════
-document.getElementById('i-fecha').value = new Date().toISOString().split('T')[0];
 document.getElementById('eq-fecha').value = new Date().toISOString().split('T')[0];
 buildEquipoGrid();
 </script>
