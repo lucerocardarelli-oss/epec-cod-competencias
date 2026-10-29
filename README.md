@@ -2,6 +2,9 @@
 
 **Qué hace:** evaluación técnica (planillas por puesto + procesos compartidos) y de liderazgo, autoevaluación, evaluación de equipo, feedback, plan de acción (con sugerencias), historial, radar, tendencia, Nine Box, ficha por persona, guía de puestos, informe ejecutivo y respaldo de datos. Tema claro/oscuro (sol/luna).
 
+## Guardar la pantalla en la computadora
+Botón **Guardar pantalla** (encabezado, junto al sol/luna): guarda lo que se ve en la pantalla actual como **PDF** (A4, con cortes de página que no parten tarjetas ni filas), **imagen PNG** o **página HTML**. Siempre en tema claro, aunque se esté usando el oscuro. En Reportes y en el reporte de Plan de Acción guarda la vista previa generada. En celular guarda con el diseño de computadora. Requiere internet (usa las librerías html2canvas y jsPDF).
+
 ## Funciones principales
 - **Puestos y procesos:** según *Descripción de Puestos CCOD v1.1* y *Procesos de Trabajo Roles*. Códigos internos JCOD/SCOD/JTMT (Coordinador de Turno MT = antes Jefe de Turno). P-SCOD-04/05 son códigos provisorios.
 - **Nivel esperado** por puesto e instancia (`ESPERADO` en `index.html`): valores de referencia a validar. Se usan en fichas, alertas, plan de acción e informe.

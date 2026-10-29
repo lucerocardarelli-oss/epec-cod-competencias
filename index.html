@@ -223,6 +223,25 @@ body{font-family:'Inter',system-ui,sans-serif;font-size:13px;color:var(--tx);bac
 .evid{width:100%;margin-top:5px;border:1px solid var(--bd);border-radius:6px;padding:4px 7px;font-size:10px;font-family:inherit;background:var(--wh);color:var(--tx);}
 .evid:focus{outline:none;border-color:var(--g);}
 .plan-score+.evid{width:130px;}
+.gp-wrap{position:relative;}
+.gp-btn{background:#fff;color:#06382c;border:none;border-radius:20px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-family:inherit;}
+.gp-btn:hover{background:#e1f5ee;}
+.gp-btn.busy{opacity:.6;cursor:wait;}
+.gp-menu{display:none;position:absolute;right:0;top:calc(100% + 8px);width:290px;background:var(--wh);color:var(--tx);border:1px solid var(--bd);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25);padding:8px;z-index:500;}
+.gp-menu.on{display:block;}
+.gp-tit{font-size:10px;color:var(--tm);text-transform:uppercase;letter-spacing:.5px;padding:4px 8px 6px;}
+.gp-menu button{width:100%;display:flex;align-items:center;gap:10px;text-align:left;background:transparent;border:none;border-radius:8px;padding:8px;cursor:pointer;color:var(--tx);font-family:inherit;}
+.gp-menu button:hover{background:var(--gl);}
+.gp-menu button i{font-size:22px;color:var(--g);}
+.gp-menu button b{display:block;font-size:12px;}
+.gp-menu button small{display:block;font-size:10px;color:var(--tm);}
+.cap-head{background:#155748;color:#fff;border-radius:10px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;gap:12px;}
+.cap-head .hdr-logo{background:#fff;color:#155748;}
+.cap-head b{font-size:14px;} .cap-head small{display:block;font-size:10px;opacity:.85;margin-top:2px;}
+.capturando .tbl-scroll{overflow:visible!important;}
+.capturando .gp-wrap{visibility:hidden;}
+.capturando .sec.on{padding:14px;background:#f5f9f7;}
+@media(max-width:700px){.gp-btn span{display:none;}.gp-btn{padding:7px 10px;}.gp-menu{position:fixed;right:8px;left:8px;width:auto;top:60px;}}
 /* TEMA OSCURO (verde oscuro) / CLARO */
 html[data-theme="dark"]{--g:#2BA888;--gd:#5fd1b0;--gm:#3dbf9c;--gl:#143a32;--g2:#1f4a3f;--r:#ff7a8a;--rl:#3d1a20;--am:#f5a623;--aml:#3a3414;--bd:#24544a;--bg:#0b1f1a;--tx:#e6f4ef;--tm:#93b8ac;--wh:#12302a;--azul:#7fb8e0;--azul-lt:#1b3a52;color-scheme:dark;}
 html[data-theme="dark"] .hdr,html[data-theme="dark"] .pt th,html[data-theme="dark"] .mx-tbl th,html[data-theme="dark"] .notif,html[data-theme="dark"] .plan-tab.on,html[data-theme="dark"] .plan-header,html[data-theme="dark"] .plan-tbl th,html[data-theme="dark"] .pz-ctbl th,html[data-theme="dark"] .pdf-table th{background:#0f5d49;border-color:#0f5d49;color:#fff;}
@@ -378,6 +397,15 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
     <p>EPEC S.A.U. · Centro de Control de Operación de Distribución · Técnica + Liderazgo Operativo</p>
   </div>
   <div class="hdr-right">
+    <div class="gp-wrap">
+      <button class="gp-btn" id="btnGuardar" onclick="toggleMenuGuardar(event)" title="Guardar esta pantalla en tu computadora" aria-label="Guardar esta pantalla"><i class="ti ti-download"></i><span>Guardar pantalla</span></button>
+      <div class="gp-menu" id="gpMenu">
+        <div class="gp-tit">Guardar tal cual se ve, en tema claro</div>
+        <button onclick="guardarPantalla('pdf')"><i class="ti ti-file-type-pdf"></i><span><b>PDF</b><small>Documento A4 para archivar o enviar</small></span></button>
+        <button onclick="guardarPantalla('png')"><i class="ti ti-photo"></i><span><b>Imagen PNG</b><small>Una sola imagen larga</small></span></button>
+        <button onclick="guardarPantalla('html')"><i class="ti ti-file-code"></i><span><b>Página HTML</b><small>Se abre en el navegador; se puede copiar texto</small></span></button>
+      </div>
+    </div>
     <div class="tema-sw" role="group" aria-label="Tema de pantalla">
       <button class="tema-op" data-t="light" onclick="setTema('light')" title="Pantalla clara" aria-label="Pantalla clara"><i class="ti ti-sun"></i></button>
       <button class="tema-op" data-t="dark" onclick="setTema('dark')" title="Pantalla oscura (verde)" aria-label="Pantalla oscura"><i class="ti ti-moon"></i></button>
@@ -1241,6 +1269,7 @@ function aplicarTema(t){
   else document.documentElement.removeAttribute('data-theme');
   try{ localStorage.setItem('epec_tema', t); }catch(e){}
   if(window.Chart){
+    Chart.defaults.animation = false;
     Chart.defaults.color = t==='dark' ? '#b7d6cb' : '#666';
     Chart.defaults.borderColor = t==='dark' ? 'rgba(255,255,255,.12)' : 'rgba(0,0,0,.1)';
   }
@@ -3170,6 +3199,151 @@ function exportEquipoCSV(){
 function exportJSON(){
   const obj = {exportado:new Date().toISOString(), exportadoPor:usuarioActual(), catalogo:CAT_VER, individual:DATA_IND, equipo:DATA_EQ, acciones:DATA_ACC};
   descargarArchivo('EPEC_CCOD_respaldo_'+sufijoFecha()+'.json', JSON.stringify(obj,null,2), 'application/json', false);
+}
+
+// ════════════════════════════════════════════════════════════
+//  GUARDAR LA PANTALLA EN LA COMPUTADORA (PDF / PNG / HTML) — tal cual se ve, en tema claro
+// ════════════════════════════════════════════════════════════
+const SEC_TITULOS = {dash:'Dashboard', ficha:'Ficha por persona', individual:'Evaluación individual', planillas:'Planillas técnicas', equipo:'Evaluación de equipo', feedback:'Feedback', acciones:'Plan de acción', personas:'Historial', radar:'Radar', tendencia:'Tendencia', ninebox:'Nine Box', puestos:'Guía de puestos', reportes:'Reportes'};
+const SEL_PERSONA = {ficha:'ficha-persona', feedback:'fb-persona', acciones:'acc-persona'};
+function toggleMenuGuardar(ev){ if(ev) ev.stopPropagation(); document.getElementById('gpMenu').classList.toggle('on'); }
+function cerrarMenuGuardar(){ const m = document.getElementById('gpMenu'); if(m) m.classList.remove('on'); }
+document.addEventListener('click', e=>{ if(!e.target.closest || !e.target.closest('.gp-wrap')) cerrarMenuGuardar(); });
+
+function capturaObjetivo(){
+  const sec = document.querySelector('.sec.on'); const id = sec.id.slice(2);
+  if(id==='reportes' && document.getElementById('pdfPreviewWrap').style.display!=='none'){
+    const ex = document.getElementById('pdfExec');
+    return {el: ex.style.display==='block' ? ex : document.getElementById('pdfContent'), id, preview:true};
+  }
+  if(id==='acciones' && document.getElementById('accReportPreviewWrap').style.display!=='none'){
+    return {el:document.getElementById('accReportContent'), id, preview:true};
+  }
+  return {el:sec, id, preview:false};
+}
+function slugTxt(t){ return String(t||'').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Za-z0-9]+/g,'_').replace(/^_+|_+$/g,''); }
+function personaSeleccionada(id){
+  const sel = SEL_PERSONA[id] && document.getElementById(SEL_PERSONA[id]);
+  return (sel && sel.value && sel.selectedIndex>=0) ? sel.options[sel.selectedIndex].text : '';
+}
+const pausa = ms=>new Promise(r=>setTimeout(r,ms));
+function redibujarGraficos(){
+  const a = document.querySelector('.sec.on'); if(!a) return; const id = a.id.slice(2);
+  if(id==='dash') renderDash();
+  else if(id==='radar'){ renderRadarTec(); renderRadarLider(); renderBrecha(); }
+  else if(id==='tendencia'){ renderTendTec(); renderTendLider(); }
+  else if(id==='ficha') renderFicha();
+  else if(id==='reportes' && document.getElementById('pdfPreviewWrap').style.display!=='none' && document.getElementById('pdfExec').style.display!=='block') buildPdfPreview();
+}
+function descargarBlob(blob, nombre){
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = nombre;
+  document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 800);
+}
+function canvasAPdf(canvas, cands, nombre, titulo){
+  const {jsPDF} = window.jspdf;
+  const pdf = new jsPDF({orientation:'portrait', unit:'mm', format:'a4'});
+  const M = 8, pw = 210-2*M, ph = 297-2*M-4;
+  const pxMm = canvas.width/pw, pageH = Math.floor(ph*pxMm), total = canvas.height;
+  // cortes de página sin partir tarjetas ni filas (si es posible)
+  const cortes = [0]; let y = 0;
+  while(total-y > pageH){
+    let best = null;
+    for(const c of cands){ if(c>y+pageH*0.45 && c<=y+pageH) best = c; }
+    y = best || (y+pageH); cortes.push(y);
+  }
+  cortes.push(total);
+  const n = cortes.length-1;
+  for(let i=0;i<n;i++){
+    const h = cortes[i+1]-cortes[i];
+    const tmp = document.createElement('canvas'); tmp.width = canvas.width; tmp.height = h;
+    const ctx = tmp.getContext('2d'); ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,tmp.width,h);
+    ctx.drawImage(canvas, 0, cortes[i], canvas.width, h, 0, 0, canvas.width, h);
+    if(i>0) pdf.addPage();
+    pdf.addImage(tmp.toDataURL('image/jpeg',0.92), 'JPEG', M, M, pw, h/pxMm, undefined, 'FAST');
+    pdf.setFontSize(8); pdf.setTextColor(120);
+    pdf.text(`EPEC S.A.U. · ${titulo} · página ${i+1} de ${n}`, 105, 292, {align:'center'});
+  }
+  pdf.save(nombre);
+}
+function htmlAutonomo(el, titulo){
+  const clone = el.cloneNode(true);
+  const orig = el.querySelectorAll('canvas'), cl = clone.querySelectorAll('canvas');
+  orig.forEach((c,i)=>{ const img = document.createElement('img'); img.src = c.toDataURL('image/png'); img.style.cssText = 'width:'+c.clientWidth+'px;height:'+c.clientHeight+'px;max-width:100%;'; cl[i].replaceWith(img); });
+  const campos = el.querySelectorAll('input,textarea,select'), campos2 = clone.querySelectorAll('input,textarea,select');
+  campos.forEach((f,i)=>{
+    const g = campos2[i]; if(!g) return;
+    if(f.tagName==='SELECT'){ [...g.options].forEach((o,j)=>{ if(j===f.selectedIndex) o.setAttribute('selected',''); else o.removeAttribute('selected'); }); }
+    else if(f.tagName==='TEXTAREA'){ g.textContent = f.value; }
+    else if(f.type==='checkbox'||f.type==='radio'){ if(f.checked) g.setAttribute('checked',''); }
+    else g.setAttribute('value', f.value);
+    g.setAttribute('disabled','');
+  });
+  clone.querySelectorAll('[onclick],[oninput],[onchange]').forEach(n=>{ n.removeAttribute('onclick'); n.removeAttribute('oninput'); n.removeAttribute('onchange'); });
+  clone.querySelectorAll('script,.acts,.gp-wrap').forEach(n=>n.remove());
+  const css = [...document.querySelectorAll('style')].map(x=>x.textContent).join('\n');
+  const links = [...document.querySelectorAll('link[rel=stylesheet],link[rel=preconnect]')].map(l=>l.outerHTML).join('\n');
+  return `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${escH(titulo)}</title>\n${links}\n<style>${css}\n.sec{display:block!important;} body{min-height:0;} .cnt{padding-top:16px;} .tbl-scroll{overflow-x:auto;}</style></head><body><div class="cnt">${clone.outerHTML}</div></body></html>`;
+}
+
+let guardandoPantalla = false;
+async function guardarPantalla(fmt){
+  cerrarMenuGuardar();
+  if(guardandoPantalla) return;
+  const btn = document.getElementById('btnGuardar');
+  if(fmt!=='html' && (!window.html2canvas || (fmt==='pdf' && !window.jspdf))){ alert('No se pudo cargar la librería de captura (se necesita internet). Recargá la página e intentá de nuevo.'); return; }
+  guardandoPantalla = true; btn.classList.add('busy');
+  const eraOscuro = document.documentElement.getAttribute('data-theme')==='dark';
+  const scrollY0 = window.scrollY;
+  let cab = null;
+  notif('⏳ Preparando el archivo… aguardá unos segundos');
+  try{
+    if(eraOscuro){ aplicarTema('light'); redibujarGraficos(); }   // siempre se guarda en tema claro
+    await pausa(450);
+    const {el, id, preview} = capturaObjetivo();
+    const titulo = SEC_TITULOS[id] || id;
+    const persona = personaSeleccionada(id);
+    const fecha = new Date().toISOString().split('T')[0];
+    const base = 'EPEC_CCOD_'+slugTxt(titulo)+(persona?'_'+slugTxt(persona):'')+'_'+fecha;
+    window.scrollTo(0,0);
+    if(!preview){
+      cab = document.createElement('div'); cab.className = 'cap-head';
+      cab.innerHTML = `<div class="hdr-logo">EPEC<br>CCOD</div><div><b>Matriz de Competencias — ${escH(titulo)}${persona?' · '+escH(persona):''}</b><small>EPEC S.A.U. · Centro de Control de Operación de Distribución · Generado por ${escH(usuarioActual())} el ${new Date().toLocaleString('es-AR')}</small></div>`;
+      el.insertBefore(cab, el.firstChild);
+    }
+    document.body.classList.add('capturando');
+    if(fmt==='html'){
+      descargarBlob(new Blob([htmlAutonomo(el, 'Matriz de Competencias — '+titulo+(persona?' · '+persona:''))], {type:'text/html;charset=utf-8'}), base+'.html');
+    } else {
+      const cands = [];
+      const alto = Math.max(el.scrollHeight, 1);
+      const scale = Math.max(1, Math.min(2, 15000/alto));
+      const opts = {scale, useCORS:true, backgroundColor:'#f5f9f7', logging:false, scrollX:0, scrollY:0,
+        onclone:(doc)=>{
+          doc.body.classList.add('capturando');
+          const e2 = doc.getElementById(el.id); if(!e2) return;
+          const top = e2.getBoundingClientRect().top;
+          e2.querySelectorAll('.card,.al,.sec-header,.sc,.rcard,.pz-card,.lider-comp,.nbx-c,.pdf-section,.pdf-header,.cap-head,.pz-det,tr').forEach(n=>{
+            cands.push(Math.round((n.getBoundingClientRect().bottom-top)*scale)); });
+          cands.sort((a,b)=>a-b);
+        }};
+      if(window.innerWidth<1000) opts.windowWidth = 1200;
+      const canvas = await html2canvas(el, opts);
+      if(fmt==='png'){
+        await new Promise((ok,ko)=>canvas.toBlob(b=>{ if(!b){ ko(new Error('No se pudo generar la imagen.')); return; } descargarBlob(b, base+'.png'); ok(); }, 'image/png'));
+      } else {
+        canvasAPdf(canvas, cands, base+'.pdf', titulo);
+      }
+    }
+    notif('✅ Guardado en tu computadora: '+base+'.'+fmt);
+  }catch(e){
+    alert('No se pudo guardar el archivo: '+(e && e.message ? e.message : e));
+  }finally{
+    if(cab && cab.parentNode) cab.parentNode.removeChild(cab);
+    document.body.classList.remove('capturando');
+    if(eraOscuro){ aplicarTema('dark'); redibujarGraficos(); }
+    window.scrollTo(0, scrollY0);
+    guardandoPantalla = false; btn.classList.remove('busy');
+  }
 }
 
 // ════════════════════════════════════════════════════════════
