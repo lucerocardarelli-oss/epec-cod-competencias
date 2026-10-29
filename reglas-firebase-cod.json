@@ -5,7 +5,7 @@
       ".read": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous'",
       ".write": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous'",
       "$id": {
-        ".validate": "newData.hasChildren(['nom','rol']) && newData.child('rol').val().matches(/^(JCOD|SCOD|JTMT)$/) && (!newData.child('avgTec').exists() || (newData.child('avgTec').isNumber() && newData.child('avgTec').val() >= 0 && newData.child('avgTec').val() <= 4)) && (!newData.child('avgLid').exists() || (newData.child('avgLid').isNumber() && newData.child('avgLid').val() >= 0 && newData.child('avgLid').val() <= 4))"
+        ".validate": "newData.hasChildren(['nom','rol']) && newData.child('rol').val().matches(/^(JCOD|SCOD|JTMT|OMT)$/) && (!newData.child('avgTec').exists() || (newData.child('avgTec').isNumber() && newData.child('avgTec').val() >= 0 && newData.child('avgTec').val() <= 4)) && (!newData.child('avgLid').exists() || (newData.child('avgLid').isNumber() && newData.child('avgLid').val() >= 0 && newData.child('avgLid').val() <= 4))"
       }
     },
     "cod_equipo": {
