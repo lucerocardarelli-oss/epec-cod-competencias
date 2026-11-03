@@ -1173,12 +1173,12 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
 
   <div class="card">
     <div class="ct"><i class="ti ti-database-export"></i>Respaldo y exportación de datos</div>
-    <div class="sub">Descargá los datos para guardarlos o trabajarlos en Excel (CSV con separador “;”). El respaldo completo en JSON conserva todo, incluida la autoría de cada carga.</div>
+    <div class="sub">Descargá cada tabla como página web (HTML): se abre en cualquier navegador, con buscador, filtros y orden por columna, y queda lista para compartir o imprimir. El respaldo completo en JSON conserva todo, incluida la autoría de cada carga, y es el que sirve para volver a cargar los datos.</div>
     <div class="acts">
-      <button class="bsec" onclick="exportEvalCSV()"><i class="ti ti-table-export"></i>Evaluaciones (CSV)</button>
-      <button class="bsec" onclick="exportDetalleCSV()"><i class="ti ti-list-details"></i>Detalle con evidencia (CSV)</button>
-      <button class="bsec" onclick="exportAccionesCSV()"><i class="ti ti-checklist"></i>Acciones (CSV)</button>
-      <button class="bsec" onclick="exportEquipoCSV()"><i class="ti ti-users"></i>Equipo (CSV)</button>
+      <button class="bsec" onclick="exportEvalCSV()"><i class="ti ti-table-export"></i>Evaluaciones (HTML)</button>
+      <button class="bsec" onclick="exportDetalleCSV()"><i class="ti ti-list-details"></i>Detalle con evidencia (HTML)</button>
+      <button class="bsec" onclick="exportAccionesCSV()"><i class="ti ti-checklist"></i>Acciones (HTML)</button>
+      <button class="bsec" onclick="exportEquipoCSV()"><i class="ti ti-users"></i>Equipo (HTML)</button>
       <button class="bp" onclick="exportJSON()"><i class="ti ti-database-export"></i>Respaldo completo (JSON)</button>
     </div>
   </div>
@@ -2729,6 +2729,91 @@ function todosLosIds(){
   PROCS_DUP.forEach(p=>{ if(!ids.includes(p.id)) ids.push(p.id); });
   return ids;
 }
+/* ── Exportación a HTML (página web con buscador, filtros y orden, lista para compartir o imprimir) ── */
+function chipClaseHTML(t){
+  const s = String(t||'').toLowerCase();
+  if(/^si$|requiere|inicial|pendiente|alerta|vencid|ausente/.test(s)) return 'bad';
+  if(/apto|destacado|competente|cumplid|complet|realizad|cerrad/.test(s)) return 'ok';
+  if(/básico|basico|proceso|curso|parcial|supervis/.test(s)) return 'warn';
+  return 'neu';
+}
+function exportarTablaHTML(o){
+  const cab = o.cab, filas = o.filas, esc = escH;
+  const fmt = v=>{ if(v==null||v==='') return ''; if(typeof v==='number') return String(Math.round(v*100)/100).replace('.',','); return String(v); };
+  const score = new Set(o.score||[]), chips = new Set(o.chips||[]), largo = new Set(o.largo||[]);
+  const filtros = [];
+  (o.filtros||[]).forEach(i=>{
+    const u = [...new Set(filas.map(f=>fmt(f[i])).filter(Boolean))];
+    if(u.length>=2) filtros.push([i,u.sort((a,b)=>a.localeCompare(b,'es'))]);
+  });
+  const th = cab.map((c,i)=>`<th data-i="${i}" class="${score.has(i)?'sc':''}" title="Tocá para ordenar">${esc(c)} <span class="ar"></span></th>`).join('');
+  const tr = filas.map(f=>'<tr>'+cab.map((c,i)=>{
+    const raw = f[i], t = fmt(raw);
+    if(score.has(i)){ const n = Math.round(Number(raw)); return `<td class="sc ${n>=1&&n<=4?'s'+n:''}" data-s="${raw||''}">${esc(t)}</td>`; }
+    if(chips.has(i) && t) return `<td><span class="chip ${chipClaseHTML(t)}">${esc(t)}</span></td>`;
+    const num = (typeof raw==='number') ? ` data-s="${raw}" class="num"` : '';
+    return `<td${num}${largo.has(i)?' class="lg"':''}>${esc(t)}</td>`;
+  }).join('')+'</tr>').join('');
+  const kp = (o.kpis||[]).map(k=>`<div class="kp"><b>${esc(String(k.n))}</b><span>${esc(k.l)}</span></div>`).join('');
+  const fil = filtros.map(([i,u])=>`<label>${esc(cab[i])}<select data-f="${i}"><option value="">Todos</option>${u.map(x=>`<option>${esc(x)}</option>`).join('')}</select></label>`).join('');
+  const cuando = new Date().toLocaleString('es-AR');
+  const html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(o.titulo)} · EPEC CCOD</title><style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Inter,Segoe UI,system-ui,sans-serif;font-size:13px;color:#1a2e2a;background:#f5f9f7}
+.top{background:linear-gradient(135deg,#155748,#218570);color:#fff;padding:18px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.lg0{background:#fff;color:#155748;border-radius:8px;padding:6px 10px;font-weight:800;font-size:12px;line-height:1.1;text-align:center}
+.top h1{font-size:19px}.top p{font-size:12px;opacity:.9;margin-top:2px}
+.wrap{max-width:1500px;margin:0 auto;padding:16px 20px}
+.desc{background:#e1f5ee;border:1px solid #bfe6da;border-radius:10px;padding:10px 14px;font-size:12px;margin-bottom:12px}
+.kps{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}.kp{background:#fff;border:1px solid #d0e8e0;border-top:4px solid #218570;border-radius:10px;padding:10px 16px;min-width:130px}
+.kp b{display:block;font-size:22px;color:#155748}.kp span{font-size:11px;color:#5a7a72}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;background:#fff;border:1px solid #d0e8e0;border-radius:10px;padding:10px 14px;margin-bottom:12px}
+.bar label{display:flex;flex-direction:column;font-size:10px;font-weight:700;color:#5a7a72;text-transform:uppercase;gap:3px}
+.bar input,.bar select{padding:7px 9px;border:1px solid #cfe3dc;border-radius:7px;font-size:12px;background:#fff;color:#1a2e2a;min-width:150px}
+.bar button{padding:8px 14px;border:0;border-radius:7px;background:#218570;color:#fff;font-weight:700;cursor:pointer;font-size:12px}.bar button.sec{background:#fff;color:#218570;border:1px solid #218570}
+.cnt{font-size:12px;color:#5a7a72;margin-left:auto;align-self:center}
+.tw{background:#fff;border:1px solid #d0e8e0;border-radius:10px;overflow:auto;max-height:72vh}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:12px}
+th{position:sticky;top:0;z-index:2;background:#155748;color:#fff;text-align:left;padding:9px 10px;font-size:11px;cursor:pointer;white-space:normal;min-width:90px;vertical-align:bottom}
+th.sc{min-width:70px;text-align:center;font-size:10px}th .ar{opacity:.8}
+td{padding:7px 10px;border-bottom:1px solid #e6f0ec;vertical-align:top}td.lg{min-width:260px;max-width:480px;white-space:pre-wrap}td.num{text-align:center}
+tbody tr:nth-child(even) td{background:#f8fbfa}tbody tr:hover td{background:#e1f5ee}
+td:first-child,th:first-child{position:sticky;left:0;z-index:1;font-weight:600}th:first-child{z-index:3}td:first-child{background:#fff}tbody tr:nth-child(even) td:first-child{background:#f8fbfa}
+td.sc{text-align:center;font-weight:700}td.s4{background:#218570!important;color:#fff}td.s3{background:#2BA888!important;color:#fff}td.s2{background:#f39c12!important;color:#fff}td.s1{background:#c02133!important;color:#fff}
+.chip{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}.chip.ok{background:#d6f3e9;color:#155748}.chip.bad{background:#fde8eb;color:#a01a2b}.chip.warn{background:#fef3c7;color:#8a5a00}.chip.neu{background:#eef2f1;color:#46605a}
+.leg{font-size:11px;color:#5a7a72;margin:10px 2px}.leg i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:middle;margin:0 3px 0 10px}
+.pie{font-size:11px;color:#5a7a72;margin:14px 2px}
+@media print{.bar,.top p{display:none}.tw{max-height:none;overflow:visible}body{background:#fff}th{position:static}td:first-child,th:first-child{position:static}@page{size:landscape;margin:10mm}}
+</style></head><body>
+<div class="top"><div class="lg0">EPEC<br>CCOD</div><div><h1>${esc(o.titulo)}</h1><p>EPEC S.A.U. · Centro de Control de Operación de Distribución · Matriz de Competencias · Emitido el ${esc(cuando)}</p></div></div>
+<div class="wrap">
+<div class="desc">${esc(o.desc||'')} Podés <b>buscar</b>, <b>filtrar</b> y <b>ordenar</b> tocando el título de cada columna. El archivo funciona sin internet.</div>
+<div class="kps">${kp}</div>
+<div class="bar"><label>Buscar<input id="q" placeholder="Escribí un nombre, código o palabra…"></label>${fil}<button class="sec" onclick="limpiar()">Limpiar filtros</button><button onclick="window.print()">🖨 Imprimir / PDF</button><span class="cnt" id="cnt"></span></div>
+${o.leyenda?`<div class="leg">${o.leyenda}</div>`:''}
+<div class="tw"><table id="t"><thead><tr>${th}</tr></thead><tbody>${tr}</tbody></table></div>
+<div class="pie">Generado por ${esc(usuarioActual())} · Catálogo ${esc(String(CAT_VER))} · ${filas.length} registro(s).</div>
+</div>
+<script>
+const T=document.getElementById('t'),B=T.tBodies[0],Q=document.getElementById('q'),C=document.getElementById('cnt');
+const norm=s=>String(s).normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase();
+function aplicar(){const q=norm(Q.value.trim());const fs=[...document.querySelectorAll('select[data-f]')].filter(s=>s.value);let n=0;
+ [...B.rows].forEach(r=>{let ok=!q||norm(r.textContent).includes(q);fs.forEach(s=>{if(r.cells[+s.dataset.f].textContent.trim()!==s.value)ok=false;});r.style.display=ok?'':'none';if(ok)n++;});
+ C.textContent='Mostrando '+n+' de '+B.rows.length;}
+function limpiar(){Q.value='';document.querySelectorAll('select[data-f]').forEach(s=>s.value='');aplicar();}
+Q.addEventListener('input',aplicar);document.querySelectorAll('select[data-f]').forEach(s=>s.addEventListener('change',aplicar));
+let dir={};T.tHead.rows[0].querySelectorAll('th').forEach(h=>h.addEventListener('click',()=>{const i=+h.dataset.i;dir[i]=!dir[i];
+ T.tHead.querySelectorAll('.ar').forEach(a=>a.textContent='');h.querySelector('.ar').textContent=dir[i]?'▲':'▼';
+ const v=r=>{const c=r.cells[i];const s=c.dataset.s;if(s!==undefined&&s!=='')return parseFloat(s);const t=c.textContent.trim();const m=t.match(/^(\\d{2})\\/(\\d{2})\\/(\\d{4})/);if(m)return m[3]+m[2]+m[1];return norm(t);};
+ const rows=[...B.rows].sort((a,b)=>{const x=v(a),y=v(b);const r=(typeof x==='number'&&typeof y==='number')?x-y:String(x).localeCompare(String(y),'es',{numeric:true});return dir[i]?r:-r;});
+ rows.forEach(r=>B.appendChild(r));}));
+aplicar();
+<\/script></body></html>`;
+  descargarArchivo(o.archivo+'_'+sufijoFecha()+'.html', html, 'text/html;charset=utf-8', false);
+}
+
+const LEYENDA_NIV = '<b>Niveles:</b><i style="background:#c02133"></i>1 Inicial<i style="background:#f39c12"></i>2 Básico<i style="background:#2BA888"></i>3 Competente<i style="background:#218570"></i>4 Destacado';
+function rango(a,b){ const r=[]; for(let i=a;i<b;i++) r.push(i); return r; }
+function promedioDe(arr){ const v=arr.filter(x=>x>0); return v.length ? (v.reduce((s,x)=>s+x,0)/v.length).toFixed(1).replace('.',',') : '—'; }
 function exportEvalCSV(){
   if(!DATA_IND.length){ notif('⚠ No hay evaluaciones para exportar.'); return; }
   const ids = todosLosIds();
@@ -2739,7 +2824,9 @@ function exportEvalCSV(){
     filas.push([d.nom, ROLE_N[d.rol]||d.rol, INST_N[d.inst]||d.inst, d.fecha, d.eval, d.avgTec, d.avgLid, d.estadoTec, d.estadoLid, d.shyBad?'SI':'', d.cat||'anterior', d.creadoPor, d.modificadoPor, d.modificadoTs?new Date(d.modificadoTs).toLocaleString('es-AR'):'',
       ...ids.map(i=>d.scoreTec[i]||''), ...COMPS_LIDER.map(c=>d.scoreLider[c.id]||''), ...COMPS_LIDER.map(c=>d.autoLider[c.id]||'')]);
   });
-  descargarArchivo('EPEC_CCOD_evaluaciones_'+sufijoFecha()+'.csv', csvTexto(filas), 'text/csv;charset=utf-8', true);
+  exportarTablaHTML({archivo:'EPEC_CCOD_evaluaciones', titulo:'Evaluaciones individuales', desc:'Una fila por evaluación: promedios, estado y el puntaje de cada proceso técnico y competencia de liderazgo.',
+    cab:filas[0], filas:filas.slice(1), score:rango(14,filas[0].length), chips:[7,8,9], filtros:[1,2,7,8,9], leyenda:LEYENDA_NIV,
+    kpis:[{n:DATA_IND.length,l:'Evaluaciones'},{n:new Set(DATA_IND.map(d=>d.nom)).size,l:'Personas evaluadas'},{n:promedioDe(DATA_IND.map(d=>d.avgTec)),l:'Promedio técnico'},{n:promedioDe(DATA_IND.map(d=>d.avgLid)),l:'Promedio liderazgo'}]});
 }
 function exportDetalleCSV(){
   if(!DATA_IND.length){ notif('⚠ No hay evaluaciones para exportar.'); return; }
@@ -2748,19 +2835,26 @@ function exportDetalleCSV(){
     Object.entries(d.scoreTec).forEach(([id,v])=>filas.push([d.nom,ROLE_N[d.rol]||d.rol,INST_N[d.inst]||d.inst,d.fecha,'Técnico',codigoVisible(id),nombreProceso(id),v,'',d.evid[id]||'']));
     COMPS_LIDER.forEach(c=>{ if(d.scoreLider[c.id]||d.autoLider[c.id]) filas.push([d.nom,ROLE_N[d.rol]||d.rol,INST_N[d.inst]||d.inst,d.fecha,'Liderazgo',c.id,c.nombre,d.scoreLider[c.id]||'',d.autoLider[c.id]||'',d.evid[c.id]||'']); });
   });
-  descargarArchivo('EPEC_CCOD_detalle_evidencia_'+sufijoFecha()+'.csv', csvTexto(filas), 'text/csv;charset=utf-8', true);
+  exportarTablaHTML({archivo:'EPEC_CCOD_detalle_evidencia', titulo:'Detalle con evidencia', desc:'Cada puntaje cargado, con su autoevaluación y la evidencia que lo respalda.',
+    cab:filas[0], filas:filas.slice(1), score:[7,8], largo:[9], filtros:[1,2,4], leyenda:LEYENDA_NIV,
+    kpis:[{n:filas.length-1,l:'Puntajes cargados'},{n:new Set(DATA_IND.map(d=>d.nom)).size,l:'Personas'},{n:filas.slice(1).filter(f=>f[9]).length,l:'Con evidencia escrita'}]});
 }
 function exportAccionesCSV(){
   if(!DATA_ACC.length){ notif('⚠ No hay acciones para exportar.'); return; }
   const filas = [['Persona','Puesto','Tipo','Código','Brecha','Nivel','Acción','Responsable','Fecha compromiso','Estado']];
   DATA_ACC.forEach(a=>filas.push([a.nom,ROLE_N[a.rol]||a.rol,a.tipo,a.procId,a.procNombre,a.score,a.accion,a.responsable,a.fechaComp,a.estado]));
-  descargarArchivo('EPEC_CCOD_acciones_'+sufijoFecha()+'.csv', csvTexto(filas), 'text/csv;charset=utf-8', true);
+  const est = {}; DATA_ACC.forEach(a=>{ const k=a.estado||'Sin estado'; est[k]=(est[k]||0)+1; });
+  exportarTablaHTML({archivo:'EPEC_CCOD_acciones', titulo:'Plan de acción', desc:'Acciones de mejora comprometidas, con responsable, fecha y estado.',
+    cab:filas[0], filas:filas.slice(1), score:[5], largo:[6], chips:[9], filtros:[1,2,7,9], leyenda:LEYENDA_NIV,
+    kpis:[{n:DATA_ACC.length,l:'Acciones'}].concat(Object.entries(est).slice(0,4).map(([k,v])=>({n:v,l:k})))});
 }
 function exportEquipoCSV(){
   if(!DATA_EQ.length){ notif('⚠ No hay evaluaciones de equipo para exportar.'); return; }
   const filas = [['Evaluador','Instancia','Fecha','Promedio','Estado','Observaciones',...COMPS_LIDER.map(c=>c.id+' '+c.nombre)]];
   DATA_EQ.forEach(e=>filas.push([e.eval,INST_N[e.inst]||e.inst,e.fecha,e.avgEq,e.estadoEq,e.obs,...COMPS_LIDER.map(c=>e.scoreEq[c.id]||'')]));
-  descargarArchivo('EPEC_CCOD_equipo_'+sufijoFecha()+'.csv', csvTexto(filas), 'text/csv;charset=utf-8', true);
+  exportarTablaHTML({archivo:'EPEC_CCOD_equipo', titulo:'Evaluaciones de equipo', desc:'Cómo evalúa el equipo a su líder, competencia por competencia.',
+    cab:filas[0], filas:filas.slice(1), score:rango(6,filas[0].length), chips:[4], largo:[5], filtros:[1,4], leyenda:LEYENDA_NIV,
+    kpis:[{n:DATA_EQ.length,l:'Evaluaciones de equipo'},{n:promedioDe(DATA_EQ.map(e=>e.avgEq)),l:'Promedio general'}]});
 }
 function exportJSON(){
   const obj = {exportado:new Date().toISOString(), exportadoPor:usuarioActual(), catalogo:CAT_VER, individual:DATA_IND, equipo:DATA_EQ, acciones:DATA_ACC};
