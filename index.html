@@ -482,7 +482,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
           <option value="JCOD">Jefe CCOD</option>
           <option value="SCOD">Subjefe CCOD</option>
           <option value="JTMT">Coordinador de Turno MT</option>
-          <option value="OMT">Operador MT</option>
+          <option value="OMT">Operador MT/BT</option>
         </select></div>
       <div class="fg"><label>Persona *</label>
         <input type="text" id="ev-nom" list="ev-nom-list" placeholder="Apellido, Nombre" onchange="evCambio()">
@@ -678,7 +678,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
 
     <div class="plan-panel" id="plan-omt">
       <div class="plan-header">
-        <div class="plan-title">OPERADOR MT — Procesos del puesto</div>
+        <div class="plan-title">OPERADOR MT/BT — Procesos del puesto</div>
         <div class="plan-sub">P-OMT-01 a P-OMT-03 · Actúa como Operador de OCOR · Depende del Coordinador de Turno MT durante el turno</div>
       </div>
       <div id="plan-ref-omt" class="puesto-ref"></div>
@@ -688,13 +688,13 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
         <tbody>
           <tr>
             <td class="cod">P-OMT-01<br>Operación en tiempo real</td>
-            <td><strong style="font-size:10px;color:var(--gd);">Operación en tiempo real de redes de Media Tensión</strong><br>Operar la red MT desde el CCOD, monitorear y llevar maniobras programadas y de servicio de inicio a fin con comunicaciones a campo, telemandos SCADA, registros y verificación del estado final, siempre autorizado y supervisado por el Coordinador.</td>
+            <td><strong style="font-size:10px;color:var(--gd);">Operación en tiempo real de redes de Media y Baja Tensión</strong><br>Operar la red MT/BT desde el CCOD, monitorear y llevar maniobras programadas y de servicio de inicio a fin con comunicaciones a campo, telemandos SCADA, registros y verificación del estado final, siempre autorizado y supervisado por el Coordinador.</td>
             <td class="crit">Eventos detectados, actuaciones autorizadas y supervisadas, telemandos y comunicaciones registradas, estados finales verificados y pendientes aportados para la entrega de turno.</td>
             <td><div class="plan-score" id="ps-omt-01"></div></td>
           </tr>
           <tr>
             <td class="cod">P-OMT-02<br>Comunicaciones y novedades</td>
-            <td><strong style="font-size:10px;color:var(--gd);">Coordinación operativa, comunicaciones y registro de novedades MT</strong><br>Asegurar comunicaciones operativas claras, oportunas y trazables; registrar novedades MT en tiempo real; consolidar información para continuidad del turno.</td>
+            <td><strong style="font-size:10px;color:var(--gd);">Coordinación operativa, comunicaciones y registro de novedades MT/BT</strong><br>Asegurar comunicaciones operativas claras, oportunas y trazables; registrar novedades MT/BT en tiempo real; consolidar información para continuidad del turno.</td>
             <td class="crit">Comunicaciones autorizadas y confirmadas, novedades completas, información diaria y registros para la entrega del Coordinador al turno entrante.</td>
             <td><div class="plan-score" id="ps-omt-02"></div></td>
           </tr>
@@ -729,7 +729,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
           <tr><td class="cod">P-DUP-04</td><td>Coordinación COD-CTZ-Teleoperación</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Establece protocolos</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Coordina turno a turno</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td><div class="plan-score" id="ps-dup-04"></div></td></tr>
           <tr><td class="cod">P-DUP-05</td><td>Provisión de equipos, EPP y herramientas</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba adquisiciones</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Gestiona inventario</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td><div class="plan-score" id="ps-dup-05"></div></td></tr>
           <tr><td class="cod">P-DUP-06</td><td>Provisión de insumos y materiales</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba solicitudes</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Gestiona stock</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td><div class="plan-score" id="ps-dup-06"></div></td></tr>
-          <tr><td class="cod">P-DUP-07</td><td>Maniobras programadas</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba plan</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Firma y autoriza la programación</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Autoriza y supervisa al Operador MT</td><td><div class="plan-score" id="ps-dup-07"></div></td></tr>
+          <tr><td class="cod">P-DUP-07</td><td>Maniobras programadas</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba plan</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Firma y autoriza la programación</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Autoriza y supervisa al Operador MT/BT</td><td><div class="plan-score" id="ps-dup-07"></div></td></tr>
           <tr><td class="cod">P-DUP-08</td><td>Comités Técnicos y de Contingencias</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Voz institucional</td><td style="font-size:10px;color:#92400e">Consultado (C)<br>Soporte técnico</td><td style="font-size:10px;color:#065f46">Informado (I)</td><td><div class="plan-score" id="ps-dup-08"></div></td></tr>
           <tr><td class="cod">P-DUP-09</td><td>Capacitación del personal</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Aprueba plan</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Elabora y coordina</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Participa y aplica</td><td><div class="plan-score" id="ps-dup-09"></div></td></tr>
           <tr><td class="cod">P-DUP-10</td><td>Cumplimiento de seguridad operacional (consulta a SHyMA)</td><td style="font-size:10px;color:#1e40af">Accountable (A)<br>Conduce; consulta a SHyMA</td><td style="font-size:10px;color:#92400e">Responsible (R)<br>Supervisa y audita</td><td style="font-size:10px;color:#065f46">Responsible (R)<br>Controla en turno</td><td><div class="plan-score" id="ps-dup-10"></div></td></tr>
@@ -764,7 +764,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
           </tr>
           <tr style="border-left:3px solid #c02133;">
             <td class="cod">P-TEC-02<br>Seguridad operacional <span class="shyma-tag" title="Proceso de seguridad operacional">🛡 Seguridad</span></td>
-            <td>Aplica la regla de seguridad operacional del manual: toda actuación del Operador MT cuenta con autorización y supervisión del Coordinador; distingue al Operador de OCOR del responsable de maniobra y del responsable de trabajo en campo (SG-P200); mantiene visibles las restricciones y comunica y escala los desvíos de seguridad. Consulta a SHyMA cuando el proceso lo prevé.</td>
+            <td>Aplica la regla de seguridad operacional del manual: toda actuación del Operador MT/BT cuenta con autorización y supervisión del Coordinador; distingue al Operador de OCOR del responsable de maniobra y del responsable de trabajo en campo (SG-P200); mantiene visibles las restricciones y comunica y escala los desvíos de seguridad. Consulta a SHyMA cuando el proceso lo prevé.</td>
             <td class="crit">Registros con rol identificado, restricciones y estado final; desvíos de seguridad escalados / detectados (indicador del manual). Sin atribuir tareas de campo al centro de control. <strong>Una calificación 1 genera una alerta de seguridad operacional (no bloquea).</strong></td>
             <td><div class="plan-score" id="ps-tec-02"></div></td>
           </tr>
@@ -888,7 +888,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
           <option value="JCOD">Jefe CCOD</option>
           <option value="SCOD">Subjefe CCOD</option>
           <option value="JTMT">Coordinador de Turno MT</option>
-          <option value="OMT">Operador MT</option>
+          <option value="OMT">Operador MT/BT</option>
         </select></div>
       <div class="fg"><label>Persona</label>
         <select id="seg-persona" onchange="segCambio()"><option value="">Seleccionar persona...</option></select></div>
@@ -921,7 +921,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
           <option value="JCOD">Jefe CCOD</option>
           <option value="SCOD">Subjefe CCOD</option>
           <option value="JTMT">Coordinador de Turno MT</option>
-          <option value="OMT">Operador MT</option>
+          <option value="OMT">Operador MT/BT</option>
         </select>
       </div>
       <div class="fg"><label>Persona</label>
@@ -957,7 +957,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
           <option value="JCOD">Jefe CCOD</option>
           <option value="SCOD">Subjefe CCOD</option>
           <option value="JTMT">Coordinador de Turno MT</option>
-          <option value="OMT">Operador MT</option>
+          <option value="OMT">Operador MT/BT</option>
         </select>
       </div>
       <div class="fg"><label>Persona</label>
@@ -1021,7 +1021,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
           <option value="JCOD">Jefe CCOD</option>
           <option value="SCOD">Subjefe CCOD</option>
           <option value="JTMT">Coordinador de Turno MT</option>
-          <option value="OMT">Operador MT</option>
+          <option value="OMT">Operador MT/BT</option>
         </select>
       </div>
       <div style="position:relative;height:300px;"><canvas id="cRadarTec"></canvas></div>
@@ -1058,7 +1058,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
           <option value="JCOD">Jefe CCOD</option>
           <option value="SCOD">Subjefe CCOD</option>
           <option value="JTMT">Coordinador de Turno MT</option>
-          <option value="OMT">Operador MT</option>
+          <option value="OMT">Operador MT/BT</option>
         </select>
       </div>
       <div style="position:relative;height:220px;"><canvas id="cTendTec"></canvas></div>
@@ -1097,7 +1097,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
         <option value="JCOD">Jefe CCOD</option>
         <option value="SCOD">Subjefe CCOD</option>
         <option value="JTMT">Coordinador de Turno MT</option>
-          <option value="OMT">Operador MT</option>
+          <option value="OMT">Operador MT/BT</option>
       </select>
     </div>
 
@@ -1151,7 +1151,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
           <option value="JCOD">Jefe CCOD</option>
           <option value="SCOD">Subjefe CCOD</option>
           <option value="JTMT">Coordinador de Turno MT</option>
-          <option value="OMT">Operador MT</option>
+          <option value="OMT">Operador MT/BT</option>
         </select>
       </div>
       <div class="fg">
@@ -1327,8 +1327,8 @@ const PROCS_TEC = {
     {id:'P-JTMT-03', n:"Atención de reclamos técnicos de turno", seg:false},
   ],
   OMT:[
-    {id:'P-OMT-01', n:"Operación en tiempo real de redes de Media Tensión", seg:false},
-    {id:'P-OMT-02', n:"Coordinación operativa, comunicaciones y registro de novedades MT", seg:false},
+    {id:'P-OMT-01', n:"Operación en tiempo real de redes de Media y Baja Tensión", seg:false},
+    {id:'P-OMT-02', n:"Coordinación operativa, comunicaciones y registro de novedades MT/BT", seg:false},
     {id:'P-OMT-03', n:"Incidentes, documentación y actuación del Operador de OCOR según SG-P200", seg:true},
   ],
 };
@@ -1400,13 +1400,13 @@ const PROC_MANUAL = {
   "sal": "Reclamo clasificado, actuación autorizada, seguimiento y cierre o transferencia al turno entrante; novedad comunicada a Subjefatura."
  },
  "P-OMT-01": {
-  "n": "Operación en tiempo real de redes de Media Tensión",
-  "fin": "Operar la red MT desde el CCOD, monitorear y llevar maniobras programadas y de servicio de inicio a fin con comunicaciones a campo, telemandos SCADA, registros y verificación del estado final, siempre autorizado y supervisado por el Coordinador.",
+  "n": "Operación en tiempo real de redes de Media y Baja Tensión",
+  "fin": "Operar la red MT/BT desde el CCOD, monitorear y llevar maniobras programadas y de servicio de inicio a fin con comunicaciones a campo, telemandos SCADA, registros y verificación del estado final, siempre autorizado y supervisado por el Coordinador.",
   "sal": "Eventos detectados, actuaciones autorizadas y supervisadas, telemandos y comunicaciones registradas, estados finales verificados y pendientes aportados para la entrega de turno."
  },
  "P-OMT-02": {
-  "n": "Coordinación operativa, comunicaciones y registro de novedades MT",
-  "fin": "Asegurar comunicaciones operativas claras, oportunas y trazables; registrar novedades MT en tiempo real; consolidar información para continuidad del turno.",
+  "n": "Coordinación operativa, comunicaciones y registro de novedades MT/BT",
+  "fin": "Asegurar comunicaciones operativas claras, oportunas y trazables; registrar novedades MT/BT en tiempo real; consolidar información para continuidad del turno.",
   "sal": "Comunicaciones autorizadas y confirmadas, novedades completas, información diaria y registros para la entrega del Coordinador al turno entrante."
  },
  "P-OMT-03": {
@@ -1458,8 +1458,8 @@ const COMPS_LIDER = [
    desc:'Presta atención genuina a lo que dice el equipo, valida las ideas recibidas y genera espacios de diálogo antes de decidir.'},
 ];
 
-const ROLE_N = {JCOD:'Jefe CCOD', SCOD:'Subjefe CCOD', JTMT:'Coordinador de Turno MT', OMT:'Operador MT'};
-const ROLE_S = {JCOD:'Jefe CCOD', SCOD:'Subjefe CCOD', JTMT:'Coord. Turno MT', OMT:'Operador MT'};
+const ROLE_N = {JCOD:'Jefe CCOD', SCOD:'Subjefe CCOD', JTMT:'Coordinador de Turno MT', OMT:'Operador MT/BT'};
+const ROLE_S = {JCOD:'Jefe CCOD', SCOD:'Subjefe CCOD', JTMT:'Coord. Turno MT', OMT:'Operador MT/BT'};
 const ROLE_C = {JCOD:'#1e40af', SCOD:'#92400e', JTMT:'#065f46', OMT:'#475569'};
 const ROLE_B = {JCOD:'bj', SCOD:'bs', JTMT:'bt', OMT:'bo'};
 const ROLES_EVAL = ['JCOD','SCOD','JTMT','OMT'];
@@ -2326,9 +2326,9 @@ const PUESTOS = {
   JTMT:{nombre:'Coordinador de Turno MT', evaluable:true, color:'#065f46',
     contribucion:'Conducción operativa durante el turno', procesos:'P-JTMT-01 a P-JTMT-03',
     depende:'Subjefe CCOD (puede recibir instrucciones directas del Jefe CCOD dentro del alcance del puesto). Antes llamado "Jefe de Turno MT".',
-    conduce:'Operador MT durante el turno. Registra ingresos y salidas de operadores MT y BT, sin ampliar su conducción al Operador BT.',
-    mision:'Conducir la operación MT durante el turno: autorizar y supervisar las actuaciones del Operador MT, coordinar la atención de eventos y comunicar las novedades al cierre, para sostener el control operativo desde el CCOD y una entrega de turno completa.',
-    decide:['Prioridades de eventos y reclamos, y asignación de tareas al Operador MT.','Autoriza y supervisa toda actuación del Operador MT (maniobras programadas y de servicio).','Cierra y entrega el turno al Coordinador entrante y comunica las novedades al Subjefe, sin requerir su aprobación.'],
+    conduce:'Operador MT/BT durante el turno. Registra ingresos y salidas de los operadores MT/BT.',
+    mision:'Conducir la operación MT durante el turno: autorizar y supervisar las actuaciones del Operador MT/BT, coordinar la atención de eventos y comunicar las novedades al cierre, para sostener el control operativo desde el CCOD y una entrega de turno completa.',
+    decide:['Prioridades de eventos y reclamos, y asignación de tareas al Operador MT/BT.','Autoriza y supervisa toda actuación del Operador MT/BT (maniobras programadas y de servicio).','Cierra y entrega el turno al Coordinador entrante y comunica las novedades al Subjefe, sin requerir su aprobación.'],
     limites:'No firma la programación de maniobras (lo hace el Subjefe). Actúa desde el CCOD: no realiza tareas ni asume responsabilidades de campo del SG-P200.',
     escala:'',
     jornada:'Turnos rotativos de seis horas.',
@@ -2339,11 +2339,11 @@ const PUESTOS = {
       ['Escalamiento oportuno','Reconoce el límite del rol y transmite situación, riesgo y necesidad de decisión con evidencia.','Notificación y registro del escalamiento.'],
       ['Entrega de turno','Comunica al Coordinador entrante estado de red, restricciones, novedades y pendientes, y al Subjefe las novedades del cierre.','Registro de entrega y comunicación de cierre.'],
     ]},
-  OMT:{nombre:'Operador MT', evaluable:true, color:'#475569',
+  OMT:{nombre:'Operador MT/BT', evaluable:true, color:'#475569',
     contribucion:'Operación bajo consigna y trazabilidad', procesos:'P-OMT-01 a P-OMT-03',
     depende:'Coordinador de Turno MT durante el turno',
     conduce:'No tiene conducción de personal.',
-    mision:'Actuar como Operador de OCOR desde el CCOD: monitorear la red MT y llevar las maniobras de inicio a fin (comunicaciones a campo, telemandos SCADA, registros y verificación del estado final), siempre con autorización y supervisión del Coordinador.',
+    mision:'Actuar como Operador de OCOR desde el CCOD: monitorear la red MT/BT y llevar las maniobras de inicio a fin (comunicaciones a campo, telemandos SCADA, registros y verificación del estado final), siempre con autorización y supervisión del Coordinador.',
     decide:['Detecta y clasifica inicialmente eventos y novedades.','Realiza comunicaciones, telemandos SCADA y registros bajo autorización del Coordinador.','Consulta ante información insuficiente y escala desvíos antes del cierre.'],
     limites:'Toda actuación operativa requiere autorización y supervisión del Coordinador. No ejecuta las tareas de campo del SG-P200.',
     escala:'',
@@ -2360,7 +2360,7 @@ const LIMITES_PUESTOS = [
   ['Criterios de operación','Define criterios y gestiona su validación.','Aporta soporte y difusión.','Aplica y valida dentro del turno.','Actúa bajo consigna y alerta desvíos.'],
   ['Sistemas y documentación','Supervisa desempeño y mejoras.','Controla disponibilidad y vigencia.','Usa medios y comunica necesidades.','Monitorea y reporta anomalías.'],
   ['Información operativa','Aprueba informes de rendimiento.','Controla calidad y consolida.','Conduce seguimiento y cierre del turno.','Registra y mantiene estados y comunicaciones.'],
-  ['Personal','Autoriza licencias.','Administra licencias, evalúa y organiza; confecciona roseta y coberturas.','Conduce al Operador MT; registra ingresos y salidas MT/BT.','Actúa bajo conducción del Coordinador.'],
+  ['Personal','Autoriza licencias.','Administra licencias, evalúa y organiza; confecciona roseta y coberturas.','Conduce al Operador MT/BT; registra sus ingresos y salidas.','Actúa bajo conducción del Coordinador.'],
   ['Maniobras','Conduce el marco de gestión.','Firma y autoriza maniobras programadas.','Autoriza y supervisa toda actuación del Operador.','Lleva la maniobra de inicio a fin como OCOR desde el CCOD.'],
   ['Entrega de turno','Recibe información de gestión.','Recibe las novedades del cierre.','Cierra y entrega al Coordinador entrante, sin aprobación del Subjefe.','Aporta registros, estados y pendientes.'],
 ];
@@ -2397,7 +2397,7 @@ function renderPuestos(){
     ['JCOD','SCOD','JTMT','OMT'].map(k=>`<span class="pz-node" style="border-color:${PUESTOS[k].color};color:${PUESTOS[k].color}">${PUESTOS[k].nombre}</span>`).join('<span class="pz-arrow">→</span>')+
     '</div><div class="sub" style="margin-top:6px;">La flecha indica de quién depende cada puesto. Escalamiento: primero al Subjefe de Zona A; si no está o por la envergadura, al Jefe de Zona A. La comunicación con Gerencia se canaliza por Zona A.</div></div>';
 
-  h += '<div class="card"><div class="ct"><i class="ti ti-table"></i>Quién hace qué — límites entre los cuatro puestos</div><div class="tbl-scroll"><table class="pdf-table"><thead><tr><th>Ámbito</th><th>Jefe CCOD</th><th>Subjefe CCOD</th><th>Coordinador de Turno MT</th><th>Operador MT</th></tr></thead><tbody>'+
+  h += '<div class="card"><div class="ct"><i class="ti ti-table"></i>Quién hace qué — límites entre los cuatro puestos</div><div class="tbl-scroll"><table class="pdf-table"><thead><tr><th>Ámbito</th><th>Jefe CCOD</th><th>Subjefe CCOD</th><th>Coordinador de Turno MT</th><th>Operador MT/BT</th></tr></thead><tbody>'+
     LIMITES_PUESTOS.map(r=>`<tr><td><strong>${r[0]}</strong></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td></tr>`).join('')+'</tbody></table></div></div>';
 
   h += '<div class="pz-grid">'+['JCOD','SCOD','JTMT','OMT'].map(k=>{
@@ -2419,7 +2419,7 @@ function renderPuestos(){
 
   h += `<div class="card" style="margin-top:14px;"><div class="ct"><i class="ti ti-shield-check"></i>Seguridad operacional y SHyMA según el manual</div>
     <ul style="padding-left:18px;font-size:12px;line-height:1.7;">
-      <li><strong>Regla de seguridad operacional:</strong> toda actuación del Operador MT requiere autorización y supervisión del Coordinador. Las maniobras programadas cuentan con firma y autorización de Subjefatura.</li>
+      <li><strong>Regla de seguridad operacional:</strong> toda actuación del Operador MT/BT requiere autorización y supervisión del Coordinador. Las maniobras programadas cuentan con firma y autorización de Subjefatura.</li>
       <li><strong>SG-P200:</strong> consignación, desconsignación, licencias y tareas de campo se rigen por ese procedimiento. El manual describe interfaces organizacionales y no lo reemplaza.</li>
       <li><strong>Campo:</strong> el responsable de maniobra (ítems a y b) y el responsable de trabajo en campo (ítems c, d y e, que vela por la seguridad de las personas y de los bienes) tienen sus propias funciones. El centro de control no las asume.</li>
       <li><strong>SHyMA</strong> es un área a la que se consulta (C) en la evaluación de impactos, criterios, instrucciones, contrataciones, análisis de desvíos y asignación de tareas. No es un proceso ni un puesto del CCOD.</li>
