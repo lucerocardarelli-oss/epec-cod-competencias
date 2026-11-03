@@ -485,7 +485,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
           <option value="OMT">Operador MT/BT</option>
         </select></div>
       <div class="fg"><label>Persona *</label>
-        <input type="text" id="ev-nom" list="ev-nom-list" placeholder="Apellido, Nombre" onchange="evCambio()">
+        <input type="text" id="ev-nom" list="ev-nom-list" placeholder="Apellido, Nombre" autocomplete="off" onfocus="evNomAbrir(this)" onblur="evNomCerrar(this)" onchange="evCambio()">
         <datalist id="ev-nom-list"></datalist></div>
       <div class="fg"><label>Instancia *</label>
         <select id="ev-inst" onchange="evCambio()">
@@ -3092,6 +3092,9 @@ let evalKey = null, evDirty = false, evCtx = {rol:'', nom:'', inst:'diagnostico'
 currentRolTab = '';
 function marcarDirty(){ evDirty = true; const b = document.getElementById('ev-dirty'); if(b) b.style.display = 'inline-flex'; }
 function limpiarDirty(){ evDirty = false; const b = document.getElementById('ev-dirty'); if(b) b.style.display = 'none'; }
+/* Persona: el navegador filtra la lista con lo escrito; al entrar al campo se vacía para mostrar a todos y, si no se elige a nadie, se restituye el nombre */
+function evNomAbrir(el){ if(el.value){ el.dataset.prev = el.value; el.value = ''; } }
+function evNomCerrar(el){ setTimeout(()=>{ if(!el.value && el.dataset.prev) el.value = el.dataset.prev; delete el.dataset.prev; }, 150); }
 function evLeer(){ return {rol:document.getElementById('ev-rol').value, nom:document.getElementById('ev-nom').value.trim(), inst:document.getElementById('ev-inst').value}; }
 function relIdsRol(){ return [...(PLAN_GRUPOS[currentRolTab]||[]), ...PLAN_GRUPOS.dup, ...PLAN_GRUPOS.tec]; }
 function poblarPersonasEv(){
