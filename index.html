@@ -1290,6 +1290,8 @@ const refEq  = db.ref('cod_equipo');
 const refAcc = db.ref('cod_acciones');
 const refNom = db.ref('cod_nomina');   // nómina de personas (solo nombre y puesto), aunque todavía no tengan evaluaciones
 let DATA_NOM = [];
+// Operadores MT/BT (Reparto 185): siempre disponibles en el desplegable Persona, sin depender de la carga en Firebase.
+const NOM_BASE = {OMT:["Abdon, Marcos Andres", "Bravo, Matias Ezequiel", "Casas, Noel Sebastian", "Da Col, Fabian Elio", "Daer, Gabriel Hugo", "Hruby, Emiliano Joaquín", "Jordan, Walter Cesar", "Juarez, Lucio Horacio", "Leyria, Rodolfo", "Maldonado, Christian Rodolfo", "Miranda, Alejandro", "Molinaro, Marco Fabian", "Ortiz, Nestor Adrian", "Pavon, Juan Roque", "Peralta, Christian Ivan", "Peralta, David Horacio", "Peralta, Gaston Eduardo", "Peralta, Marcelo Rito", "Perez, Jose Maria", "Rodriguez Benavidez, Marcos Sebastian", "Roldan, Cristian Fernando", "Sanchez, Diego Angel", "Sosa, Mario German", "Zacaro, Ramon Antonio"]};
 
 // Evaluaciones guardadas antes del catálogo vigente: se descartan sólo los puntajes de procesos
 // cuya definición cambió (para no atribuirles un significado distinto al que se evaluó).
@@ -3123,6 +3125,7 @@ function poblarPersonasEv(){
   const sumar = nom => { const k = normNom(nom); if(k && !vistos.has(k)){ vistos.add(k); lista.push(nom); } };
   nbPersonas(rol ? DATA_IND.filter(d=>d.rol===rol) : DATA_IND).forEach(p=>sumar(p.nom));
   (rol ? DATA_NOM.filter(n=>n.rol===rol) : DATA_NOM).forEach(n=>sumar(n.nom));
+  Object.keys(NOM_BASE).forEach(r=>{ if(!rol || rol===r) NOM_BASE[r].forEach(sumar); });
   lista.sort((a,b)=>a.localeCompare(b,'es'));
   dl.innerHTML = lista.map(n=>`<option value="${escH(n)}">`).join('');
 }
