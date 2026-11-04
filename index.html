@@ -3483,6 +3483,14 @@ function personasConEval(rolFiltro){
     const key = x.nom+'|'+x.rol;
     if(!seen.has(key)) seen.set(key, {nom:x.nom, rol:x.rol});
   });
+  // Nómina cargada (aunque todavía no tenga evaluaciones): se suma sin repetir a quien ya fue evaluado.
+  const ya = new Set([...seen.values()].map(p=>p.rol+'|'+normNom(p.nom)));
+  const nomina = [...DATA_NOM, ...Object.entries(NOM_BASE).flatMap(([rol,l])=>l.map(nom=>({nom,rol})))];
+  nomina.forEach(n=>{
+    if(rolFiltro && n.rol!==rolFiltro) return;
+    const k = n.rol+'|'+normNom(n.nom); if(ya.has(k)) return; ya.add(k);
+    seen.set(n.nom+'|'+n.rol, {nom:n.nom, rol:n.rol});
+  });
   return [...seen.values()].sort((a,b)=>a.nom.localeCompare(b.nom,'es'));
 }
 function ultimaEvalDe(nom, rol){
@@ -3539,7 +3547,7 @@ function renderFeedback(){
   const [nom, rol] = val.split('|');
   const rec = ultimaEvalDe(nom, rol);
   if(!rec){
-    wrap.innerHTML = '<div class="card"><p style="font-size:12px;color:var(--tm);text-align:center;padding:20px;">No hay evaluaciones cargadas para esta persona.</p></div>';
+    wrap.innerHTML = '<div class="card"><p style="font-size:12px;color:var(--tm);text-align:center;padding:20px;">Todavía no tiene evaluaciones. Cargá una en <strong>Evaluar persona</strong> para ver sus brechas y su plan de acción.</p></div>';
     return;
   }
   const brechas = calcularBrechas(rec);
@@ -3621,7 +3629,7 @@ function renderAcciones(){
   const [nom, rol] = val.split('|');
   const rec = ultimaEvalDe(nom, rol);
   if(!rec){
-    wrap.innerHTML = '<div class="card"><p style="font-size:12px;color:var(--tm);text-align:center;padding:20px;">No hay evaluaciones cargadas para esta persona.</p></div>';
+    wrap.innerHTML = '<div class="card"><p style="font-size:12px;color:var(--tm);text-align:center;padding:20px;">Todavía no tiene evaluaciones. Cargá una en <strong>Evaluar persona</strong> para ver sus brechas y su plan de acción.</p></div>';
     return;
   }
   const brechas = calcularBrechas(rec);
