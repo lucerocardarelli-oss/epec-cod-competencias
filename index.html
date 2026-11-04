@@ -1183,6 +1183,17 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
     </div>
   </div>
 
+  <div class="card">
+    <div class="ct"><i class="ti ti-users-group"></i>Nómina de personas</div>
+    <div class="sub">Cargá a las personas de cada puesto (solo nombre y puesto) para que aparezcan en el desplegable <b>Persona</b> de <b>Evaluar persona</b> aunque todavía no tengan evaluaciones. Pegá un nombre por línea con el formato <b>Apellido, Nombre</b>.</div>
+    <div class="acts" style="align-items:flex-start;">
+      <select id="nom-rol" style="max-width:240px;"><option value="">Puesto...</option><option value="JCOD">Jefe CCOD</option><option value="SCOD">Subjefe CCOD</option><option value="JTMT">Coordinador de Turno MT</option><option value="OMT">Operador MT/BT</option></select>
+    </div>
+    <textarea id="nom-txt" rows="6" placeholder="Apellido, Nombre&#10;Apellido, Nombre" style="width:100%;margin-top:8px;"></textarea>
+    <div class="acts"><button class="bp" onclick="cargarNomina()"><i class="ti ti-user-plus"></i>Cargar en la nómina</button><span id="nom-msg" style="font-size:12px;"></span></div>
+    <div id="nom-lista"></div>
+  </div>
+
   <div id="pdfPreviewWrap" style="display:none;">
     <div class="pdf-preview" id="pdfExec" style="display:none;"></div>
     <div class="pdf-preview" id="pdfContent">
@@ -1277,6 +1288,8 @@ const db = firebase.database();
 const refInd = db.ref('cod_individual');
 const refEq  = db.ref('cod_equipo');
 const refAcc = db.ref('cod_acciones');
+const refNom = db.ref('cod_nomina');   // nómina de personas (solo nombre y puesto), aunque todavía no tengan evaluaciones
+let DATA_NOM = [];
 
 // Evaluaciones guardadas antes del catálogo vigente: se descartan sólo los puntajes de procesos
 // cuya definición cambió (para no atribuirles un significado distinto al que se evaluó).
@@ -1567,6 +1580,12 @@ refEq.on('value', snap => {
   });
   console.log('DATA_EQ cargado:', DATA_EQ.length, 'registros');
 });
+
+refNom.on('value', snap => {
+  DATA_NOM = [];
+  snap.forEach(child => { const v = child.val(); if(v && v.nom && v.rol) DATA_NOM.push({fbKey:child.key, nom:v.nom, rol:v.rol}); });
+  poblarPersonasEv(); renderNomina();
+}, e => { console.warn('Nómina no disponible:', e && e.message); });
 
 refAcc.on('value', snap => {
   DATA_ACC = [];
@@ -3100,7 +3119,38 @@ function relIdsRol(){ return [...(PLAN_GRUPOS[currentRolTab]||[]), ...PLAN_GRUPO
 function poblarPersonasEv(){
   const dl = document.getElementById('ev-nom-list'); if(!dl) return;
   const rol = document.getElementById('ev-rol').value;
-  dl.innerHTML = nbPersonas(rol ? DATA_IND.filter(d=>d.rol===rol) : DATA_IND).map(p=>`<option value="${escH(p.nom)}">`).join('');
+  const vistos = new Set(), lista = [];
+  const sumar = nom => { const k = normNom(nom); if(k && !vistos.has(k)){ vistos.add(k); lista.push(nom); } };
+  nbPersonas(rol ? DATA_IND.filter(d=>d.rol===rol) : DATA_IND).forEach(p=>sumar(p.nom));
+  (rol ? DATA_NOM.filter(n=>n.rol===rol) : DATA_NOM).forEach(n=>sumar(n.nom));
+  lista.sort((a,b)=>a.localeCompare(b,'es'));
+  dl.innerHTML = lista.map(n=>`<option value="${escH(n)}">`).join('');
+}
+
+// ── Nómina de personas (solo nombre y puesto) ─────────────────────────────
+function renderNomina(){
+  const box = document.getElementById('nom-lista'); if(!box) return;
+  if(!DATA_NOM.length){ box.innerHTML = '<div style="font-size:12px;color:var(--tm);">Todavía no hay personas cargadas en la nómina.</div>'; return; }
+  box.innerHTML = Object.keys(ROLE_N).map(r=>{
+    const l = DATA_NOM.filter(n=>n.rol===r).sort((a,b)=>a.nom.localeCompare(b.nom,'es')); if(!l.length) return '';
+    return `<div style="margin-top:10px;"><div style="font-size:12px;font-weight:700;margin-bottom:6px;">${escH(ROLE_N[r])} · ${l.length} personas</div>`+
+      l.map(n=>`<span style="display:inline-flex;align-items:center;gap:6px;background:var(--bg3,rgba(128,128,128,.12));border-radius:14px;padding:3px 10px;margin:0 6px 6px 0;font-size:12px;">${escH(n.nom)}<a href="#" title="Quitar de la nómina" style="text-decoration:none;color:var(--tm);" onclick="quitarNomina('${n.fbKey}');return false;">✕</a></span>`).join('')+`</div>`;
+  }).join('');
+}
+function cargarNomina(){
+  const rol = document.getElementById('nom-rol').value, ta = document.getElementById('nom-txt'), msg = document.getElementById('nom-msg');
+  const nombres = ta.value.split(/\r?\n/).map(t=>t.replace(/\s+/g,' ').trim()).filter(Boolean);
+  if(!rol || !nombres.length){ msg.style.color='var(--r,#c0392b)'; msg.textContent='Elegí el puesto y pegá al menos un nombre.'; return; }
+  const ya = new Set(DATA_NOM.filter(n=>n.rol===rol).map(n=>normNom(n.nom)));
+  const nuevos = []; nombres.forEach(n=>{ const k = normNom(n); if(!ya.has(k)){ ya.add(k); nuevos.push(n); } });
+  if(!nuevos.length){ msg.style.color='var(--tm)'; msg.textContent='Todas esas personas ya estaban en la nómina.'; return; }
+  Promise.all(nuevos.map(n=>refNom.push({nom:n, rol, ts:Date.now(), creadoPor:usuarioActual()}))).then(()=>{
+    ta.value=''; msg.style.color='var(--g)'; msg.textContent='✅ Se cargaron '+nuevos.length+' personas como '+ROLE_N[rol]+(nombres.length>nuevos.length?' ('+(nombres.length-nuevos.length)+' ya estaban).':'.');
+  }).catch(e=>{ msg.style.color='var(--r,#c0392b)'; msg.textContent='No se pudo guardar: '+(e&&e.message?e.message:e); });
+}
+function quitarNomina(k){
+  const n = DATA_NOM.find(x=>x.fbKey===k); if(!n) return;
+  if(confirm('¿Quitar a '+n.nom+' de la nómina? Sus evaluaciones, si las tiene, no se borran.')) refNom.child(k).remove();
 }
 function evCambio(){
   const n = evLeer();
