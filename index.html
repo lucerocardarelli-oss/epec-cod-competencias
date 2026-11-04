@@ -679,29 +679,29 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
     <div class="plan-panel" id="plan-omt">
       <div class="plan-header">
         <div class="plan-title">OPERADOR MT/BT — Procesos del puesto</div>
-        <div class="plan-sub">P-OMT-01 a P-OMT-03 · Actúa como Operador de OCOR · Depende del Coordinador de Turno MT durante el turno</div>
+        <div class="plan-sub">P-OMT-01 a P-OMT-03 · Procesos propios del puesto, no compartidos con otros roles · Depende del Jefe de Turno MT / Coordinador durante el turno</div>
       </div>
       <div id="plan-ref-omt" class="puesto-ref"></div>
       <div class="tbl-scroll">
       <table class="plan-tbl">
-        <thead><tr><th style="width:120px">Proceso</th><th>Finalidad / Actividad a verificar (Manual v1.2)</th><th style="width:210px">Criterio de aceptación (salida clave)</th><th style="width:140px;text-align:center">Puntuación</th></tr></thead>
+        <thead><tr><th style="width:120px">Proceso</th><th>Finalidad / Actividades a verificar (Procedimientos del Operador MT)</th><th style="width:260px">Criterio de aceptación (salidas y registros)</th><th style="width:140px;text-align:center">Puntuación</th></tr></thead>
         <tbody>
           <tr>
             <td class="cod">P-OMT-01<br>Operación en tiempo real</td>
-            <td><strong style="font-size:10px;color:var(--gd);">Operación en tiempo real de redes de Media y Baja Tensión</strong><br>Operar la red MT/BT desde el CCOD, monitorear y llevar maniobras programadas y de servicio de inicio a fin con comunicaciones a campo, telemandos SCADA, registros y verificación del estado final, siempre autorizado y supervisado por el Coordinador.</td>
-            <td class="crit">Eventos detectados, actuaciones autorizadas y supervisadas, telemandos y comunicaciones registradas, estados finales verificados y pendientes aportados para la entrega de turno.</td>
+            <td><strong style="font-size:10px;color:var(--gd);">Operación en tiempo real de redes de Media Tensión</strong><br>Monitorear, registrar y acompañar la operación en tiempo real de redes MT, detectando condiciones fuera de parámetro, apoyando maniobras bajo consigna y verificando la normalización segura del servicio.<br><strong style="font-size:10px;">Actividades a verificar:</strong><ol style="margin:6px 0 0 16px;padding:0;font-size:11px;line-height:1.45;"><li>Tomar el turno, revisar estado general de red, eventos abiertos, restricciones, pendientes y consignas vigentes.</li><li>Monitorear estados, alarmas, tendencias, tensiones, corrientes, cargas, disparos e indisponibilidades en sistemas operativos.</li><li>Clasificar la condición observada como normal, anómala, crítica o fuera del umbral operativo del rol.</li><li>Notificar al Jefe de Turno MT toda condición fuera de parámetro, evento crítico o condición insegura.</li><li>Registrar maniobras bajo consigna: hora, equipo, responsable, estado inicial/final, instrucción y observaciones.</li><li>Comunicar instrucciones operativas autorizadas aplicando comunicación cerrada: emisión, repetición, confirmación y registro.</li><li>Verificar normalización del servicio, estado final de red, restricciones remanentes y pendientes de cierre.</li><li>Escalar normalización incompleta, riesgo de continuidad o desvío de seguridad antes del cierre del evento.</li></ol></td>
+            <td class="crit">Eventos identificados y registrados; maniobras documentadas; comunicaciones confirmadas; normalización verificada; desvíos escalados; bitácora actualizada.<br><br><strong>Registros obligatorios:</strong> Bitácora del turno; registro de maniobras; registro de novedades; comunicaciones operativas; cierre de evento con estado final y pendientes.</td>
             <td><div class="plan-score" id="ps-omt-01"></div></td>
           </tr>
           <tr>
             <td class="cod">P-OMT-02<br>Comunicaciones y novedades</td>
-            <td><strong style="font-size:10px;color:var(--gd);">Coordinación operativa, comunicaciones y registro de novedades MT/BT</strong><br>Asegurar comunicaciones operativas claras, oportunas y trazables; registrar novedades MT/BT en tiempo real; consolidar información para continuidad del turno.</td>
-            <td class="crit">Comunicaciones autorizadas y confirmadas, novedades completas, información diaria y registros para la entrega del Coordinador al turno entrante.</td>
+            <td><strong style="font-size:10px;color:var(--gd);">Coordinación operativa, comunicaciones y registro de novedades MT</strong><br>Asegurar comunicaciones operativas claras, oportunas y trazables, registrar novedades MT en tiempo real y consolidar la información del turno para la continuidad operativa.<br><strong style="font-size:10px;">Actividades a verificar:</strong><ol style="margin:6px 0 0 16px;padding:0;font-size:11px;line-height:1.45;"><li>Recibir comunicación operativa e identificar emisor, ubicación, evento, riesgo, acción requerida y urgencia.</li><li>Definir canal adecuado y prioridad de respuesta según criticidad, riesgo eléctrico o impacto en continuidad del servicio.</li><li>Emitir comunicación clara, breve y técnica, solicitando repetición o confirmación de recepción cuando corresponda.</li><li>Registrar en tiempo real la comunicación o novedad relevante con fecha, hora, ubicación, responsable, acción y estado.</li><li>Clasificar la novedad como falla, maniobra, reclamo, incidente de seguridad, indisponibilidad, derivación o pendiente.</li><li>Actualizar estado de la novedad durante el turno hasta cierre, derivación o escalamiento.</li><li>Consolidar informe diario con eventos, causas, acciones, tiempos, derivaciones y pendientes.</li><li>Entregar continuidad al turno siguiente informando restricciones, pendientes y responsables.</li></ol></td>
+            <td class="crit">Comunicaciones confirmadas; novedades clasificadas; registros completos; informe diario; pendientes priorizados; responsables identificados para continuidad.<br><br><strong>Registros obligatorios:</strong> Registro de comunicaciones relevantes; bitácora COD; registro de novedades; informe diario de operación; listado de pendientes y responsables.</td>
             <td><div class="plan-score" id="ps-omt-02"></div></td>
           </tr>
           <tr style="border-left:3px solid #c02133;">
-            <td class="cod">P-OMT-03<br>Incidentes y OCOR (SG-P200) <span class="shyma-tag" title="Proceso de seguridad operacional">🛡 Seguridad</span></td>
-            <td><strong style="font-size:10px;color:var(--gd);">Incidentes, documentación y actuación del Operador de OCOR según SG-P200</strong><br>Interpretar información técnica, analizar incidentes y actuar como Operador de OCOR desde el CCOD durante consignación y desconsignación MT, siempre bajo autorización y supervisión del Coordinador.</td>
-            <td class="crit">Evento clasificado, actuación autorizada, comunicaciones OCOR-campo y registros trazables, discrepancias y desvíos comunicados y estado final verificado. <strong>Una calificación 1 genera una alerta de seguridad operacional (no bloquea).</strong></td>
+            <td class="cod">P-OMT-03<br>Incidentes y seguridad operacional <span class="shyma-tag" title="Proceso de seguridad operacional">🛡 Seguridad</span></td>
+            <td><strong style="font-size:10px;color:var(--gd);">Gestión de incidentes, documentación técnica y seguridad operacional MT</strong><br>Aplicar documentación técnica, análisis de incidentes y criterios de seguridad operacional para canalizar reclamos, apoyar la localización de fallas y prevenir desvíos durante la operación MT.<br><strong style="font-size:10px;">Actividades a verificar:</strong><ol style="margin:6px 0 0 16px;padding:0;font-size:11px;line-height:1.45;"><li>Identificar necesidad de documentación técnica ante maniobra, falla, reclamo o discrepancia operativa.</li><li>Consultar SITEC/GIS, planos, croquis o esquemas para ubicar alimentadores, seccionamientos, puntos de maniobra y zonas de trabajo.</li><li>Contrastar documentación disponible con estado real informado por campo o sistemas operativos.</li><li>Registrar discrepancias planimétricas o documentales y notificarlas al responsable correspondiente.</li><li>Analizar incidente o reclamo MT según criticidad, riesgo, afectación, recurrencia y posible causa.</li><li>Canalizar el incidente al responsable correcto: Jefe de Turno MT, cuadrilla, CTZ, Teleoperación, área técnica o SHyMA según corresponda.</li><li>Verificar condiciones de seguridad antes, durante y después de maniobras o intervenciones.</li><li>Detener, informar o escalar condiciones inseguras o desvíos de procedimiento que comprometan personas, instalaciones o servicio.</li></ol></td>
+            <td class="crit">Referencia técnica correcta; incidentes clasificados; derivaciones documentadas; causas probables; acciones correctivas; condiciones de seguridad registradas; desvíos escalados.<br><br><strong>Registros obligatorios:</strong> Registro de discrepancias; registro de incidentes y reclamos; derivaciones; acciones correctivas; bitácora de seguridad; notificaciones de desvíos de procedimiento. <strong>Una calificación 1 genera una alerta de seguridad operacional (no bloquea).</strong></td>
             <td><div class="plan-score" id="ps-omt-03"></div></td>
           </tr>
         </tbody>
@@ -1342,9 +1342,9 @@ const PROCS_TEC = {
     {id:'P-JTMT-03', n:"Atención de reclamos técnicos de turno", seg:false},
   ],
   OMT:[
-    {id:'P-OMT-01', n:"Operación en tiempo real de redes de Media y Baja Tensión", seg:false},
-    {id:'P-OMT-02', n:"Coordinación operativa, comunicaciones y registro de novedades MT/BT", seg:false},
-    {id:'P-OMT-03', n:"Incidentes, documentación y actuación del Operador de OCOR según SG-P200", seg:true},
+    {id:'P-OMT-01', n:"Operación en tiempo real de redes de Media Tensión", seg:false},
+    {id:'P-OMT-02', n:"Coordinación operativa, comunicaciones y registro de novedades MT", seg:false},
+    {id:'P-OMT-03', n:"Gestión de incidentes, documentación técnica y seguridad operacional MT", seg:true},
   ],
 };
 // Textos del Manual de Procesos CCOD v1.2 (13/10/2026): finalidad y salida clave de cada proceso.
@@ -1415,19 +1415,19 @@ const PROC_MANUAL = {
   "sal": "Reclamo clasificado, actuación autorizada, seguimiento y cierre o transferencia al turno entrante; novedad comunicada a Subjefatura."
  },
  "P-OMT-01": {
-  "n": "Operación en tiempo real de redes de Media y Baja Tensión",
-  "fin": "Operar la red MT/BT desde el CCOD, monitorear y llevar maniobras programadas y de servicio de inicio a fin con comunicaciones a campo, telemandos SCADA, registros y verificación del estado final, siempre autorizado y supervisado por el Coordinador.",
-  "sal": "Eventos detectados, actuaciones autorizadas y supervisadas, telemandos y comunicaciones registradas, estados finales verificados y pendientes aportados para la entrega de turno."
+  "n": "Operación en tiempo real de redes de Media Tensión",
+  "fin": "Monitorear, registrar y acompañar la operación en tiempo real de redes MT, detectando condiciones fuera de parámetro, apoyando maniobras bajo consigna y verificando la normalización segura del servicio.",
+  "sal": "Eventos identificados y registrados; maniobras documentadas; comunicaciones confirmadas; normalización verificada; desvíos escalados; bitácora actualizada."
  },
  "P-OMT-02": {
-  "n": "Coordinación operativa, comunicaciones y registro de novedades MT/BT",
-  "fin": "Asegurar comunicaciones operativas claras, oportunas y trazables; registrar novedades MT/BT en tiempo real; consolidar información para continuidad del turno.",
-  "sal": "Comunicaciones autorizadas y confirmadas, novedades completas, información diaria y registros para la entrega del Coordinador al turno entrante."
+  "n": "Coordinación operativa, comunicaciones y registro de novedades MT",
+  "fin": "Asegurar comunicaciones operativas claras, oportunas y trazables, registrar novedades MT en tiempo real y consolidar la información del turno para la continuidad operativa.",
+  "sal": "Comunicaciones confirmadas; novedades clasificadas; registros completos; informe diario; pendientes priorizados; responsables identificados para continuidad."
  },
  "P-OMT-03": {
-  "n": "Incidentes, documentación y actuación del Operador de OCOR según SG-P200",
-  "fin": "Interpretar información técnica, analizar incidentes y actuar como Operador de OCOR desde el CCOD durante consignación y desconsignación MT, siempre bajo autorización y supervisión del Coordinador.",
-  "sal": "Evento clasificado, actuación autorizada, comunicaciones OCOR-campo y registros trazables, discrepancias y desvíos comunicados y estado final verificado."
+  "n": "Gestión de incidentes, documentación técnica y seguridad operacional MT",
+  "fin": "Aplicar documentación técnica, análisis de incidentes y criterios de seguridad operacional para canalizar reclamos, apoyar la localización de fallas y prevenir desvíos durante la operación MT.",
+  "sal": "Referencia técnica correcta; incidentes clasificados; derivaciones documentadas; causas probables; acciones correctivas; condiciones de seguridad registradas; desvíos escalados."
  }
 };
 // Versión del catálogo con el que se guardan las evaluaciones nuevas. Las evaluaciones anteriores
@@ -1996,7 +1996,7 @@ function delEq(key){if(!confirm('¿Eliminar esta evaluación de equipo?'))return
 function renderRadarTec(){
   const rol=document.getElementById('rRolTec').value;
   const evals=DATA_IND.filter(d=>d.rol===rol);
-  const todos=[...(PROCS_TEC[rol]||[]),...PROCS_DUP].slice(0,8);
+  const todos=procsRol(rol).slice(0,8);
   const vals=todos.map(p=>{const v=evals.map(d=>d.scoreTec?.[p.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
   if(cRadarTec)cRadarTec.destroy();
   cRadarTec=new Chart(document.getElementById('cRadarTec').getContext('2d'),{type:'radar',data:{
@@ -2444,7 +2444,7 @@ function renderPuestos(){
       <li><strong>SG-P200:</strong> consignación, desconsignación, licencias y tareas de campo se rigen por ese procedimiento. El manual describe interfaces organizacionales y no lo reemplaza.</li>
       <li><strong>Campo:</strong> el responsable de maniobra (ítems a y b) y el responsable de trabajo en campo (ítems c, d y e, que vela por la seguridad de las personas y de los bienes) tienen sus propias funciones. El centro de control no las asume.</li>
       <li><strong>SHyMA</strong> es un área a la que se consulta (C) en la evaluación de impactos, criterios, instrucciones, contrataciones, análisis de desvíos y asignación de tareas. No es un proceso ni un puesto del CCOD.</li>
-      <li><strong>Procesos de seguridad que evalúa la app:</strong> P-JTMT-02 (consignación y desconsignación, SG-P200) y P-OMT-03 (actuación del Operador de OCOR), más la evaluación transversal de seguridad operacional. Una calificación 1 genera una <em>alerta de seguridad operacional</em> para revisar con el tutor; no bloquea.</li>
+      <li><strong>Procesos de seguridad que evalúa la app:</strong> P-JTMT-02 (consignación y desconsignación, SG-P200) y P-OMT-03 (gestión de incidentes y seguridad operacional del Operador), más la evaluación transversal de seguridad operacional. Una calificación 1 genera una <em>alerta de seguridad operacional</em> para revisar con el tutor; no bloquea.</li>
       <li><strong>P-DUP y P-TEC-01</strong> no figuran en el Manual v1.2: se conservan como procesos complementarios del programa.</li>
     </ul></div>`;
   h += '<div class="card" style="margin-top:14px;"><div class="sub" style="margin:0;line-height:1.6;"><strong>OCOR</strong> es el Organismo que Coordina la Operación de la Red y tiene a cargo el control operativo de la red eléctrica. <strong>MT</strong> = Media Tensión · <strong>BT</strong> = Baja Tensión. Las tareas de campo están definidas en el procedimiento SG-P200 (responsable de maniobra y responsable de trabajo en campo). Fuente: <em>Manual de Procesos de Trabajo CCOD v1.2</em> (13/10/2026), <em>Descripción de los puestos del CCOD v1.1</em> y <em>Procesos de Trabajo — Roles COD</em>; donde difieren, prevalece el Manual v1.2, que incorpora el relevamiento confirmado.</div></div>';
@@ -2574,7 +2574,7 @@ function renderFicha(){
 
   // brechas
   const items = [];
-  [...(PROCS_TEC[rol]||[]), ...PROCS_DUP].forEach(p=>{ const v = pa.scoreTec[p.id]; if(v && v<3) items.push({t:'Técnico', id:p.id, n:p.n, v, ev:pa.evid[p.id]}); });
+  procsRol(rol).forEach(p=>{ const v = pa.scoreTec[p.id]; if(v && v<3) items.push({t:'Técnico', id:p.id, n:p.n, v, ev:pa.evid[p.id]}); });
   COMPS_LIDER.forEach(c=>{ const v = pa.scoreLider[c.id]; if(v && v<3) items.push({t:'Liderazgo', id:c.id, n:c.nombre, v, ev:pa.evid[c.id]}); });
   items.sort((a,b)=>a.v-b.v);
   h += `<div class="card"><div class="ct"><i class="ti ti-target-arrow"></i>Qué le falta (por debajo de 3 / 4)</div>`;
@@ -3117,7 +3117,10 @@ function limpiarDirty(){ evDirty = false; const b = document.getElementById('ev-
 function evNomAbrir(el){ if(el.value){ el.dataset.prev = el.value; el.value = ''; } }
 function evNomCerrar(el){ setTimeout(()=>{ if(!el.value && el.dataset.prev) el.value = el.dataset.prev; delete el.dataset.prev; }, 150); }
 function evLeer(){ return {rol:document.getElementById('ev-rol').value, nom:document.getElementById('ev-nom').value.trim(), inst:document.getElementById('ev-inst').value}; }
-function relIdsRol(){ return [...(PLAN_GRUPOS[currentRolTab]||[]), ...PLAN_GRUPOS.dup, ...PLAN_GRUPOS.tec]; }
+// El Operador MT/BT tiene procesos propios y no comparte los P-DUP con los demás puestos.
+const sinDup = rol => String(rol).toUpperCase()==='OMT';
+function procsRol(rol){ return sinDup(rol) ? [...(PROCS_TEC[rol]||[])] : [...(PROCS_TEC[rol]||[]), ...PROCS_DUP]; }
+function relIdsRol(){ return [...(PLAN_GRUPOS[currentRolTab]||[]), ...(sinDup(currentRolTab)?[]:PLAN_GRUPOS.dup), ...PLAN_GRUPOS.tec]; }
 function poblarPersonasEv(){
   const dl = document.getElementById('ev-nom-list'); if(!dl) return;
   const rol = document.getElementById('ev-rol').value;
@@ -3170,6 +3173,8 @@ function aplicarRolEnPlanillas(rol){
   document.querySelectorAll('.plan-panel').forEach(p=>p.classList.remove('on'));
   document.getElementById('plan-vacio').style.display = rol ? 'none' : 'block';
   document.getElementById('plan-tabs-wrap').style.display = rol ? 'flex' : 'none';
+  document.getElementById('ptab-dup').style.display = sinDup(rol) ? 'none' : '';
+  if(sinDup(rol) && planTabActual==='dup') planTabActual = 'rol';
   document.getElementById('ptab-rol-lbl').textContent = rol ? ROLE_N[rol] : 'Procesos del puesto';
   if(rol) showPlan(planTabActual); else document.getElementById('shyAlerta').style.display = 'none';
 }
@@ -3204,7 +3209,7 @@ function promedios(){
   const vt = rol ? relIdsRol().map(i=>planScores[i]).filter(Boolean) : [];
   const vl = Object.values(scoreLider).filter(Boolean);
   const m = a=>a.length ? +(a.reduce((x,y)=>x+y,0)/a.length).toFixed(2) : 0;
-  const shy = !!rol && [...(PROCS_TEC[rol]||[]), ...PROCS_DUP].filter(p=>p.seg).some(p=>planScores[firebaseIdToPlanId(p.id)]===1);
+  const shy = !!rol && procsRol(rol).filter(p=>p.seg).some(p=>planScores[firebaseIdToPlanId(p.id)]===1);
   return {avgTec:m(vt), avgLid:m(vl), shyBad:shy, nTec:vt.length, nLid:vl.length};
 }
 function actualizarEv(){
@@ -3487,7 +3492,7 @@ function calcularBrechas(rec){
   if(!rec) return [];
   const brechas = [];
   const propsRol = PROCS_TEC[rec.rol] || [];
-  const todosTec = [...propsRol, ...PROCS_DUP];
+  const todosTec = procsRol(rec.rol);
   todosTec.forEach(p=>{
     const v = rec.scoreTec ? rec.scoreTec[p.id] : null;
     if(v && v<3) brechas.push({tipo:'tecnico', id:p.id, nombre:p.n, score:v, gap:+(4-v).toFixed(1), seg:p.seg});
