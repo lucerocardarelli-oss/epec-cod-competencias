@@ -1987,7 +1987,17 @@ function renderPersonas(tipo){
   }
   document.getElementById('pTbl').innerHTML=h+'</tbody>';
 }
-function delInd(key){if(!confirm('¿Eliminar esta evaluación?'))return;refInd.child(key).remove().then(()=>notif('Evaluación eliminada'));}
+function delInd(key){ quitarEvaluacion(key); }
+// Quita una evaluación cargada (con confirmación que indica persona, instancia y fecha)
+function quitarEvaluacion(key){
+  const r = DATA_IND.find(x=>x.fbKey===key); if(!r) return;
+  const q = `¿Quitar la evaluación de ${INST_N[r.inst]||r.inst} del ${r.fecha||'—'} de ${r.nom} (${ROLE_N[r.rol]||r.rol})?\n\nSe borra de forma definitiva y no se puede deshacer.`;
+  if(!confirm(q)) return;
+  refInd.child(key).remove().then(()=>{
+    notif('🗑 Evaluación quitada: '+r.nom+' ('+(INST_N[r.inst]||r.inst)+')');
+    if(key===evalKey){ evalKey = null; limpiarDirty(); cargarEvaluacion(); }   // si estaba abierta en el formulario, se reinicia
+  }).catch(e=>notif('⚠ No se pudo quitar: '+(e && e.message ? e.message : e)));
+}
 function delEq(key){if(!confirm('¿Eliminar esta evaluación de equipo?'))return;refEq.child(key).remove().then(()=>notif('Evaluación de equipo eliminada'));}
 
 // ════════════════════════════════════════════════════════════
@@ -2568,8 +2578,8 @@ function renderFicha(){
   const pts = regs.filter(r=>(r.avgTec||0)>0 || (r.avgLid||0)>0);
   h += `<div class="card"><div class="ct"><i class="ti ti-trending-up"></i>Evolución</div>
     <div style="position:relative;height:220px;"><canvas id="cFicha"></canvas></div>
-    <div class="tbl-scroll" style="margin-top:10px;"><table class="pdf-table"><thead><tr><th>Instancia</th><th>Fecha</th><th>Técnica</th><th>Liderazgo</th><th>Esperado</th><th>Evaluador</th></tr></thead><tbody>`+
-    pts.slice().reverse().map(r=>`<tr><td>${INST_N[r.inst]||r.inst}</td><td>${r.fecha}</td><td style="color:${scColor(r.avgTec)};font-weight:600">${r.avgTec>0?r.avgTec.toFixed(1):'—'}</td><td style="color:${scColor(r.avgLid)};font-weight:600">${r.avgLid>0?r.avgLid.toFixed(1):'—'}</td><td>${esperadoDe(rol,r.inst)}</td><td>${escH(r.eval||'—')}</td></tr>`).join('')+
+    <div class="tbl-scroll" style="margin-top:10px;"><table class="pdf-table"><thead><tr><th>Instancia</th><th>Fecha</th><th>Técnica</th><th>Liderazgo</th><th>Esperado</th><th>Evaluador</th><th>Quitar</th></tr></thead><tbody>`+
+    pts.slice().reverse().map(r=>`<tr><td>${INST_N[r.inst]||r.inst}</td><td>${r.fecha}</td><td style="color:${scColor(r.avgTec)};font-weight:600">${r.avgTec>0?r.avgTec.toFixed(1):'—'}</td><td style="color:${scColor(r.avgLid)};font-weight:600">${r.avgLid>0?r.avgLid.toFixed(1):'—'}</td><td>${esperadoDe(rol,r.inst)}</td><td>${escH(r.eval||'—')}</td><td><button class="bdel" title="Quitar esta evaluación" onclick="quitarEvaluacion('${r.fbKey}')"><i class="ti ti-trash"></i></button></td></tr>`).join('')+
     `</tbody></table></div></div>`;
 
   // brechas
@@ -3252,8 +3262,11 @@ function cargarEvaluacion(){
     if(regs.length){
       const last = regs[regs.length-1]; evalKey = last.fbKey;
       document.getElementById('ev-eval').value = last.eval || ''; document.getElementById('ev-fecha').value = last.fecha || hoyISO();
-    } else if(!document.getElementById('ev-fecha').value){ document.getElementById('ev-fecha').value = hoyISO(); }
+    }
   }
+  // Sin evaluación guardada para este puesto + persona + instancia (o pantalla limpia): fecha de hoy y tutor vacío,
+  // para que no queden pegados los de la evaluación anterior.
+  if(!evalKey){ document.getElementById('ev-fecha').value = hoyISO(); document.getElementById('ev-eval').value = ''; }
   pintarPlanBtns(); buildMatrizLider(); pintarLider(); actualizarEv(); renderEvStatus();
   if(visible('s-ficha')) renderFicha(); else document.getElementById('fichaWrap').innerHTML = '';
 }
@@ -3302,8 +3315,12 @@ function unificarRegistros(){
 }
 function limpiarEvaluacion(){
   if(evDirty && !confirm('Tenés cambios sin guardar. ¿Limpiar de todos modos?')) return;
-  document.getElementById('ev-rol').value = ''; document.getElementById('ev-nom').value = ''; document.getElementById('ev-inst').value = 'diagnostico';
+  const nomEl = document.getElementById('ev-nom');
+  delete nomEl.dataset.prev;   // evita que el campo Persona "restituya" el nombre anterior al perder el foco
+  if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  document.getElementById('ev-rol').value = ''; nomEl.value = ''; document.getElementById('ev-inst').value = 'diagnostico';
   document.getElementById('ev-fecha').value = hoyISO(); document.getElementById('ev-eval').value = '';
+  evalKey = null; evCtx = {rol:'', nom:'', inst:'diagnostico'};
   planTabActual = 'rol'; cargarEvaluacion(); poblarPersonasEv();
   notif('🧹 Pantalla limpia: lista para una nueva evaluación.');
 }
