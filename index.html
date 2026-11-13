@@ -434,6 +434,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
   <button class="nt" onclick="go('equipo')"><i class="ti ti-users"></i>Evaluación de Equipo</button>
   <button class="nt" onclick="go('seguimiento')"><i class="ti ti-message-report"></i>Feedback y Plan</button>
   <button class="nt" onclick="go('analisis')"><i class="ti ti-chart-radar"></i>Análisis</button>
+  <button class="nt" onclick="go('comparativo')"><i class="ti ti-table"></i>Comparativo</button>
   <button class="nt" onclick="go('ninebox')"><i class="ti ti-layout-grid"></i>Nine Box</button>
   <button class="nt" onclick="go('puestos')"><i class="ti ti-sitemap"></i>Guía de puestos</button>
   <button class="nt" onclick="go('reportes')"><i class="ti ti-file-type-pdf"></i>Reportes PDF</button>
@@ -1105,6 +1106,56 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
 </div>
 
 <!-- ═══════════════════════════════════════════
+     COMPARATIVO
+═══════════════════════════════════════════ -->
+<div class="sec" id="s-comparativo">
+  <style>
+    .cmp-bar{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;}
+    .cmp-bar .fg{min-width:220px;}
+    .cmp-tb{width:100%;border-collapse:collapse;font-size:12px;}
+    .cmp-tb th{padding:6px 8px;font-size:10px;text-align:center;color:var(--tm);border-bottom:1px solid var(--bd,rgba(128,128,128,.3));white-space:nowrap;user-select:none;}
+    .cmp-tb th.ord{cursor:pointer;} .cmp-tb th.ord:hover{color:var(--g);}
+    .cmp-tb th.grp{border-bottom:none;font-size:11px;font-weight:700;color:var(--tx,inherit);border-left:2px solid var(--bd,rgba(128,128,128,.3));}
+    .cmp-tb td{padding:6px 8px;text-align:center;border-bottom:1px solid var(--bd,rgba(128,128,128,.15));}
+    .cmp-tb td.nm,.cmp-tb th.nm{text-align:left;font-weight:600;}
+    .cmp-tb td.sep,.cmp-tb th.sep{border-left:2px solid var(--bd,rgba(128,128,128,.3));}
+    .cmp-tb tr.prom td{font-weight:700;border-top:2px solid var(--bd,rgba(128,128,128,.4));}
+    .cmp-r{background:rgba(192,33,51,.2);color:#e0556a;font-weight:700;}
+    .cmp-o{background:rgba(243,156,18,.2);color:#e08e0b;font-weight:700;}
+    .cmp-g{background:rgba(43,168,136,.2);color:#2BA888;font-weight:700;}
+    .cmp-gg{background:rgba(33,133,112,.32);color:#1f9a7c;font-weight:700;}
+    .cmp-n{color:var(--tm);}
+    .cmp-sub{font-size:10px;color:var(--tm);font-weight:400;}
+    .capturando .cmp-noprint{display:none!important;}
+  </style>
+  <div class="card cmp-noprint">
+    <div class="ct"><i class="ti ti-table"></i>Cuadro comparativo de evaluaciones</div>
+    <div class="cmp-bar">
+      <div class="fg"><label>Puesto</label>
+        <select id="cmpRol" onchange="renderComparativo()">
+          <option value="all">Todos los puestos</option>
+          <option value="JCOD">Jefe CCOD</option>
+          <option value="SCOD">Subjefe CCOD</option>
+          <option value="JTMT">Coordinador de Turno MT</option>
+          <option value="OMT">Operador MT/BT</option>
+        </select></div>
+      <div class="acts" style="margin:0;">
+        <button class="bsec" onclick="cmpDescargar('xls')"><i class="ti ti-file-spreadsheet"></i>Excel</button>
+        <button class="bsec" onclick="cmpDescargar('pdf')"><i class="ti ti-file-type-pdf"></i>PDF</button>
+        <button class="bsec" onclick="cmpDescargar('html')"><i class="ti ti-file-type-html"></i>HTML</button>
+      </div>
+    </div>
+    <div class="rad-guia" style="font-size:12px;line-height:1.7;color:var(--tm);margin-top:10px;">
+      Cada fila es una persona. <b>Téc.</b> = promedio técnico y <b>Lid.</b> = promedio de liderazgo, de 1 a 4, en cada instancia.
+      <b>Variación</b> = lo que cambió entre su primera y su última evaluación. <b>Brecha</b> = lo que le falta para el nivel esperado de su última instancia.
+      Colores: <span class="cmp-r" style="padding:1px 6px;border-radius:4px;">menos de 2</span> <span class="cmp-o" style="padding:1px 6px;border-radius:4px;">2 a 2,9</span> <span class="cmp-g" style="padding:1px 6px;border-radius:4px;">3 a 3,4</span> <span class="cmp-gg" style="padding:1px 6px;border-radius:4px;">3,5 o más</span>.
+      Hacé clic en un encabezado para ordenar.
+    </div>
+  </div>
+  <div id="cmpCont"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════
      NINE BOX
 ═══════════════════════════════════════════ -->
 <div class="sec" id="s-ninebox">
@@ -1582,6 +1633,7 @@ refInd.on('value', snap => {
   renderDash();
   if(document.getElementById('s-personas').classList.contains('on')) renderPersonas(pfiltro);
   if(document.getElementById('s-radar').classList.contains('on')){renderRadarTec();renderRadarLider();renderBrecha();}
+  if(document.getElementById('s-comparativo').classList.contains('on')) renderComparativo();
   if(document.getElementById('s-ninebox').classList.contains('on')) renderNineBox();
   if(document.getElementById('s-tendencia').classList.contains('on')){renderTendTec();renderTendLider();renderAlertas();}
   if(visible('s-evaluar')) evDatosCambiaron();
@@ -1719,6 +1771,7 @@ function refresh(){
   renderDash();
   if(document.getElementById('s-personas').classList.contains('on')) renderPersonas(pfiltro);
   if(document.getElementById('s-radar').classList.contains('on')){renderRadarTec();renderRadarLider();renderBrecha();}
+  if(document.getElementById('s-comparativo').classList.contains('on')) renderComparativo();
   if(document.getElementById('s-tendencia').classList.contains('on')){renderTendTec();renderTendLider();renderAlertas();}
 }
 
@@ -3025,7 +3078,7 @@ function exportJSON(){
 // ════════════════════════════════════════════════════════════
 //  GUARDAR LA PANTALLA EN LA COMPUTADORA (PDF / PNG / HTML) — tal cual se ve, en tema claro
 // ════════════════════════════════════════════════════════════
-const SEC_TITULOS = {dash:'Dashboard', evaluar:'Evaluar persona', equipo:'Evaluación de equipo', seguimiento:'Feedback y Plan de acción', analisis:'Análisis', ninebox:'Nine Box', puestos:'Guía de puestos', reportes:'Reportes'};
+const SEC_TITULOS = {dash:'Dashboard', evaluar:'Evaluar persona', equipo:'Evaluación de equipo', seguimiento:'Feedback y Plan de acción', analisis:'Análisis', comparativo:'Cuadro comparativo', ninebox:'Nine Box', puestos:'Guía de puestos', reportes:'Reportes'};
 const SEL_PERSONA = {seguimiento:'seg-persona'};
 function toggleMenuGuardar(ev){ if(ev) ev.stopPropagation(); document.getElementById('gpMenu').classList.toggle('on'); }
 function cerrarMenuGuardar(){ const m = document.getElementById('gpMenu'); if(m) m.classList.remove('on'); }
@@ -3191,6 +3244,7 @@ function go(id){
   switch(act){
     case 'dash': renderDash(); break;
     case 'ninebox': renderNineBox(); break;
+    case 'comparativo': renderComparativo(); break;
     case 'puestos': renderPuestos(); break;
     case 'ficha': poblarPersonasEv(); renderFicha(); break;
     case 'planillas': case 'individual': poblarPersonasEv(); break;
@@ -3484,6 +3538,98 @@ function initEvaluar(){
   poblarPersonasEv(); aplicarRolEnPlanillas(''); renderEvStatus();
 }
 initEvaluar();
+
+// ════════════════════════════════════════════════════════════
+//  COMPARATIVO — personas de cada puesto, instancia por instancia
+// ════════════════════════════════════════════════════════════
+let cmpSort = {k:'nom', dir:1};
+const CMP_INST = ['diagnostico','seguimiento','certificacion'];
+function cmpClase(v){ return v==null ? 'cmp-n' : v>=3.5 ? 'cmp-gg' : v>=3 ? 'cmp-g' : v>=2 ? 'cmp-o' : 'cmp-r'; }
+function cmpNum(v){ return v==null ? '—' : v.toFixed(1); }
+function cmpFilas(rol){
+  const filas = [];
+  radPersonas(rol).forEach(p=>{
+    const regs = registrosDe(p.nom, rol), f = {nom:p.nom, rol, fechas:{}};
+    CMP_INST.forEach((inst,i)=>{
+      const rs = regs.filter(r=>r.inst===inst);
+      const t = rs.filter(r=>(r.avgTec||0)>0).pop(), l = rs.filter(r=>(r.avgLid||0)>0).pop();
+      f[['d','s','c'][i]+'_t'] = t ? t.avgTec : null; f[['d','s','c'][i]+'_l'] = l ? l.avgLid : null;
+      f.fechas[inst] = rs.length ? rs[rs.length-1].fecha : '';
+    });
+    const con = CMP_INST.filter((inst,i)=>f[['d','s','c'][i]+'_t']!=null || f[['d','s','c'][i]+'_l']!=null);
+    f.inst = con.length ? con[con.length-1] : null;
+    const serie = k => CMP_INST.map((inst,i)=>f[['d','s','c'][i]+'_'+k]).filter(v=>v!=null);
+    const st = serie('t'), sl = serie('l');
+    f.v_t = st.length>1 ? +(st[st.length-1]-st[0]).toFixed(1) : null;
+    f.v_l = sl.length>1 ? +(sl[sl.length-1]-sl[0]).toFixed(1) : null;
+    const ult = k => { const s = serie(k); return s.length ? s[s.length-1] : null; };
+    const esp = f.inst ? esperadoDe(rol, f.inst) : null;
+    f.esp = esp;
+    f.b_t = (esp!=null && ult('t')!=null) ? +Math.max(0, esp-ult('t')).toFixed(1) : null;
+    f.b_l = (esp!=null && ult('l')!=null) ? +Math.max(0, esp-ult('l')).toFixed(1) : null;
+    f.instOrd = f.inst ? CMP_INST.indexOf(f.inst)+1 : 0;
+    filas.push(f);
+  });
+  const k = cmpSort.k, d = cmpSort.dir;
+  filas.sort((a,b)=>{
+    const x = a[k], y = b[k];
+    if(x==null && y==null) return a.nom.localeCompare(b.nom,'es');
+    if(x==null) return 1; if(y==null) return -1;
+    return (typeof x==='string' ? x.localeCompare(y,'es') : x-y) * d || a.nom.localeCompare(b.nom,'es');
+  });
+  return filas;
+}
+function cmpPromedio(filas, k){ const v = filas.map(f=>f[k]).filter(x=>x!=null); return v.length ? +(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1) : null; }
+function cmpOrdenar(k){ cmpSort = {k, dir: (cmpSort.k===k ? -cmpSort.dir : (k==='nom'||k==='inst'?1:-1))}; renderComparativo(); }
+function cmpTablaRol(rol, conOrden){
+  const filas = cmpFilas(rol);
+  if(!filas.length) return '';
+  const esp = ESPERADO[rol] || {};
+  const th = (k, txt, extra) => conOrden
+    ? `<th class="ord${extra||''}" onclick="cmpOrdenar('${k}')" title="Ordenar">${txt}${cmpSort.k===k ? (cmpSort.dir>0?' ▲':' ▼') : ''}</th>`
+    : `<th class="${(extra||'').trim()}">${txt}</th>`;
+  const grp = (txt, esperado) => `<th class="grp" colspan="2">${txt}<div class="cmp-sub">esperado ${esperado}</div></th>`;
+  let h = `<table class="cmp-tb"><thead><tr><th class="nm" rowspan="2" ${conOrden?'onclick="cmpOrdenar(\'nom\')" style="cursor:pointer;text-align:left;"':'style="text-align:left;"'}>Persona${conOrden&&cmpSort.k==='nom'?(cmpSort.dir>0?' ▲':' ▼'):''}</th>`
+    + grp('Diagnóstico', esp.diagnostico) + grp('Seguimiento', esp.seguimiento) + grp('Certificación', esp.certificacion)
+    + `<th class="grp" colspan="2">Variación<div class="cmp-sub">primera → última</div></th><th class="grp" colspan="3">Situación actual</th></tr><tr>`
+    + th('d_t','Téc.',' sep')+th('d_l','Lid.')+th('s_t','Téc.',' sep')+th('s_l','Lid.')+th('c_t','Téc.',' sep')+th('c_l','Lid.')
+    + th('v_t','Téc.',' sep')+th('v_l','Lid.')+th('instOrd','Última instancia',' sep')+th('b_t','Brecha téc.')+th('b_l','Brecha lid.')+`</tr></thead><tbody>`;
+  const celda = (v, sep, titulo) => `<td class="${sep?'sep ':''}${cmpClase(v)}"${titulo?` title="${escH(titulo)}"`:''}>${cmpNum(v)}</td>`;
+  const vari = (v, sep) => v==null ? `<td class="${sep?'sep ':''}cmp-n">—</td>` : `<td class="${sep?'sep ':''}" style="font-weight:700;color:${v>0?'#2BA888':v<0?'#e0556a':'var(--tm)'}">${v>0?'▲ +':v<0?'▼ ':'= '}${v.toFixed(1)}</td>`;
+  const brecha = v => v==null ? `<td class="cmp-n">—</td>` : v===0 ? `<td class="cmp-g">✅ Cumple</td>` : `<td class="cmp-o">Falta ${v.toFixed(1)}</td>`;
+  filas.forEach(f=>{
+    h += `<tr><td class="nm">${escH(f.nom)}</td>`
+      + celda(f.d_t,true,f.fechas.diagnostico) + celda(f.d_l,false,f.fechas.diagnostico)
+      + celda(f.s_t,true,f.fechas.seguimiento) + celda(f.s_l,false,f.fechas.seguimiento)
+      + celda(f.c_t,true,f.fechas.certificacion) + celda(f.c_l,false,f.fechas.certificacion)
+      + vari(f.v_t,true) + vari(f.v_l,false)
+      + `<td class="sep">${f.inst ? INST_N[f.inst] : '—'}</td>` + brecha(f.b_t) + brecha(f.b_l) + `</tr>`;
+  });
+  h += `<tr class="prom"><td class="nm">Promedio del puesto</td>`
+    + ['d_t','d_l','s_t','s_l','c_t','c_l'].map((k,i)=>{ const v = cmpPromedio(filas,k); return `<td class="${i%2===0?'sep ':''}${cmpClase(v)}">${cmpNum(v)}</td>`; }).join('')
+    + vari(cmpPromedio(filas,'v_t'),true) + vari(cmpPromedio(filas,'v_l'),false) + `<td class="sep"></td><td></td><td></td></tr></tbody></table>`;
+  return `<div class="card"><div class="ct"><i class="ti ti-users"></i>${ROLE_N[rol]} — ${filas.length} persona${filas.length!==1?'s':''}</div><div class="tbl-scroll">${h}</div></div>`;
+}
+function cmpRoles(){ const v = document.getElementById('cmpRol').value; return v==='all' ? ROLES_EVAL : [v]; }
+function renderComparativo(){
+  const cont = document.getElementById('cmpCont'); if(!cont) return;
+  const html = cmpRoles().map(r=>cmpTablaRol(r,true)).join('');
+  cont.innerHTML = html || '<div class="card"><p style="font-size:12px;color:var(--tm);text-align:center;padding:20px;">Todavía no hay evaluaciones cargadas para mostrar.</p></div>';
+}
+function cmpDescargar(fmt){
+  if(fmt==='pdf'){ guardarPantalla('pdf'); return; }
+  const fecha = sufijoFecha(), tablas = cmpRoles().map(r=>cmpTablaRol(r,false)).filter(Boolean);
+  if(!tablas.length){ notif('⚠ No hay evaluaciones para descargar.'); return; }
+  const estilos = `body{font-family:Segoe UI,Arial,sans-serif;color:#1c2b26;padding:18px}h1{font-size:18px;color:#0f4d3d}h2,.ct{font-size:14px;color:#0f4d3d;margin:18px 0 6px}small{color:#666}
+    table{border-collapse:collapse;font-size:12px;margin-bottom:8px}th,td{border:1px solid #c9d6d1;padding:5px 9px;text-align:center}td.nm,th.nm{text-align:left;font-weight:600}
+    th{background:#e8f1ed;font-size:11px}.cmp-sub{font-size:10px;font-weight:400;color:#555}.cmp-r{background:#f6c9cf;color:#a01a2b;font-weight:700}.cmp-o{background:#fde3b8;color:#a35f00;font-weight:700}
+    .cmp-g{background:#c4ebdd;color:#14705a;font-weight:700}.cmp-gg{background:#8fd8c0;color:#0b5a46;font-weight:700}.cmp-n{color:#888}tr.prom td{font-weight:700;background:#f2f7f5}`;
+  const cuerpo = `<h1>EPEC S.A.U. — Matriz de Competencias CCOD · Cuadro comparativo</h1><small>Generado el ${fecha}. Téc. = promedio técnico, Lid. = promedio de liderazgo (escala 1 a 4).</small>`
+    + tablas.join('').replace(/<div class="card"><div class="ct"><i class="ti ti-users"><\/i>/g,'<h2>').replace(/<\/div><div class="tbl-scroll">/g,'</h2>').replace(/<\/div><\/div>/g,'');
+  const doc = `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Cuadro comparativo CCOD</title><style>${estilos}</style></head><body>${cuerpo}</body></html>`;
+  if(fmt==='xls') descargarArchivo('EPEC_CCOD_Comparativo_'+fecha+'.xls', doc, 'application/vnd.ms-excel;charset=utf-8', true);
+  else descargarArchivo('EPEC_CCOD_Comparativo_'+fecha+'.html', doc, 'text/html;charset=utf-8', false);
+}
 
 // ════════════════════════════════════════════════════════════
 //  REPORTES PDF
