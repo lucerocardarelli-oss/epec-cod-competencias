@@ -1012,35 +1012,63 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
      RADAR
 ═══════════════════════════════════════════ -->
 <div class="subv" id="s-radar">
-  <div class="g2">
-    <div class="card">
-      <div class="ct"><i class="ti ti-chart-radar"></i>Radar — Expertiz Técnica</div>
-      <div class="fg" style="max-width:200px;">
-        <label>Rol</label>
-        <select id="rRolTec" onchange="renderRadarTec()">
+  <style>
+    .rad-f{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;}
+    .rad-guia{font-size:12px;line-height:1.7;color:var(--tm);}
+    .rad-guia b{color:var(--tx,inherit);}
+    .rad-res{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+    .rad-res>div{flex:1 1 260px;border:1px solid var(--bd,rgba(255,255,255,.12));border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.5;}
+    .rad-tab{width:100%;border-collapse:collapse;font-size:11px;margin-top:10px;}
+    .rad-tab th{text-align:left;padding:5px 6px;font-size:10px;color:var(--tm);border-bottom:1px solid var(--bd,rgba(255,255,255,.15));}
+    .rad-tab td{padding:5px 6px;border-bottom:1px solid var(--bd,rgba(255,255,255,.07));vertical-align:top;}
+  </style>
+  <div class="card">
+    <div class="ct"><i class="ti ti-adjustments"></i>¿Qué querés ver?</div>
+    <div class="rad-f">
+      <div class="fg"><label>1 · Puesto</label>
+        <select id="rRol" onchange="radarRolCambio()">
           <option value="JCOD">Jefe CCOD</option>
           <option value="SCOD">Subjefe CCOD</option>
           <option value="JTMT">Coordinador de Turno MT</option>
           <option value="OMT">Operador MT/BT</option>
-        </select>
-      </div>
-      <div style="position:relative;height:300px;"><canvas id="cRadarTec"></canvas></div>
+        </select></div>
+      <div class="fg"><label>2 · Persona</label><select id="rPers" onchange="renderRadares();renderBrecha()"></select></div>
+      <div class="fg"><label>3 · Momento</label>
+        <select id="rInst" onchange="renderRadares();renderBrecha()">
+          <option value="ultima">Última evaluación de cada persona</option>
+          <option value="diagnostico">Diagnóstico (punto de partida)</option>
+          <option value="seguimiento">Seguimiento</option>
+          <option value="certificacion">Certificación</option>
+        </select></div>
+      <div class="fg"><label>4 · Comparar con</label>
+        <select id="rComp" onchange="renderRadares();renderBrecha()">
+          <option value="ninguno">Solo el nivel esperado</option>
+          <option value="diagnostico">Su diagnóstico inicial (ver cuánto avanzó)</option>
+        </select></div>
+      <div class="fg"><label>5 · Liderazgo: mostrar también</label>
+        <select id="rExtra" onchange="renderRadares();renderBrecha()">
+          <option value="ninguno">Solo la evaluación del tutor</option>
+          <option value="auto">Autoevaluación de la persona</option>
+          <option value="equipo">Mirada del equipo</option>
+        </select></div>
+    </div>
+  </div>
+  <div class="card" id="radTitulo"></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct"><i class="ti ti-chart-radar"></i>Expertiz técnica — un vértice por proceso</div>
+      <div style="position:relative;height:400px;"><canvas id="cRadarTec"></canvas></div>
+      <div id="radTabTec"></div>
     </div>
     <div class="card">
-      <div class="ct"><i class="ti ti-chart-radar"></i>Radar — Liderazgo Operativo</div>
-      <div class="fg" style="max-width:200px;">
-        <label>Ver</label>
-        <select id="rModLider" onchange="renderRadarLider()">
-          <option value="grupo">Promedio del grupo</option>
-          <option value="equipo">Evaluaciones de equipo</option>
-        </select>
-      </div>
-      <div style="position:relative;height:300px;"><canvas id="cRadarLider"></canvas></div>
+      <div class="ct"><i class="ti ti-chart-radar"></i>Liderazgo operativo — un vértice por competencia</div>
+      <div style="position:relative;height:400px;"><canvas id="cRadarLider"></canvas></div>
+      <div id="radTabLid"></div>
     </div>
   </div>
   <div class="card">
-    <div class="ct"><i class="ti ti-chart-bar-off"></i>Brechas — Liderazgo individual vs. nivel requerido</div>
-    <div style="position:relative;height:240px;"><canvas id="cBrecha"></canvas></div>
+    <div class="ct"><i class="ti ti-chart-bar-off"></i>Brecha de liderazgo — lo que falta para llegar al nivel esperado</div>
+    <div style="position:relative;height:260px;"><canvas id="cBrecha"></canvas></div>
   </div>
 </div>
 
@@ -2003,50 +2031,152 @@ function delEq(key){if(!confirm('¿Eliminar esta evaluación de equipo?'))return
 // ════════════════════════════════════════════════════════════
 //  RADAR
 // ════════════════════════════════════════════════════════════
-function renderRadarTec(){
-  const rol=document.getElementById('rRolTec').value;
-  const evals=DATA_IND.filter(d=>d.rol===rol);
-  const todos=procsRol(rol).slice(0,8);
-  const vals=todos.map(p=>{const v=evals.map(d=>d.scoreTec?.[p.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
-  if(cRadarTec)cRadarTec.destroy();
-  cRadarTec=new Chart(document.getElementById('cRadarTec').getContext('2d'),{type:'radar',data:{
-    labels:todos.map(p=>p.id),
-    datasets:[
-      {label:'Requerido',data:todos.map(()=>4),borderColor:'#218570',backgroundColor:'rgba(33,133,112,.1)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#218570'},
-      {label:'Real',data:vals,borderColor:'#c02133',backgroundColor:'rgba(192,33,51,.12)',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#c02133'}
-    ]
-  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:8}},pointLabels:{font:{size:9}}}},plugins:{legend:{display:false}}}});
+function renderRadarTec(){ renderRadares(); }
+function renderRadarLider(){}
+const RAD_PAL = ['#3b82f6','#f39c12','#a855f7','#ef4444','#14b8a6','#eab308','#ec4899','#84cc16'];
+const RAD_NIVEL = v => v>=3.5 ? 'Avanzado referente' : v>=3 ? 'Competente autónomo' : v>=2 ? 'Básico supervisado' : 'Inicial';
+function radWrap(t, n){
+  const L=[]; let c='';
+  String(t).split(' ').forEach(x=>{ if(c && (c+' '+x).length>n){ L.push(c); c=x; } else c=(c?c+' ':'')+x; });
+  if(c) L.push(c);
+  if(L.length>3){ L.length=3; L[2]=L[2].slice(0,n-1)+'…'; }
+  return L;
 }
-
-function renderRadarLider(){
-  const modo=document.getElementById('rModLider').value;
-  let avgL;
-  if(modo==='equipo'){
-    avgL=COMPS_LIDER.map(c=>{const v=DATA_EQ.map(d=>d.scoreEq?.[c.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
+function radPersonas(rol){
+  const m = new Map();
+  DATA_IND.filter(d=>d.rol===rol).forEach(d=>{ const k=normNom(d.nom); if(!m.has(k)) m.set(k,d.nom); });
+  return [...m].map(([key,nom])=>({key,nom})).sort((a,b)=>a.nom.localeCompare(b.nom,'es'));
+}
+function radPoblarPersonas(){
+  const rol = document.getElementById('rRol').value, sel = document.getElementById('rPers'), prev = sel.value;
+  const ps = radPersonas(rol);
+  let h = `<option value="">Promedio de todo el puesto (${ps.length} persona${ps.length!==1?'s':''})</option>`;
+  if(ps.length>1) h += `<option value="__todas__">Comparar personas (una línea por persona)</option>`;
+  h += ps.map(p=>`<option value="${escH(p.key)}">${escH(p.nom)}</option>`).join('');
+  sel.innerHTML = h;
+  sel.value = [...sel.options].some(o=>o.value===prev) ? prev : '';
+}
+function radAgregar(rol, key, inst){
+  const out = [];
+  radPersonas(rol).filter(p=>!key || p.key===key).forEach(p=>{
+    let regs = registrosDe(p.nom, rol);
+    if(inst!=='ultima') regs = regs.filter(r=>r.inst===inst);
+    if(regs.length) out.push({nom:p.nom, pa:puntajesActuales(regs)});
+  });
+  return out;
+}
+function radProm(list, getter, ids){
+  return ids.map(id=>{ const v = list.map(x=>(getter(x)||{})[id]).filter(Boolean); return v.length ? +(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1) : null; });
+}
+function radCtx(){
+  const S = {rol:document.getElementById('rRol').value, pers:document.getElementById('rPers').value, inst:document.getElementById('rInst').value,
+             comp:document.getElementById('rComp').value, extra:document.getElementById('rExtra').value};
+  S.todas = S.pers==='__todas__'; S.key = (S.pers && !S.todas) ? S.pers : '';
+  S.list = radAgregar(S.rol, S.key, S.inst);
+  S.esp = S.list.length ? +(S.list.map(x=>esperadoDe(S.rol, S.inst==='ultima' ? x.pa.inst : S.inst)).reduce((a,b)=>a+b,0)/S.list.length).toFixed(1)
+                        : esperadoDe(S.rol, S.inst==='ultima' ? 'diagnostico' : S.inst);
+  S.tec = procsRol(S.rol).map(p=>({id:p.id, nombre:p.n}));
+  S.lid = COMPS_LIDER.map(c=>({id:c.id, nombre:c.nombre}));
+  return S;
+}
+function radSeries(S, kind){
+  const items = kind==='tec' ? S.tec : S.lid, ids = items.map(i=>i.id);
+  const get = x => kind==='tec' ? x.pa.scoreTec : x.pa.scoreLider;
+  const ds = [{label:`Nivel esperado (${S.esp})`, vals:items.map(()=>S.esp), color:'#2BA888', esp:true}];
+  if(S.todas){
+    S.list.slice(0,8).forEach((x,i)=>ds.push({label:x.nom, vals:radProm([x],get,ids), color:RAD_PAL[i]}));
   } else {
-    avgL=COMPS_LIDER.map(c=>{const v=DATA_IND.map(d=>d.scoreLider?.[c.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
+    ds.push({label: S.key ? S.list[0].nom : `Promedio del puesto (${S.list.length} persona${S.list.length!==1?'s':''})`, vals:radProm(S.list,get,ids), color:'#3b82f6', main:true});
+    if(S.comp==='diagnostico' && S.inst!=='diagnostico'){
+      const dl = radAgregar(S.rol, S.key, 'diagnostico');
+      if(dl.length) ds.push({label: S.key ? 'Su diagnóstico inicial' : 'Diagnóstico inicial del puesto', vals:radProm(dl,get,ids), color:'#9ca3af', dash:true});
+    }
+    if(kind==='lid' && S.extra==='auto'){
+      ds.push({label: S.key ? 'Autoevaluación de la persona' : 'Autoevaluación del puesto', vals:radProm(S.list, x=>x.pa.autoLider, ids), color:'#f39c12', dash:true});
+    }
+    if(kind==='lid' && S.extra==='equipo'){
+      const eq = DATA_EQ.filter(d=>S.inst==='ultima' || d.inst===S.inst);
+      ds.push({label:'Mirada del equipo (evaluaciones de equipo)', vals:radProm(eq, d=>d.scoreEq, ids), color:'#a855f7', dash:true});
+    }
   }
-  if(cRadarLider)cRadarLider.destroy();
-  cRadarLider=new Chart(document.getElementById('cRadarLider').getContext('2d'),{type:'radar',data:{
-    labels:COMPS_LIDER.map(c=>c.nombre.split(' ').slice(0,2).join(' ')),
-    datasets:[
-      {label:'Requerido',data:COMPS_LIDER.map(()=>4),borderColor:'#218570',backgroundColor:'rgba(33,133,112,.1)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#218570'},
-      {label:modo==='equipo'?'Equipo':'Individual',data:avgL,borderColor:'#1a5276',backgroundColor:'rgba(26,82,118,.12)',borderWidth:2,borderDash:[5,3],pointRadius:3,pointBackgroundColor:'#1a5276'}
-    ]
-  },options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:8}},pointLabels:{font:{size:9}}}},plugins:{legend:{display:false}}}});
+  return {items, ds};
 }
+function radDibujar(canvasId, prev, items, ds){
+  if(prev) prev.destroy();
+  return new Chart(document.getElementById(canvasId).getContext('2d'),{type:'radar',data:{
+    labels: items.map((it,i)=>radWrap(`${i+1}. ${it.nombre}`, 20)),
+    datasets: ds.map(d=>({label:d.label, data:d.vals, borderColor:d.color, pointBackgroundColor:d.color,
+      backgroundColor: d.main ? d.color+'38' : 'transparent', fill: !!d.main,
+      borderWidth: d.main ? 3 : 2, pointRadius: d.esp ? 0 : (d.main ? 4 : 3),
+      borderDash: (d.esp||d.dash) ? [6,4] : [], spanGaps:true}))
+  },options:{responsive:true,maintainAspectRatio:false,layout:{padding:6},
+    scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:10},showLabelBackdrop:false},pointLabels:{font:{size:11}}}},
+    plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},boxWidth:16,padding:10}},
+      tooltip:{callbacks:{title:c=>items[c[0].dataIndex].nombre, label:c=>` ${c.dataset.label}: ${c.raw==null?'sin dato':c.raw+' / 4'}`}}}}});
+}
+function radTabla(S, items, ds){
+  const cols = ds.filter(d=>!d.esp), f = v=>v==null ? '—' : v.toFixed(1);
+  let h = `<table class="rad-tab"><thead><tr><th>#</th><th>${items===S.tec?'Proceso':'Competencia'}</th>${cols.map(c=>`<th>${escH(c.label.length>22 ? c.label.slice(0,21)+'…' : c.label)}</th>`).join('')}<th>Esperado</th>${S.todas?'':'<th>Situación</th>'}</tr></thead><tbody>`;
+  items.forEach((it,i)=>{
+    h += `<tr><td>${i+1}</td><td>${escH(it.nombre)}</td>` + cols.map(c=>`<td style="color:${scColor(c.vals[i])};font-weight:700">${f(c.vals[i])}</td>`).join('') + `<td>${S.esp}</td>`;
+    if(!S.todas){
+      const v = cols[0].vals[i];
+      h += `<td>${v==null ? '<span style="color:var(--tm)">Sin dato</span>' : v>=S.esp ? '✅ Cumple' : `<span style="color:#e67e22;font-weight:600">Falta ${(S.esp-v).toFixed(1)}</span>`}</td>`;
+    }
+    h += '</tr>';
+  });
+  return h + '</tbody></table>';
+}
+function renderRadares(){
+  if(!document.getElementById('rRol')) return;
+  const rolEl = document.getElementById('rRol');
+  if(!rolEl.dataset.init && DATA_IND.length){ rolEl.dataset.init = '1'; const r = ['JCOD','SCOD','JTMT','OMT'].find(x=>DATA_IND.some(d=>d.rol===x)); if(r) rolEl.value = r; }
+  radPoblarPersonas();
+  const S = radCtx(), box = document.getElementById('radTitulo');
+  const instTxt = S.inst==='ultima' ? 'la última evaluación de cada persona' : 'la evaluación de '+INST_N[S.inst];
+  if(!S.list.length){
+    box.innerHTML = `<div class="rad-guia">No hay evaluaciones de <b>${ROLE_N[S.rol]}</b> para esa selección (${instTxt}). Probá con otro puesto o con otro momento.</div>`;
+    if(cRadarTec){ cRadarTec.destroy(); cRadarTec = null; } if(cRadarLider){ cRadarLider.destroy(); cRadarLider = null; }
+    document.getElementById('radTabTec').innerHTML = ''; document.getElementById('radTabLid').innerHTML = '';
+    return;
+  }
+  const quien = S.todas ? `<b>cada persona del puesto por separado</b> (${S.list.length}${S.list.length>8?', se muestran las primeras 8':''})`
+    : S.key ? `<b>${escH(S.list[0].nom)}</b>` : `<b>el promedio de ${S.list.length} persona${S.list.length!==1?'s':''}</b> (${S.list.map(x=>escH(x.nom)).join(', ')})`;
+  const T = radSeries(S,'tec'), L = radSeries(S,'lid');
+  // resumen en lenguaje simple
+  let res = '';
+  if(!S.todas){
+    const all = [...T.items.map((it,i)=>({n:it.nombre, v:T.ds[1].vals[i]})), ...L.items.map((it,i)=>({n:it.nombre, v:L.ds[1].vals[i]}))].filter(x=>x.v!=null);
+    if(all.length){
+      const fuerte = all.slice().sort((a,b)=>b.v-a.v)[0], brecha = all.slice().sort((a,b)=>(a.v-S.esp)-(b.v-S.esp))[0];
+      res = `<div class="rad-res"><div>💪 <b>Lo más fuerte</b><br>${escH(fuerte.n)} — ${fuerte.v.toFixed(1)} / 4 (${RAD_NIVEL(fuerte.v)})</div>
+        <div>${brecha.v>=S.esp ? '✅ <b>Sin brechas</b><br>Alcanza el nivel esperado en todo lo evaluado.' : `🎯 <b>Mayor brecha</b><br>${escH(brecha.n)} — ${brecha.v.toFixed(1)} / 4, le faltan ${(S.esp-brecha.v).toFixed(1)} para llegar a ${S.esp}`}</div></div>`;
+    }
+  }
+  box.innerHTML = `<div class="ct"><i class="ti ti-info-circle"></i>Estás viendo: ${ROLE_N[S.rol]}</div>
+    <div class="rad-guia">Mostrando ${quien}, según ${instTxt}.${(!S.key && !S.todas && S.list.length>1)?' <b>Es un promedio</b>: para ver a una sola persona elegila en “2 · Persona”.':''}<br>
+    <b>Cómo leer el gráfico:</b> cada vértice es un proceso (o una competencia). Cuanto <b>más lejos del centro</b>, mejor dominio: 1 Inicial · 2 Básico supervisado · 3 Competente autónomo · 4 Avanzado referente.
+    La <b style="color:#2BA888">línea verde punteada</b> es el nivel esperado: si el área de color la alcanza, cumple; si queda adentro, hay una brecha.</div>${res}`;
+  cRadarTec = radDibujar('cRadarTec', cRadarTec, T.items, T.ds);
+  cRadarLider = radDibujar('cRadarLider', cRadarLider, L.items, L.ds);
+  document.getElementById('radTabTec').innerHTML = radTabla(S, T.items, T.ds);
+  document.getElementById('radTabLid').innerHTML = radTabla(S, L.items, L.ds);
+}
+function radarRolCambio(){ document.getElementById('rPers').value = ''; renderRadares(); renderBrecha(); }
 
 function renderBrecha(){
-  const avgL=COMPS_LIDER.map(c=>{const v=DATA_IND.map(d=>d.scoreLider?.[c.id]).filter(v=>v);return v.length?+(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1):0;});
-  const brechas=avgL.map(v=>+(4-v).toFixed(1));
-  if(cBrecha)cBrecha.destroy();
-  cBrecha=new Chart(document.getElementById('cBrecha').getContext('2d'),{type:'bar',data:{
-    labels:COMPS_LIDER.map(c=>c.nombre.split(' ').slice(0,3).join(' ')),
+  if(!document.getElementById('rRol')) return;
+  const S = radCtx(), ids = S.lid.map(i=>i.id);
+  const vals = radProm(S.list, x=>x.pa.scoreLider, ids);
+  if(cBrecha) cBrecha.destroy();
+  cBrecha = new Chart(document.getElementById('cBrecha').getContext('2d'),{type:'bar',data:{
+    labels: S.lid.map(c=>radWrap(c.nombre, 18)),
     datasets:[
-      {label:'Nivel alcanzado',data:avgL,backgroundColor:'#218570',borderRadius:4},
-      {label:'Brecha',data:brechas,backgroundColor:'rgba(192,33,51,.3)',borderRadius:4}
+      {label:'Nivel alcanzado', data:vals.map(v=>v==null?0:v), backgroundColor:'#218570', borderRadius:4},
+      {label:`Lo que falta para el nivel esperado (${S.esp})`, data:vals.map(v=>v==null?S.esp:Math.max(0,+(S.esp-v).toFixed(1))), backgroundColor:'rgba(230,126,34,.55)', borderRadius:4}
     ]
-  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:9},boxWidth:9}}},scales:{x:{stacked:true,ticks:{font:{size:9},maxRotation:30}},y:{stacked:true,min:0,max:4}}}});
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},boxWidth:12}}},
+    scales:{x:{stacked:true,ticks:{font:{size:10}}},y:{stacked:true,min:0,max:4}}}});
 }
 
 // ════════════════════════════════════════════════════════════
@@ -3104,7 +3234,7 @@ function irAAccionesDesdeFeedback(nom, rol, sub){
 //  LIMPIAR (una acción por pestaña, para empezar de nuevo)
 // ════════════════════════════════════════════════════════════
 function limpiarAnalisis(){
-  document.getElementById('rRolTec').value = 'JCOD'; document.getElementById('rModLider').value = 'grupo';
+  document.getElementById('rPers').value = ''; document.getElementById('rInst').value = 'ultima'; document.getElementById('rComp').value = 'ninguno'; document.getElementById('rExtra').value = 'ninguno';
   document.getElementById('tRolTec').value = 'all'; pfiltro = 'individual';
   document.querySelectorAll('#s-personas .rtab').forEach((b,i)=>b.classList.toggle('on', i===0));
   go(SUB_ULTIMA.analisis); notif('🧹 Filtros restablecidos.');
