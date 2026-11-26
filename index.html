@@ -1185,9 +1185,9 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
       <div class="fg"><label>Puesto</label>
         <select id="evoRol" onchange="document.getElementById('evoPers').value='';renderEvolucion()">
           <option value="SCOD">Subjefe CCOD</option>
-          <option value="JCOD" disabled>Jefe CCOD (próximamente)</option>
-          <option value="JTMT" disabled>Coordinador de Turno MT (próximamente)</option>
-          <option value="OMT" disabled>Operador MT/BT (próximamente)</option>
+          <option value="JCOD">Jefe CCOD</option>
+          <option value="JTMT">Coordinador de Turno MT</option>
+          <option value="OMT">Operador MT/BT</option>
         </select></div>
       <div class="fg"><label>Persona</label><select id="evoPers" onchange="renderEvolucion()"></select></div>
       <div class="fg"><label>Mostrar</label>
@@ -3715,6 +3715,27 @@ const FAMILIAS_TEC = {
     {n:'Personal y capacitación', ids:['P-SCOD-04','P-DUP-09','P-DUP-15']},
     {n:'Recursos y presupuesto', ids:['P-DUP-05','P-DUP-06','P-DUP-12']},
     {n:'Indicadores, gestión y mejora', ids:['P-DUP-13','P-DUP-14','P-DUP-08']}
+  ],
+  JCOD:[
+    {n:'Marco normativo y criterios técnicos', ids:['P-JCOD-01','P-JCOD-02','P-DUP-11','P-DUP-10','P-TEC-02']},
+    {n:'Sistemas y conocimiento técnico de la red', ids:['P-JCOD-04','P-TEC-01','P-DUP-02','P-DUP-01']},
+    {n:'Operación y coordinación', ids:['P-DUP-07','P-DUP-03','P-DUP-04','P-DUP-08']},
+    {n:'Recursos y contrataciones', ids:['P-JCOD-03','P-DUP-05','P-DUP-06','P-DUP-12']},
+    {n:'Personal y capacitación', ids:['P-DUP-09','P-DUP-15']},
+    {n:'Informes, indicadores y mejora', ids:['P-JCOD-05','P-DUP-13','P-DUP-14']}
+  ],
+  JTMT:[
+    {n:'Conducción del turno y maniobras', ids:['P-JTMT-01','P-DUP-07','P-DUP-04']},
+    {n:'Seguridad operacional y consignación', ids:['P-JTMT-02','P-DUP-10','P-TEC-02','P-DUP-11']},
+    {n:'Reclamos y contingencias', ids:['P-JTMT-03','P-DUP-03','P-DUP-08']},
+    {n:'Conocimiento técnico de la red', ids:['P-TEC-01','P-DUP-02','P-DUP-01']},
+    {n:'Recursos, personal y capacitación', ids:['P-DUP-05','P-DUP-06','P-DUP-09','P-DUP-15','P-DUP-12']},
+    {n:'Indicadores, gestión y mejora', ids:['P-DUP-13','P-DUP-14']}
+  ],
+  OMT:[
+    {n:'Operación en tiempo real de redes MT', ids:['P-OMT-01']},
+    {n:'Coordinación, comunicaciones y registro de novedades', ids:['P-OMT-02']},
+    {n:'Incidentes, documentación y seguridad operacional', ids:['P-OMT-03']}
   ]
 };
 const EVO_INST = ['diagnostico','seguimiento','certificacion'];
@@ -3737,6 +3758,7 @@ function evoDatos(nom, rol){
   out.vt = dif('pt'); out.vl = dif('pl');
   out.avance = Math.max(out.vt==null?-9:out.vt, out.vl==null?-9:out.vl);
   out.con = con;
+  out.tieneLid = con.some(i=>out.inst[i].pl!=null);
   return out;
 }
 function evoResumen(d){
@@ -3800,8 +3822,8 @@ function renderEvolucion(){
   personas.forEach(d=>{
     const serie = k => d.con.map(i=>d.inst[i][k]).filter(x=>x!=null).map(v=>v.toFixed(1)).join(' → ') || '—';
     html += `<div class="card"><div class="ct"><i class="ti ti-user"></i>${escH(d.nom)} — ${ROLE_N[d.rol]}</div>
-      <div class="evo-chips"><span>Técnica: <b>${serie('pt')}</b> ${d.vt!=null?'('+vari(d.vt)+')':''}</span><span>Liderazgo: <b>${serie('pl')}</b> ${d.vl!=null?'('+vari(d.vl)+')':''}</span>${evoResumen(d)}</div>
-      ${que!=='lid' ? fila(d,'tec') : ''}${que!=='tec' ? fila(d,'lid') : ''}</div>`;
+      <div class="evo-chips"><span>Técnica: <b>${serie('pt')}</b> ${d.vt!=null?'('+vari(d.vt)+')':''}</span>${d.tieneLid ? `<span>Liderazgo: <b>${serie('pl')}</b> ${d.vl!=null?'('+vari(d.vl)+')':''}</span>` : ''}${evoResumen(d)}</div>
+      ${que!=='lid' ? fila(d,'tec') : ''}${(que!=='tec' && d.tieneLid) ? fila(d,'lid') : ''}</div>`;
   });
   cont.innerHTML = html;
   pend.forEach(a=>evoDibujar(...a));
