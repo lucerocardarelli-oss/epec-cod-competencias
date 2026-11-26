@@ -27,6 +27,13 @@ Botón **Guardar pantalla** (encabezado, junto al sol/luna): guarda lo que se ve
 ## Parámetros editables (al inicio del script, sección "PARÁMETROS EDITABLES")
 `ESPERADO`, `REEVAL_DIAS`, `ENABLE_MS_LOGIN`, `MS_TENANT`.
 
+## Auditoría y papelera (nuevo)
+- **Registro de accesos y cambios** en Firebase (`cod_auditoria`): ingreso y cierre de sesión, evaluaciones cargadas/modificadas/quitadas, evaluaciones de equipo, acciones, nómina y descargas. Cada línea guarda usuario (email de la cuenta), fecha y hora **del servidor** y detalle. Nadie puede modificar ni borrar el registro (solo agregar).
+- **Papelera** (`cod_papelera`): "Quitar evaluación", "Eliminar evaluación de equipo/acción" y "Unificar registros" ya no borran en forma definitiva: guardan una copia completa y se pueden **restaurar** desde la pestaña **Auditoría**.
+- **Pestaña Auditoría**: solo la ve la cuenta administradora (`ADMIN_EMAILS` en `index.html`; las reglas de Firebase lo hacen cumplir). Muestra quién ingresó, el historial con filtros, la papelera y descarga CSV.
+- **Requiere publicar las reglas**: agregar a las reglas de Firebase los nodos `cod_auditoria` y `cod_papelera` de `reglas-firebase-cod.json` (sin tocar el resto). Hasta entonces la app funciona igual, pero no guarda el registro.
+- Si dos personas usan la misma cuenta, el registro las distingue como una sola. Conviene una cuenta por evaluador (Firebase → Authentication).
+
 ## Login con cuenta EPEC (Microsoft Entra ID)
 Está **apagado** (`ENABLE_MS_LOGIN = false`). Para activarlo: (1) EPEC registra una aplicación en Entra ID con la URI de redirección que muestra Firebase; (2) Firebase Console → Authentication → Sign-in method → Microsoft: cargar Application (client) ID y secreto; (3) poner `ENABLE_MS_LOGIN = true` (y `MS_TENANT` con el ID de directorio de EPEC) y subir el archivo. El email/contraseña sigue disponible para personas externas.
 

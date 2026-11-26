@@ -1,5 +1,5 @@
 {
-  "_LEEME": "NO reemplazar las reglas completas del proyecto: el proyecto Firebase 'epec---capacitaciones' lo usan también otras apps. Copiar SOLO estos 4 nodos dentro de 'rules' y conservar el resto.",
+  "_LEEME": "NO reemplazar las reglas completas del proyecto: el proyecto Firebase 'epec---capacitaciones' lo usan también otras apps. Copiar SOLO estos 6 nodos dentro de 'rules' y conservar el resto. Los nodos cod_auditoria y cod_papelera son nuevos (registro de accesos/cambios y papelera); solo los puede LEER el administrador (cambiar el email si hace falta).",
   "rules": {
     "cod_individual": {
       ".read": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous'",
@@ -19,6 +19,23 @@
     "cod_connected": {
       ".read": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous'",
       ".write": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous'"
+    },
+    "cod_auditoria": {
+      ".read": "auth != null && auth.token.email != null && auth.token.email.toLowerCase() == 'clucero@epec.com.ar'",
+      ".indexOn": [
+        "ts"
+      ],
+      "$id": {
+        ".write": "auth != null && auth.token.firebase.sign_in_provider != 'anonymous' && !data.exists() && newData.exists()",
+        ".validate": "newData.hasChildren(['ts','email','accion']) && newData.child('ts').val() == now && newData.child('email').val() == auth.token.email.toLowerCase() && newData.child('accion').isString()"
+      }
+    },
+    "cod_papelera": {
+      ".read": "auth != null && auth.token.email != null && auth.token.email.toLowerCase() == 'clucero@epec.com.ar'",
+      "$id": {
+        ".write": "(auth != null && auth.token.firebase.sign_in_provider != 'anonymous' && !data.exists() && newData.exists()) || (auth != null && auth.token.email != null && auth.token.email.toLowerCase() == 'clucero@epec.com.ar')",
+        ".validate": "newData.hasChildren(['nodo','key','rec','ts'])"
+      }
     }
   }
 }
