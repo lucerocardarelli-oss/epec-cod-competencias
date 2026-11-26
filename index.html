@@ -436,6 +436,7 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
   <button class="nt" onclick="go('seguimiento')"><i class="ti ti-message-report"></i>Feedback y Plan</button>
   <button class="nt" onclick="go('analisis')"><i class="ti ti-chart-radar"></i>Análisis</button>
   <button class="nt" onclick="go('comparativo')"><i class="ti ti-table"></i>Comparativo</button>
+  <button class="nt" onclick="go('evolucion')"><i class="ti ti-timeline"></i>Evolución individual</button>
   <button class="nt" onclick="go('ninebox')"><i class="ti ti-layout-grid"></i>Nine Box</button>
   <button class="nt" onclick="go('puestos')"><i class="ti ti-sitemap"></i>Guía de puestos</button>
   <button class="nt" onclick="go('reportes')"><i class="ti ti-file-type-pdf"></i>Reportes PDF</button>
@@ -1157,6 +1158,65 @@ html[data-theme="dark"] #pdfPreviewWrap .pdf-table th{background:#155748;}
 </div>
 
 <!-- ═══════════════════════════════════════════
+     EVOLUCIÓN INDIVIDUAL
+═══════════════════════════════════════════ -->
+<div class="sec" id="s-evolucion">
+  <style>
+    .evo-bar{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;}
+    .evo-bar .fg{min-width:200px;}
+    .evo-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:6px;}
+    .evo-box{border:1px solid var(--bd,rgba(128,128,128,.3));border-radius:12px;padding:8px 8px 6px;}
+    .evo-box h5{margin:0 0 2px;font-size:12px;text-align:center;}
+    .evo-box .evo-sub{font-size:10px;text-align:center;color:var(--tm);margin-bottom:2px;}
+    .evo-box .evo-cv{position:relative;height:260px;}
+    .evo-vacio{border:2px dashed var(--bd,rgba(128,128,128,.4));border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--tm);font-size:12px;min-height:200px;padding:10px;}
+    .evo-sec-t{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--tm);margin:12px 0 2px;}
+    .evo-chips{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 2px;font-size:12px;}
+    .evo-chips span{border:1px solid var(--bd,rgba(128,128,128,.3));border-radius:8px;padding:4px 9px;}
+    .evo-leyenda i{display:inline-block;width:14px;height:0;border-top:3px solid;vertical-align:middle;margin:0 4px 0 10px;}
+    .evo-fam summary{cursor:pointer;font-size:12px;font-weight:600;}
+    .evo-fam ul{font-size:11px;color:var(--tm);margin:6px 0 0 16px;padding:0;line-height:1.6;}
+    .capturando .evo-noprint{display:none!important;}
+    @media(max-width:900px){.evo-row{grid-template-columns:1fr;}}
+  </style>
+  <div class="card evo-noprint">
+    <div class="ct"><i class="ti ti-timeline"></i>Evolución individual — un radar por instancia, uno al lado del otro</div>
+    <div class="evo-bar">
+      <div class="fg"><label>Puesto</label>
+        <select id="evoRol" onchange="document.getElementById('evoPers').value='';renderEvolucion()">
+          <option value="SCOD">Subjefe CCOD</option>
+          <option value="JCOD" disabled>Jefe CCOD (próximamente)</option>
+          <option value="JTMT" disabled>Coordinador de Turno MT (próximamente)</option>
+          <option value="OMT" disabled>Operador MT/BT (próximamente)</option>
+        </select></div>
+      <div class="fg"><label>Persona</label><select id="evoPers" onchange="renderEvolucion()"></select></div>
+      <div class="fg"><label>Mostrar</label>
+        <select id="evoQue" onchange="renderEvolucion()">
+          <option value="ambas">Técnica y liderazgo</option>
+          <option value="tec">Solo técnica (por familias)</option>
+          <option value="lid">Solo liderazgo</option>
+        </select></div>
+      <div class="fg"><label>Ordenar por</label>
+        <select id="evoOrden" onchange="renderEvolucion()">
+          <option value="nom">Nombre</option>
+          <option value="avance">Mayor avance primero</option>
+        </select></div>
+      <div class="acts" style="margin:0;">
+        <button class="bsec" onclick="guardarPantalla('pdf')"><i class="ti ti-file-type-pdf"></i>PDF</button>
+        <button class="bsec" onclick="guardarPantalla('html')"><i class="ti ti-file-type-html"></i>HTML</button>
+      </div>
+    </div>
+    <div style="font-size:12px;line-height:1.7;color:var(--tm);margin-top:10px;">
+      Cada persona tiene una fila de radares: <b>Diagnóstico → Seguimiento → Certificación</b>. Todos usan la misma escala (1 a 4), así se ve cómo crece el área.
+      La <b>línea amarilla punteada</b> es el nivel esperado en esa instancia. La parte técnica se agrupa en <b>familias de procesos</b> para que se lea bien.
+      <span class="evo-leyenda"><i id="evoL1"></i>Diagnóstico<i id="evoL2"></i>Seguimiento<i id="evoL3"></i>Certificación<i id="evoL4"></i>Nivel esperado</span>
+    </div>
+    <details class="evo-fam" style="margin-top:8px;"><summary>¿Qué procesos incluye cada familia?</summary><div id="evoFamDet"></div></details>
+  </div>
+  <div id="evoCont"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════
      NINE BOX
 ═══════════════════════════════════════════ -->
 <div class="sec" id="s-ninebox">
@@ -1635,6 +1695,7 @@ refInd.on('value', snap => {
   if(document.getElementById('s-personas').classList.contains('on')) renderPersonas(pfiltro);
   if(document.getElementById('s-radar').classList.contains('on')){renderRadarTec();renderRadarLider();renderBrecha();}
   if(document.getElementById('s-comparativo').classList.contains('on')) renderComparativo();
+  if(document.getElementById('s-evolucion').classList.contains('on')) renderEvolucion();
   if(document.getElementById('s-ninebox').classList.contains('on')) renderNineBox();
   if(document.getElementById('s-tendencia').classList.contains('on')){renderTendTec();renderTendLider();renderAlertas();}
   if(visible('s-evaluar')) evDatosCambiaron();
@@ -1773,6 +1834,7 @@ function refresh(){
   if(document.getElementById('s-personas').classList.contains('on')) renderPersonas(pfiltro);
   if(document.getElementById('s-radar').classList.contains('on')){renderRadarTec();renderRadarLider();renderBrecha();}
   if(document.getElementById('s-comparativo').classList.contains('on')) renderComparativo();
+  if(document.getElementById('s-evolucion').classList.contains('on')) renderEvolucion();
   if(document.getElementById('s-tendencia').classList.contains('on')){renderTendTec();renderTendLider();renderAlertas();}
 }
 
@@ -3086,8 +3148,8 @@ function exportJSON(){
 // ════════════════════════════════════════════════════════════
 //  GUARDAR LA PANTALLA EN LA COMPUTADORA (PDF / PNG / HTML) — tal cual se ve, en tema claro
 // ════════════════════════════════════════════════════════════
-const SEC_TITULOS = {dash:'Dashboard', evaluar:'Evaluar persona', equipo:'Evaluación de equipo', seguimiento:'Feedback y Plan de acción', analisis:'Análisis', comparativo:'Cuadro comparativo', ninebox:'Nine Box', puestos:'Guía de puestos', reportes:'Reportes'};
-const SEL_PERSONA = {seguimiento:'seg-persona'};
+const SEC_TITULOS = {dash:'Dashboard', evaluar:'Evaluar persona', equipo:'Evaluación de equipo', seguimiento:'Feedback y Plan de acción', analisis:'Análisis', comparativo:'Cuadro comparativo', evolucion:'Evolución individual', ninebox:'Nine Box', puestos:'Guía de puestos', reportes:'Reportes'};
+const SEL_PERSONA = {seguimiento:'seg-persona', evolucion:'evoPers'};
 function toggleMenuGuardar(ev){ if(ev) ev.stopPropagation(); document.getElementById('gpMenu').classList.toggle('on'); }
 function cerrarMenuGuardar(){ const m = document.getElementById('gpMenu'); if(m) m.classList.remove('on'); }
 document.addEventListener('click', e=>{ if(!e.target.closest || !e.target.closest('.gp-wrap')) cerrarMenuGuardar(); });
@@ -3114,6 +3176,7 @@ function redibujarGraficos(){
   const a = document.querySelector('.sec.on'); if(!a) return; const id = a.id.slice(2);
   if(id==='dash') renderDash();
   else if(id==='analisis'){ if(visible('s-radar')){ renderRadarTec(); renderRadarLider(); renderBrecha(); } else if(visible('s-tendencia')){ renderTendTec(); renderTendLider(); } }
+  else if(id==='evolucion') renderEvolucion();
   else if(id==='evaluar' && visible('s-ficha')) renderFicha();
   else if(id==='reportes' && document.getElementById('pdfPreviewWrap').style.display!=='none' && document.getElementById('pdfExec').style.display!=='block') buildPdfPreview();
 }
@@ -3253,6 +3316,7 @@ function go(id){
     case 'dash': renderDash(); break;
     case 'ninebox': renderNineBox(); break;
     case 'comparativo': renderComparativo(); break;
+    case 'evolucion': renderEvolucion(); break;
     case 'puestos': renderPuestos(); break;
     case 'ficha': poblarPersonasEv(); renderFicha(); break;
     case 'planillas': case 'individual': poblarPersonasEv(); break;
@@ -3637,6 +3701,110 @@ function cmpDescargar(fmt){
   const doc = `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Cuadro comparativo CCOD</title><style>${estilos}</style></head><body>${cuerpo}</body></html>`;
   if(fmt==='xls') descargarArchivo('EPEC_CCOD_Comparativo_'+fecha+'.xls', doc, 'application/vnd.ms-excel;charset=utf-8', true);
   else descargarArchivo('EPEC_CCOD_Comparativo_'+fecha+'.html', doc, 'text/html;charset=utf-8', false);
+}
+
+// ════════════════════════════════════════════════════════════
+//  EVOLUCIÓN INDIVIDUAL — un radar por instancia, uno al lado del otro
+// ════════════════════════════════════════════════════════════
+// Familias de procesos técnicos (para que el radar sea legible). Se pueden ajustar sin tocar el resto.
+const FAMILIAS_TEC = {
+  SCOD:[
+    {n:'Operación, maniobras y comunicaciones', ids:['P-SCOD-05','P-DUP-07','P-DUP-03','P-DUP-04','P-SCOD-01','P-SCOD-03']},
+    {n:'Seguridad operacional y procedimientos', ids:['P-DUP-10','P-TEC-02','P-DUP-11']},
+    {n:'Conocimiento técnico de la red', ids:['P-TEC-01','P-SCOD-02','P-DUP-02','P-DUP-01']},
+    {n:'Personal y capacitación', ids:['P-SCOD-04','P-DUP-09','P-DUP-15']},
+    {n:'Recursos y presupuesto', ids:['P-DUP-05','P-DUP-06','P-DUP-12']},
+    {n:'Indicadores, gestión y mejora', ids:['P-DUP-13','P-DUP-14','P-DUP-08']}
+  ]
+};
+const EVO_INST = ['diagnostico','seguimiento','certificacion'];
+let evoCharts = [];
+function evoColorInst(inst){ return radCol(inst==='diagnostico' ? 'diag' : inst==='seguimiento' ? 'equipo' : 'actual'); }
+function evoPromFam(scores, ids){ const v = ids.map(id=>(scores||{})[id]).filter(Boolean); return v.length ? +(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1) : null; }
+function evoDatos(nom, rol){
+  const regs = registrosDe(nom, rol), fam = FAMILIAS_TEC[rol] || [], out = {nom, rol, inst:{}};
+  EVO_INST.forEach(inst=>{
+    const rs = regs.filter(r=>r.inst===inst);
+    if(!rs.length){ out.inst[inst] = null; return; }
+    const pa = puntajesActuales(rs);
+    const tec = fam.map(f=>evoPromFam(pa.scoreTec, f.ids));
+    const lid = COMPS_LIDER.map(c=>(pa.scoreLider||{})[c.id] || null);
+    const prom = a => { const v = a.filter(x=>x!=null); return v.length ? +(v.reduce((x,y)=>x+y,0)/v.length).toFixed(1) : null; };
+    out.inst[inst] = {tec, lid, pt:prom(tec), pl:prom(lid), fecha:rs[rs.length-1].fecha, esp:esperadoDe(rol, inst)};
+  });
+  const con = EVO_INST.filter(i=>out.inst[i]);
+  const dif = k => { const v = con.map(i=>out.inst[i][k]).filter(x=>x!=null); return v.length>1 ? +(v[v.length-1]-v[0]).toFixed(1) : null; };
+  out.vt = dif('pt'); out.vl = dif('pl');
+  out.avance = Math.max(out.vt==null?-9:out.vt, out.vl==null?-9:out.vl);
+  out.con = con;
+  return out;
+}
+function evoResumen(d){
+  if(d.con.length<2) return '';
+  const a = d.inst[d.con[0]], b = d.inst[d.con[d.con.length-1]], esp = b.esp;
+  const items = [];
+  FAMILIAS_TEC[d.rol].forEach((f,i)=>{ if(a.tec[i]!=null && b.tec[i]!=null) items.push({n:f.n, d:+(b.tec[i]-a.tec[i]).toFixed(1), v:b.tec[i]}); else if(b.tec[i]!=null) items.push({n:f.n, d:null, v:b.tec[i]}); });
+  COMPS_LIDER.forEach((c,i)=>{ if(a.lid[i]!=null && b.lid[i]!=null) items.push({n:c.nombre, d:+(b.lid[i]-a.lid[i]).toFixed(1), v:b.lid[i]}); else if(b.lid[i]!=null) items.push({n:c.nombre, d:null, v:b.lid[i]}); });
+  const conD = items.filter(x=>x.d!=null).sort((x,y)=>y.d-x.d), brecha = items.slice().sort((x,y)=>x.v-y.v)[0];
+  let h = '';
+  if(conD.length && conD[0].d>0) h += `<span>▲ <b>Mayor avance:</b> ${escH(conD[0].n)} (+${conD[0].d.toFixed(1)})</span>`;
+  if(brecha) h += `<span>${brecha.v>=esp ? '✅ Cumple el esperado en todo' : `🎯 <b>Mayor brecha actual:</b> ${escH(brecha.n)} (${brecha.v.toFixed(1)}, esperado ${esp})`}</span>`;
+  return h;
+}
+function evoDibujar(id, labels, vals, color, esp){
+  const cv = document.getElementById(id); if(!cv) return;
+  evoCharts.push(new Chart(cv.getContext('2d'),{type:'radar',data:{
+    labels: labels.map(l=>radWrap(l, 14)),
+    datasets:[
+      {label:'Nivel esperado', data:labels.map(()=>esp), borderColor:radCol('esperado'), backgroundColor:'transparent', borderWidth:2.5, borderDash:[7,4], pointRadius:0},
+      {label:'Resultado', data:vals, borderColor:color, backgroundColor:color+'40', pointBackgroundColor:color, pointBorderColor:color, borderWidth:3.5, pointRadius:4, spanGaps:true}
+    ]},options:{responsive:true,maintainAspectRatio:false,layout:{padding:2},
+      scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:9},showLabelBackdrop:false},pointLabels:{font:{size:9}}}},
+      plugins:{legend:{display:false},tooltip:{callbacks:{title:c=>labels[c[0].dataIndex], label:c=>` ${c.dataset.label}: ${c.raw==null?'sin dato':c.raw+' / 4'}`}}}}}));
+}
+function evoPoblarPersonas(){
+  const rol = document.getElementById('evoRol').value, sel = document.getElementById('evoPers'), prev = sel.value;
+  const ps = radPersonas(rol);
+  sel.innerHTML = `<option value="">Todas las personas (${ps.length})</option>` + ps.map(p=>`<option value="${escH(p.key)}">${escH(p.nom)}</option>`).join('');
+  sel.value = [...sel.options].some(o=>o.value===prev) ? prev : '';
+}
+function renderEvolucion(){
+  const cont = document.getElementById('evoCont'); if(!cont) return;
+  evoCharts.forEach(c=>c.destroy()); evoCharts = [];
+  [['evoL1','diagnostico'],['evoL2','seguimiento'],['evoL3','certificacion']].forEach(([i,inst])=>{ const e = document.getElementById(i); if(e) e.style.borderTopColor = evoColorInst(inst); });
+  const l4 = document.getElementById('evoL4'); if(l4){ l4.style.borderTopColor = radCol('esperado'); l4.style.borderTopStyle = 'dashed'; }
+  evoPoblarPersonas();
+  const rol = document.getElementById('evoRol').value, key = document.getElementById('evoPers').value;
+  const que = document.getElementById('evoQue').value, orden = document.getElementById('evoOrden').value;
+  const fam = FAMILIAS_TEC[rol];
+  if(!fam){ cont.innerHTML = '<div class="card"><p style="font-size:12px;color:var(--tm);padding:16px;text-align:center;">Para este puesto todavía no está definida la agrupación en familias.</p></div>'; return; }
+  document.getElementById('evoFamDet').innerHTML = '<ul>' + fam.map(f=>`<li><b>${escH(f.n)}</b>: ${f.ids.map(id=>{ const p = procsRol(rol).find(x=>x.id===id); return escH(p ? p.n : id); }).join(' · ')}</li>`).join('') + '</ul>';
+  let personas = radPersonas(rol).filter(p=>!key || p.key===key).map(p=>evoDatos(p.nom, rol)).filter(d=>d.con.length);
+  if(orden==='avance') personas.sort((a,b)=>b.avance-a.avance || a.nom.localeCompare(b.nom,'es'));
+  if(!personas.length){ cont.innerHTML = '<div class="card"><p style="font-size:12px;color:var(--tm);padding:16px;text-align:center;">Todavía no hay evaluaciones cargadas para mostrar.</p></div>'; return; }
+  const pend = [];
+  let html = '', n = 0;
+  const fila = (d, tipo) => {
+    const labels = tipo==='tec' ? fam.map(f=>f.n) : COMPS_LIDER.map(c=>c.nombre);
+    let h = `<div class="evo-sec-t">${tipo==='tec' ? 'Expertiz técnica — por familias de procesos' : 'Liderazgo operativo — por competencia'}</div><div class="evo-row">`;
+    EVO_INST.forEach(inst=>{
+      const x = d.inst[inst];
+      if(!x){ h += `<div class="evo-vacio">${INST_N[inst]}<br>Sin evaluar todavía</div>`; return; }
+      const id = 'evc'+(n++), prom = tipo==='tec' ? x.pt : x.pl;
+      h += `<div class="evo-box"><h5 style="color:${evoColorInst(inst)}">${INST_N[inst]}</h5><div class="evo-sub">${escH(x.fecha||'')} · promedio <b>${prom==null?'—':prom.toFixed(1)}</b> · esperado ${x.esp}</div><div class="evo-cv"><canvas id="${id}"></canvas></div></div>`;
+      pend.push([id, labels, tipo==='tec' ? x.tec : x.lid, evoColorInst(inst), x.esp]);
+    });
+    return h + '</div>';
+  };
+  const vari = v => v==null ? '—' : v>0 ? `<b style="color:${radCol('actual')}">▲ +${v.toFixed(1)}</b>` : v<0 ? `<b style="color:#e0556a">▼ ${v.toFixed(1)}</b>` : '= 0.0';
+  personas.forEach(d=>{
+    const serie = k => d.con.map(i=>d.inst[i][k]).filter(x=>x!=null).map(v=>v.toFixed(1)).join(' → ') || '—';
+    html += `<div class="card"><div class="ct"><i class="ti ti-user"></i>${escH(d.nom)} — ${ROLE_N[d.rol]}</div>
+      <div class="evo-chips"><span>Técnica: <b>${serie('pt')}</b> ${d.vt!=null?'('+vari(d.vt)+')':''}</span><span>Liderazgo: <b>${serie('pl')}</b> ${d.vl!=null?'('+vari(d.vl)+')':''}</span>${evoResumen(d)}</div>
+      ${que!=='lid' ? fila(d,'tec') : ''}${que!=='tec' ? fila(d,'lid') : ''}</div>`;
+  });
+  cont.innerHTML = html;
+  pend.forEach(a=>evoDibujar(...a));
 }
 
 // ════════════════════════════════════════════════════════════
