@@ -2087,7 +2087,12 @@ function delEq(key){if(!confirm('¿Eliminar esta evaluación de equipo?'))return
 // ════════════════════════════════════════════════════════════
 function renderRadarTec(){ renderRadares(); }
 function renderRadarLider(){}
-const RAD_PAL = ['#3b82f6','#f39c12','#a855f7','#ef4444','#14b8a6','#eab308','#ec4899','#84cc16'];
+// Colores fluorescentes bien distintos entre sí (oscuro) y versión más profunda para tema claro / PDF
+const RAD_FLUO = {
+  oscuro:{actual:'#39FF14', esperado:'#FFF200', diag:'#FF2BD6', auto:'#FF8A00', equipo:'#00E5FF', pers:['#39FF14','#00E5FF','#FF2BD6','#FFF200','#FF8A00','#B44CFF','#FF3B3B','#00FFA3']},
+  claro: {actual:'#00B341', esperado:'#D9A400', diag:'#E0008F', auto:'#F26A00', equipo:'#0095D9', pers:['#00B341','#0095D9','#E0008F','#D9A400','#F26A00','#8A2BE2','#E02020','#00A877']}
+};
+function radCol(k){ const t = document.documentElement.getAttribute('data-theme')==='dark' ? 'oscuro' : 'claro'; return RAD_FLUO[t][k]; }
 const RAD_NIVEL = v => v>=3.5 ? 'Avanzado referente' : v>=3 ? 'Competente autónomo' : v>=2 ? 'Básico supervisado' : 'Inicial';
 function radWrap(t, n){
   const L=[]; let c='';
@@ -2136,36 +2141,38 @@ function radCtx(){
 function radSeries(S, kind){
   const items = kind==='tec' ? S.tec : S.lid, ids = items.map(i=>i.id);
   const get = x => kind==='tec' ? x.pa.scoreTec : x.pa.scoreLider;
-  const ds = [{label:`Nivel esperado (${S.esp})`, vals:items.map(()=>S.esp), color:'#2BA888', esp:true}];
+  const ds = [{label:`Nivel esperado (${S.esp})`, vals:items.map(()=>S.esp), color:radCol('esperado'), esp:true}];
   if(S.todas){
-    S.list.slice(0,8).forEach((x,i)=>ds.push({label:x.nom, vals:radProm([x],get,ids), color:RAD_PAL[i]}));
+    S.list.slice(0,8).forEach((x,i)=>ds.push({label:x.nom, vals:radProm([x],get,ids), color:radCol('pers')[i]}));
   } else {
-    ds.push({label: S.key ? S.list[0].nom : `Promedio del puesto (${S.list.length} persona${S.list.length!==1?'s':''})`, vals:radProm(S.list,get,ids), color:'#3b82f6', main:true});
+    ds.push({label: S.key ? S.list[0].nom : `Promedio del puesto (${S.list.length} persona${S.list.length!==1?'s':''})`, vals:radProm(S.list,get,ids), color:radCol('actual'), main:true});
     if(S.comp==='diagnostico' && S.inst!=='diagnostico'){
       const dl = radAgregar(S.rol, S.key, 'diagnostico');
-      if(dl.length) ds.push({label: S.key ? 'Su diagnóstico inicial' : 'Diagnóstico inicial del puesto', vals:radProm(dl,get,ids), color:'#9ca3af', dash:true});
+      if(dl.length) ds.push({label: S.key ? 'Su diagnóstico inicial' : 'Diagnóstico inicial del puesto', vals:radProm(dl,get,ids), color:radCol('diag'), dash:true, tri:true});
     }
     if(kind==='lid' && S.extra==='auto'){
-      ds.push({label: S.key ? 'Autoevaluación de la persona' : 'Autoevaluación del puesto', vals:radProm(S.list, x=>x.pa.autoLider, ids), color:'#f39c12', dash:true});
+      ds.push({label: S.key ? 'Autoevaluación de la persona' : 'Autoevaluación del puesto', vals:radProm(S.list, x=>x.pa.autoLider, ids), color:radCol('auto'), dash:true});
     }
     if(kind==='lid' && S.extra==='equipo'){
       const eq = DATA_EQ.filter(d=>S.inst==='ultima' || d.inst===S.inst);
-      ds.push({label:'Mirada del equipo (evaluaciones de equipo)', vals:radProm(eq, d=>d.scoreEq, ids), color:'#a855f7', dash:true});
+      ds.push({label:'Mirada del equipo (evaluaciones de equipo)', vals:radProm(eq, d=>d.scoreEq, ids), color:radCol('equipo'), dash:true, tri:true});
     }
   }
   return {items, ds};
 }
 function radDibujar(canvasId, prev, items, ds){
   if(prev) prev.destroy();
-  return new Chart(document.getElementById(canvasId).getContext('2d'),{type:'radar',data:{
-    labels: items.map((it,i)=>radWrap(`${i+1}. ${it.nombre}`, 20)),
-    datasets: ds.map(d=>({label:d.label, data:d.vals, borderColor:d.color, pointBackgroundColor:d.color,
-      backgroundColor: d.main ? d.color+'38' : 'transparent', fill: !!d.main,
-      borderWidth: d.main ? 3 : 2, pointRadius: d.esp ? 0 : (d.main ? 4 : 3),
-      borderDash: (d.esp||d.dash) ? [6,4] : [], spanGaps:true}))
+  const cv = document.getElementById(canvasId), muchos = items.length>12;
+  if(cv.parentElement) cv.parentElement.style.height = muchos ? '540px' : '400px';
+  return new Chart(cv.getContext('2d'),{type:'radar',data:{
+    labels: items.map((it,i)=>radWrap(`${i+1}. ${it.nombre}`, muchos ? 15 : 20)),
+    datasets: ds.map(d=>({label:d.label, data:d.vals, borderColor:d.color, pointBackgroundColor:d.color, pointBorderColor:d.color,
+      backgroundColor: d.main ? d.color+'40' : 'transparent', fill: !!d.main,
+      borderWidth: d.main ? 4 : 3, pointRadius: d.esp ? 0 : (d.main ? 5 : 4), pointStyle: d.tri ? 'triangle' : 'circle',
+      borderDash: (d.esp||d.dash) ? [8,5] : [], spanGaps:true}))
   },options:{responsive:true,maintainAspectRatio:false,layout:{padding:6},
-    scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:10},showLabelBackdrop:false},pointLabels:{font:{size:11}}}},
-    plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},boxWidth:16,padding:10}},
+    scales:{r:{min:0,max:4,ticks:{stepSize:1,font:{size:10},showLabelBackdrop:false},pointLabels:{font:{size:muchos?9:11}}}},
+    plugins:{legend:{display:true,position:'bottom',labels:{font:{size:11},boxWidth:16,padding:10,usePointStyle:false}},
       tooltip:{callbacks:{title:c=>items[c[0].dataIndex].nombre, label:c=>` ${c.dataset.label}: ${c.raw==null?'sin dato':c.raw+' / 4'}`}}}}});
 }
 function radTabla(S, items, ds){
@@ -2210,7 +2217,7 @@ function renderRadares(){
   box.innerHTML = `<div class="ct"><i class="ti ti-info-circle"></i>Estás viendo: ${ROLE_N[S.rol]}</div>
     <div class="rad-guia">Mostrando ${quien}, según ${instTxt}.${(!S.key && !S.todas && S.list.length>1)?' <b>Es un promedio</b>: para ver a una sola persona elegila en “2 · Persona”.':''}<br>
     <b>Cómo leer el gráfico:</b> cada vértice es un proceso (o una competencia). Cuanto <b>más lejos del centro</b>, mejor dominio: 1 Inicial · 2 Básico supervisado · 3 Competente autónomo · 4 Avanzado referente.
-    La <b style="color:#2BA888">línea verde punteada</b> es el nivel esperado: si el área de color la alcanza, cumple; si queda adentro, hay una brecha.</div>${res}`;
+    La <b style="color:${radCol('esperado')}">línea amarilla punteada</b> es el nivel esperado: si el área <b style="color:${radCol('actual')}">verde</b> la alcanza, cumple; si queda adentro, hay una brecha. Lo anterior (diagnóstico) se dibuja en <b style="color:${radCol('diag')}">magenta</b>, así se ve cuánto avanzó.</div>${res}`;
   cRadarTec = radDibujar('cRadarTec', cRadarTec, T.items, T.ds);
   cRadarLider = radDibujar('cRadarLider', cRadarLider, L.items, L.ds);
   document.getElementById('radTabTec').innerHTML = radTabla(S, T.items, T.ds);
